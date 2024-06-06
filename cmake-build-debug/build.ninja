@@ -47,15 +47,15 @@ cmake_ninja_workdir = C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Docum
 #############################################
 # Order-only phony target for BattleBeyz
 
-build cmake_object_order_depends_target_BattleBeyz: phony || CMakeFiles/BattleBeyz.dir
+build cmake_object_order_depends_target_BattleBeyz: phony || cmake_object_order_depends_target_glfw
 
-build CMakeFiles/BattleBeyz.dir/main.cpp.obj: CXX_COMPILER__BattleBeyz_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/main.cpp || cmake_object_order_depends_target_BattleBeyz
-  DEP_FILE = CMakeFiles\BattleBeyz.dir\main.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+build CMakeFiles/BattleBeyz.dir/src/main.cpp.obj: CXX_COMPILER__BattleBeyz_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/src/main.cpp || cmake_object_order_depends_target_BattleBeyz
+  DEFINES = -DGLEW_STATIC
+  DEP_FILE = CMakeFiles\BattleBeyz.dir\src\main.cpp.obj.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1"
   OBJECT_DIR = CMakeFiles\BattleBeyz.dir
-  OBJECT_FILE_DIR = CMakeFiles\BattleBeyz.dir
-  TARGET_COMPILE_PDB = CMakeFiles\BattleBeyz.dir\
-  TARGET_PDB = BattleBeyz.pdb
+  OBJECT_FILE_DIR = CMakeFiles\BattleBeyz.dir\src
 
 
 # =============================================================================
@@ -65,16 +65,16 @@ build CMakeFiles/BattleBeyz.dir/main.cpp.obj: CXX_COMPILER__BattleBeyz_unscanned
 #############################################
 # Link the executable BattleBeyz.exe
 
-build BattleBeyz.exe: CXX_EXECUTABLE_LINKER__BattleBeyz_Debug CMakeFiles/BattleBeyz.dir/main.cpp.obj
+build BattleBeyz.exe: CXX_EXECUTABLE_LINKER__BattleBeyz_Debug CMakeFiles/BattleBeyz.dir/src/main.cpp.obj | lib/glfw-3.4/src/libglfw3.a || lib/glfw-3.4/src/libglfw3.a
   FLAGS = -g
-  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  LINK_LIBRARIES = lib/glfw-3.4/src/libglfw3.a  -lglew32s  -lopengl32  -lglu32  -lglu32  -lopengl32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  LINK_PATH = -LC:/Users/ricky/ONEDRI~1/DOCUME~1/BATTLE~1/lib/GLEW-2~2.0/lib/Release/x64
   OBJECT_DIR = CMakeFiles\BattleBeyz.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
-  TARGET_COMPILE_PDB = CMakeFiles\BattleBeyz.dir\
   TARGET_FILE = BattleBeyz.exe
   TARGET_IMPLIB = libBattleBeyz.dll.a
-  TARGET_PDB = BattleBeyz.pdb
+  TARGET_PDB = BattleBeyz.exe.dbg
 
 
 #############################################
@@ -99,10 +99,490 @@ build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
 
 build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 
+
+#############################################
+# Utility command for list_install_components
+
+build list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build CMakeFiles/install.util: CUSTOM_COMMAND all
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -P cmake_install.cmake"
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build install: phony CMakeFiles/install.util
+
+
+#############################################
+# Utility command for install/local
+
+build CMakeFiles/install/local.util: CUSTOM_COMMAND all
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build install/local: phony CMakeFiles/install/local.util
+
+
+#############################################
+# Utility command for install/strip
+
+build CMakeFiles/install/strip.util: CUSTOM_COMMAND all
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake"
+  DESC = Installing the project stripped...
+  pool = console
+  restat = 1
+
+build install/strip: phony CMakeFiles/install/strip.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for uninstall
+
+build lib/glfw-3.4/uninstall: phony lib/glfw-3.4/CMakeFiles/uninstall
+
+
+#############################################
+# Utility command for edit_cache
+
+build lib/glfw-3.4/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug\lib\glfw-3.4" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -E echo "No interactive CMake dialog available.""
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build lib/glfw-3.4/edit_cache: phony lib/glfw-3.4/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build lib/glfw-3.4/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug\lib\glfw-3.4" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe --regenerate-during-build -S"C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz" -B"C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug""
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build lib/glfw-3.4/rebuild_cache: phony lib/glfw-3.4/CMakeFiles/rebuild_cache.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build lib/glfw-3.4/list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build lib/glfw-3.4/CMakeFiles/install.util: CUSTOM_COMMAND lib/glfw-3.4/all
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug\lib\glfw-3.4" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -P cmake_install.cmake"
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build lib/glfw-3.4/install: phony lib/glfw-3.4/CMakeFiles/install.util
+
+
+#############################################
+# Utility command for install/local
+
+build lib/glfw-3.4/CMakeFiles/install/local.util: CUSTOM_COMMAND lib/glfw-3.4/all
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug\lib\glfw-3.4" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build lib/glfw-3.4/install/local: phony lib/glfw-3.4/CMakeFiles/install/local.util
+
+
+#############################################
+# Utility command for install/strip
+
+build lib/glfw-3.4/CMakeFiles/install/strip.util: CUSTOM_COMMAND lib/glfw-3.4/all
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug\lib\glfw-3.4" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake"
+  DESC = Installing the project stripped...
+  pool = console
+  restat = 1
+
+build lib/glfw-3.4/install/strip: phony lib/glfw-3.4/CMakeFiles/install/strip.util
+
+
+#############################################
+# Custom command for lib\glfw-3.4\CMakeFiles\uninstall
+
+build lib/glfw-3.4/CMakeFiles/uninstall | ${cmake_ninja_workdir}lib/glfw-3.4/CMakeFiles/uninstall: CUSTOM_COMMAND
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug\lib\glfw-3.4" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -P "C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/cmake_uninstall.cmake""
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target glfw
+
+
+#############################################
+# Order-only phony target for glfw
+
+build cmake_object_order_depends_target_glfw: phony || lib/glfw-3.4/src/CMakeFiles/glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/context.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/context.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\context.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/init.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/init.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\init.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/input.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/input.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\input.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/monitor.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/monitor.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\monitor.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/platform.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/platform.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\platform.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/vulkan.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/vulkan.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\vulkan.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/window.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/window.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\window.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/egl_context.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/egl_context.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\egl_context.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/osmesa_context.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/osmesa_context.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\osmesa_context.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/null_init.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/null_init.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\null_init.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/null_monitor.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/null_monitor.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\null_monitor.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/null_window.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/null_window.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\null_window.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/null_joystick.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/null_joystick.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\null_joystick.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_module.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/win32_module.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\win32_module.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_time.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/win32_time.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\win32_time.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_thread.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/win32_thread.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\win32_thread.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_init.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/win32_init.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\win32_init.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_joystick.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/win32_joystick.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\win32_joystick.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_monitor.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/win32_monitor.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\win32_monitor.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_window.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/win32_window.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\win32_window.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+build lib/glfw-3.4/src/CMakeFiles/glfw.dir/wgl_context.c.obj: C_COMPILER__glfw_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/wgl_context.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
+  DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\wgl_context.c.obj.d
+  FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target glfw
+
+
+#############################################
+# Link the static library lib\glfw-3.4\src\libglfw3.a
+
+build lib/glfw-3.4/src/libglfw3.a: C_STATIC_LIBRARY_LINKER__glfw_Debug lib/glfw-3.4/src/CMakeFiles/glfw.dir/context.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/init.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/input.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/monitor.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/platform.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/vulkan.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/window.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/egl_context.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/osmesa_context.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/null_init.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/null_monitor.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/null_window.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/null_joystick.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_module.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_time.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_thread.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_init.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_joystick.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_monitor.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_window.c.obj lib/glfw-3.4/src/CMakeFiles/glfw.dir/wgl_context.c.obj
+  LANGUAGE_COMPILE_FLAGS = -g
+  OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = lib\glfw-3.4\src\libglfw3.a
+  TARGET_PDB = glfw3.a.dbg
+
+
+#############################################
+# Utility command for update_mappings
+
+build lib/glfw-3.4/src/update_mappings: phony lib/glfw-3.4/src/CMakeFiles/update_mappings
+
+
+#############################################
+# Utility command for edit_cache
+
+build lib/glfw-3.4/src/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug\lib\glfw-3.4\src" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -E echo "No interactive CMake dialog available.""
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build lib/glfw-3.4/src/edit_cache: phony lib/glfw-3.4/src/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build lib/glfw-3.4/src/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug\lib\glfw-3.4\src" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe --regenerate-during-build -S"C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz" -B"C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug""
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build lib/glfw-3.4/src/rebuild_cache: phony lib/glfw-3.4/src/CMakeFiles/rebuild_cache.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build lib/glfw-3.4/src/list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build lib/glfw-3.4/src/CMakeFiles/install.util: CUSTOM_COMMAND lib/glfw-3.4/src/all
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug\lib\glfw-3.4\src" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -P cmake_install.cmake"
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build lib/glfw-3.4/src/install: phony lib/glfw-3.4/src/CMakeFiles/install.util
+
+
+#############################################
+# Utility command for install/local
+
+build lib/glfw-3.4/src/CMakeFiles/install/local.util: CUSTOM_COMMAND lib/glfw-3.4/src/all
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug\lib\glfw-3.4\src" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build lib/glfw-3.4/src/install/local: phony lib/glfw-3.4/src/CMakeFiles/install/local.util
+
+
+#############################################
+# Utility command for install/strip
+
+build lib/glfw-3.4/src/CMakeFiles/install/strip.util: CUSTOM_COMMAND lib/glfw-3.4/src/all
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug\lib\glfw-3.4\src" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake"
+  DESC = Installing the project stripped...
+  pool = console
+  restat = 1
+
+build lib/glfw-3.4/src/install/strip: phony lib/glfw-3.4/src/CMakeFiles/install/strip.util
+
+
+#############################################
+# Custom command for lib\glfw-3.4\src\CMakeFiles\update_mappings
+
+build lib/glfw-3.4/src/CMakeFiles/update_mappings | ${cmake_ninja_workdir}lib/glfw-3.4/src/CMakeFiles/update_mappings: CUSTOM_COMMAND
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\lib\glfw-3.4\src" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -P "C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/CMake/GenerateMappings.cmake" mappings.h.in mappings.h"
+  DESC = Updating gamepad mappings from upstream repository
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for edit_cache
+
+build lib/glfw-3.4/docs/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug\lib\glfw-3.4\docs" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -E echo "No interactive CMake dialog available.""
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build lib/glfw-3.4/docs/edit_cache: phony lib/glfw-3.4/docs/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build lib/glfw-3.4/docs/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug\lib\glfw-3.4\docs" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe --regenerate-during-build -S"C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz" -B"C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug""
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build lib/glfw-3.4/docs/rebuild_cache: phony lib/glfw-3.4/docs/CMakeFiles/rebuild_cache.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build lib/glfw-3.4/docs/list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build lib/glfw-3.4/docs/CMakeFiles/install.util: CUSTOM_COMMAND lib/glfw-3.4/docs/all
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug\lib\glfw-3.4\docs" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -P cmake_install.cmake"
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build lib/glfw-3.4/docs/install: phony lib/glfw-3.4/docs/CMakeFiles/install.util
+
+
+#############################################
+# Utility command for install/local
+
+build lib/glfw-3.4/docs/CMakeFiles/install/local.util: CUSTOM_COMMAND lib/glfw-3.4/docs/all
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug\lib\glfw-3.4\docs" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build lib/glfw-3.4/docs/install/local: phony lib/glfw-3.4/docs/CMakeFiles/install/local.util
+
+
+#############################################
+# Utility command for install/strip
+
+build lib/glfw-3.4/docs/CMakeFiles/install/strip.util: CUSTOM_COMMAND lib/glfw-3.4/docs/all
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug\lib\glfw-3.4\docs" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake"
+  DESC = Installing the project stripped...
+  pool = console
+  restat = 1
+
+build lib/glfw-3.4/docs/install/strip: phony lib/glfw-3.4/docs/CMakeFiles/install/strip.util
+
 # =============================================================================
 # Target aliases.
 
 build BattleBeyz: phony BattleBeyz.exe
+
+build glfw: phony lib/glfw-3.4/src/libglfw3.a
+
+build libglfw3.a: phony lib/glfw-3.4/src/libglfw3.a
+
+build uninstall: phony lib/glfw-3.4/uninstall
+
+build update_mappings: phony lib/glfw-3.4/src/update_mappings
 
 # =============================================================================
 # Folder targets.
@@ -112,7 +592,28 @@ build BattleBeyz: phony BattleBeyz.exe
 #############################################
 # Folder: C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug
 
-build all: phony BattleBeyz.exe
+build all: phony BattleBeyz.exe lib/glfw-3.4/all
+
+# =============================================================================
+
+#############################################
+# Folder: C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4
+
+build lib/glfw-3.4/all: phony lib/glfw-3.4/src/all lib/glfw-3.4/docs/all
+
+# =============================================================================
+
+#############################################
+# Folder: C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/docs
+
+build lib/glfw-3.4/docs/all: phony
+
+# =============================================================================
+
+#############################################
+# Folder: C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src
+
+build lib/glfw-3.4/src/all: phony lib/glfw-3.4/src/libglfw3.a
 
 # =============================================================================
 # Built-in targets
@@ -121,14 +622,14 @@ build all: phony BattleBeyz.exe
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCCompiler.cmake.in C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCCompilerABI.c C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCXXCompiler.cmake.in C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCXXCompilerABI.cpp C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCXXInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCompilerIdDetection.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeDetermineCCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeDetermineCXXCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeDetermineCompileFeatures.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeDetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeDetermineRCCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeDetermineSystem.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeFindBinUtils.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeGenericSystem.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeParseImplicitIncludeInfo.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeParseImplicitLinkInfo.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeParseLibraryArchitecture.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeRCCompiler.cmake.in C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeRCInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeSystem.cmake.in C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeTestCCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeTestCXXCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeTestCompilerCommon.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeTestRCCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/ADSP-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/ARMCC-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/ARMClang-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/AppleClang-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Borland-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Bruce-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Clang-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Clang-DetermineCompilerInternal.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Comeau-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Compaq-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Cray-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/CrayClang-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Embarcadero-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Fujitsu-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GHS-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU-C.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU-CXX.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU-FindBinUtils.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/HP-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/HP-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/IAR-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/IBMCPP-C-DetermineVersionInternal.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/IBMClang-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/IBMClang-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Intel-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/IntelLLVM-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/LCC-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/LCC-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/MSVC-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/NVHPC-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/NVIDIA-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/OrangeC-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/PGI-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/PathScale-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/SCO-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/SDCC-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/SunPro-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/TI-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Tasking-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/TinyCC-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/VisualAge-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Watcom-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/XL-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/XL-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/XLClang-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/zOS-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Internal/FeatureTesting.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-Determine-CXX.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-C.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-CXX.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-Initialize.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-windres.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/WindowsPaths.cmake C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/CMakeLists.txt CMakeCache.txt CMakeFiles/3.28.1/CMakeCCompiler.cmake CMakeFiles/3.28.1/CMakeCXXCompiler.cmake CMakeFiles/3.28.1/CMakeRCCompiler.cmake CMakeFiles/3.28.1/CMakeSystem.cmake
+build build.ninja: RERUN_CMAKE | C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/BasicConfigVersion-SameMajorVersion.cmake.in C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCXXInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeDependentOption.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeGenericSystem.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakePackageConfigHelpers.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeRCInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CheckCSourceCompiles.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CheckIncludeFile.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CheckLibraryExists.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU-C.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU-CXX.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/FindDoxygen.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/FindOpenGL.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/FindPackageMessage.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/FindThreads.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/GNUInstallDirs.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Internal/CheckSourceCompiles.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-C.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-CXX.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-Initialize.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-windres.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/WindowsPaths.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/WriteBasicConfigVersionFile.cmake C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/CMakeLists.txt C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/CMakeLists.txt C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/CMake/cmake_uninstall.cmake.in C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/CMake/glfw3.pc.in C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/CMake/glfw3Config.cmake.in C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/docs/CMakeLists.txt C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/CMakeLists.txt CMakeCache.txt CMakeFiles/3.28.1/CMakeCCompiler.cmake CMakeFiles/3.28.1/CMakeCXXCompiler.cmake CMakeFiles/3.28.1/CMakeRCCompiler.cmake CMakeFiles/3.28.1/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCCompiler.cmake.in C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCCompilerABI.c C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCXXCompiler.cmake.in C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCXXCompilerABI.cpp C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCXXInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCompilerIdDetection.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeDetermineCCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeDetermineCXXCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeDetermineCompileFeatures.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeDetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeDetermineRCCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeDetermineSystem.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeFindBinUtils.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeGenericSystem.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeParseImplicitIncludeInfo.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeParseImplicitLinkInfo.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeParseLibraryArchitecture.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeRCCompiler.cmake.in C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeRCInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeSystem.cmake.in C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeTestCCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeTestCXXCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeTestCompilerCommon.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeTestRCCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/ADSP-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/ARMCC-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/ARMClang-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/AppleClang-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Borland-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Bruce-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Clang-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Clang-DetermineCompilerInternal.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Comeau-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Compaq-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Cray-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/CrayClang-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Embarcadero-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Fujitsu-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GHS-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU-C.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU-CXX.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU-FindBinUtils.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/HP-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/HP-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/IAR-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/IBMCPP-C-DetermineVersionInternal.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/IBMClang-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/IBMClang-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Intel-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/IntelLLVM-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/LCC-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/LCC-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/MSVC-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/NVHPC-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/NVIDIA-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/OrangeC-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/PGI-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/PathScale-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/SCO-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/SDCC-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/SunPro-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/TI-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Tasking-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/TinyCC-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/VisualAge-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/Watcom-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/XL-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/XL-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/XLClang-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/zOS-C-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Internal/FeatureTesting.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-Determine-CXX.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-C.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-CXX.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-Initialize.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-windres.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/WindowsPaths.cmake C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/CMakeLists.txt CMakeCache.txt CMakeFiles/3.28.1/CMakeCCompiler.cmake CMakeFiles/3.28.1/CMakeCXXCompiler.cmake CMakeFiles/3.28.1/CMakeRCCompiler.cmake CMakeFiles/3.28.1/CMakeSystem.cmake: phony
+build C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/BasicConfigVersion-SameMajorVersion.cmake.in C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCXXInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeDependentOption.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeGenericSystem.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakePackageConfigHelpers.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeRCInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CheckCSourceCompiles.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CheckIncludeFile.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/CheckLibraryExists.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU-C.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU-CXX.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/FindDoxygen.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/FindOpenGL.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/FindPackageMessage.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/FindThreads.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/GNUInstallDirs.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Internal/CheckSourceCompiles.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-C.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-CXX.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-Initialize.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-windres.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/WindowsPaths.cmake C$:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/WriteBasicConfigVersionFile.cmake C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/CMakeLists.txt C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/CMakeLists.txt C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/CMake/cmake_uninstall.cmake.in C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/CMake/glfw3.pc.in C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/CMake/glfw3Config.cmake.in C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/docs/CMakeLists.txt C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/glfw-3.4/src/CMakeLists.txt CMakeCache.txt CMakeFiles/3.28.1/CMakeCCompiler.cmake CMakeFiles/3.28.1/CMakeCXXCompiler.cmake CMakeFiles/3.28.1/CMakeRCCompiler.cmake CMakeFiles/3.28.1/CMakeSystem.cmake: phony
 
 
 #############################################
