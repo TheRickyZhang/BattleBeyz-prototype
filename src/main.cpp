@@ -3,78 +3,22 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include "ShaderProgram.h"
+#include "TextRenderer.h"
+#include "ShaderSource.h"
+
 #include <iostream>
-
-// Vertex shader source code
-// Use attributes in vertex buffer objects to pass vertex data from application to vertex shader
-// REVIEW: Homogenous coordinates - using 4th 'scaling factor' for projections and transformations
-
-const char* vertexShaderSource = R"(
-#version 330 core                       // Specifies the version of GLSL (OpenGL Shading Language) to use, which is 3.30 in this case.
-layout (location = 0) in vec3 aPos;     // attribute position {x, y, z}
-
-uniform mat4 model;                     //  4x4 matrix transforms vertices from local object space to world space.
-uniform mat4 view;                      //  4x4 matrix transforms vertices from world space to camera space (view space).
-uniform mat4 projection;                //  4x4 matrix transforms vertices from camera space to clip space (projection space).
-
-void main() {                           // The main function, which is executed for each vertex.
-    gl_Position = projection * view * model * vec4(aPos, 1.0); // Computes the final position of the vertex by transforming 'aPos' through the model, view, and projection matrices.
-                                                             // 'vec4(aPos, 1.0)' converts the 3-component vector 'aPos' to a 4-component vector with a w-component of 1.0 (homogeneous coordinates).
-                                                             // The multiplication order is important:
-                                                             // 1. 'model' transforms the vertex from local space to world space.
-                                                             // 2. 'view' transforms the vertex from world space to view space (relative to the camera).
-                                                             // 3. 'projection' transforms the vertex from view space to clip space (applying perspective projection).
-                                                             // The result is assigned to 'gl_Position', a built-in output variable that specifies the vertex's final position in clip space.
-}
-)";
-
-// Fragment shader source code
-const char* fragmentShaderSource = R"(
-#version 330 core
-out vec4 FragColor;
-void main() {
-    FragColor = vec4(1.0, 0.5, 0.2, 1.0);
-}
-)";
 
 // Callback function for when the window is resized
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-
-// Process input
+// Function to process input from the keyboard
 void processInput(GLFWwindow* window) {
-    const float cameraSpeed = 0.05f;
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraFront;
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraFront;
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-}
-
-
-// Function to compile shader and check for errors
-GLuint compileShader(GLenum type, const char* source) {
-    GLuint shader = glCreateShader(type);
-    glShaderSource(shader, 1, &source, nullptr);
-    glCompileShader(shader);
-    int success;
-    char infoLog[512];
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(shader, 512, nullptr, infoLog);
-        std::cerr << "ERROR::SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-    return shader;
 }
 
 int main() {
@@ -84,112 +28,268 @@ int main() {
         return -1;
     }
 
-    // Set GLFW window creation hints (optional)
+    // Configure GLFW
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // For MacOS
+#endif
+
     // Create a GLFW window
-    GLFWwindow* window = glfwCreateWindow(800, 600, "BattleBeyz", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "Basic Text Renderer", nullptr, nullptr);
     if (!window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
     }
-
-    // Make the window's context current
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    // Load OpenGL function pointers with GLEW
+    // Initialize GLEW
+    glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK) {
         std::cerr << "Failed to initialize GLEW" << std::endl;
         return -1;
     }
 
-    // Compile shaders
-    GLuint vertexShader = compileShader(GL_VERTEX_SHADER, vertexShaderSource);
-    GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+    // Configure OpenGL state
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // Link shaders into a program
-    GLuint shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-    int success;
-    char infoLog[512];
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(shaderProgram, 512, nullptr, infoLog);
-        std::cerr << "ERROR::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-    }
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    // Initialize TextRenderer
+    TextRenderer textRenderer("../assets/fonts/MetalFight.ttf", 800, 600);
 
-    // Set up vertex data and buffers and configure vertex attributes
-    float vertices[] = {
-            -0.4f, -0.5f, 0.0f,
-            0.4f, -0.5f, 0.0f,
-            0.0f,  0.5f, 0.0f
-    };
-
-    GLuint VBO, VAO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)nullptr);
-    glEnableVertexAttribArray(0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-
-    // Set up transformation matrices
-    glm::mat4 model = glm::mat4(1.0f);
-    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-
-    // Get the uniform locations
-    GLint modelLoc = glGetUniformLocation(shaderProgram, "model");
-    GLint viewLoc = glGetUniformLocation(shaderProgram, "view");
-    GLint projectionLoc = glGetUniformLocation(shaderProgram, "projection");
-
-    // Set the uniform values
-    glUseProgram(shaderProgram);
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-
-    // Enable depth testing
-    glEnable(GL_DEPTH_TEST);
-
-    // Render loop
+    // Main render loop
     while (!glfwWindowShouldClose(window)) {
+        // Process input
         processInput(window);
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        // Clear the screen
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-        glm::mat4 currView = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(currView));
+        // Render text
+        textRenderer.RenderText("Hello, world!", 25.0f, 25.0f, 1.0f, glm::vec3(0.5f, 0.8f, 0.2f));
 
-        glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-
+        // Swap buffers and poll events
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-
     // Clean up and exit
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteProgram(shaderProgram);
-
     glfwTerminate();
     return 0;
 }
+
+
+
+//#include <GL/glew.h>
+//#include <GLFW/glfw3.h>
+//#include <glm/glm.hpp>
+//#include <glm/gtc/matrix_transform.hpp>
+//#include <glm/gtc/type_ptr.hpp>
+//
+//#include "ShaderProgram.h"
+//#include "Buffers.h"
+//#include "Initialize.h"
+//#include "TextRenderer.h"
+//#include "ShaderSource.h" // Include the header file
+//
+//#include <iostream>
+//#include <filesystem>
+//
+//
+//
+//// GLOBAL VARIABLES
+//
+//
+//// Callback function for when the window is resized
+//void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+//    glViewport(0, 0, width, height);
+//}
+//
+//// Initial camera values
+//glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+//glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+//glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+//
+//// Last mouse positions
+//double lastX = 400, lastY = 300; // Assuming initial cursor position at the center of the screen
+//bool firstMouse = true;
+//
+//// Euler angles for rotation
+//double yaw = -90.0f;  // Yaw is initialized to -90.0 degrees to look along the negative Z-axis
+//double pitch = 0.0f;
+//double roll = 0.0f;
+//
+//// Sensitivity
+//const float sensitivity = 0.1f;
+//
+//// Function to handle mouse movement
+//void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+//    // Check if the right mouse button is held down
+//    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
+//        if (firstMouse) {
+//            lastX = xpos;
+//            lastY = ypos;
+//            firstMouse = false;
+//        }
+//
+//        double xoffset = xpos - lastX;
+//        double yoffset = lastY - ypos; // Reversed since y-coordinates go from bottom to top
+//        lastX = xpos;
+//        lastY = ypos;
+//
+//        xoffset *= sensitivity;
+//        yoffset *= sensitivity;
+//
+//        yaw += xoffset;
+//        pitch += yoffset;
+//
+//        // Constrain the pitch angle to avoid flipping at the poles
+//        if (pitch > 89.0f)
+//            pitch = 89.0f;
+//        if (pitch < -89.0f)
+//            pitch = -89.0f;
+//
+//        // Update camera front vector based on Euler angles
+//        glm::vec3 front;
+//        front.x = float (cos(glm::radians(yaw)) * cos(glm::radians(pitch)));
+//        front.y = float (sin(glm::radians(pitch)));
+//        front.z = float (sin(glm::radians(yaw)) * cos(glm::radians(pitch)));
+//        cameraFront = glm::normalize(front);
+//    } else {
+//        // Avoid sudden jumps when right button is pressed again
+//        firstMouse = true;
+//    }
+//}
+//
+//// Function to process input from the keyboard
+//void processInput(GLFWwindow* window) {
+//    const float cameraSpeed = 0.05f;  // Speed of the camera movement per frame
+//
+//    // Calculate right vector based on current front and up vectors
+//    glm::vec3 cameraRight = glm::normalize(glm::cross(cameraFront, cameraUp));
+//
+//    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+//        glfwSetWindowShouldClose(window, true);
+//
+//    // WASD for lateral, QE for vertical movement
+//    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+//        cameraPos += cameraSpeed * cameraFront;
+//    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+//        cameraPos -= cameraSpeed * cameraFront;
+//    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+//        cameraPos -= cameraSpeed * cameraRight;
+//    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+//        cameraPos += cameraSpeed * cameraRight;
+//    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+//        cameraPos += cameraSpeed * cameraUp;
+//    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+//        cameraPos -= cameraSpeed * cameraUp;
+//}
+//
+//int main() {
+//    // Create a GLFW window with a width of 800 and height of 600, titled "BattleBeyz"
+//    GLFWwindow* window = initGLFWandGLEW("Battlebeyz", 800, 600);
+//    int windowWidth, windowHeight;
+//
+//    ShaderProgram shaderProgram(vertexShaderSource, fragmentShaderSource);
+//    ShaderProgram textShaderProgram(textVertexShaderSource, textFragmentShaderSource);
+//
+//    // Register inputs here
+//    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+//    glfwSetCursorPosCallback(window, mouse_callback);
+//
+//    // VBO = Vertex Buffer Object, stores texture data: Positions, Normals, Texture Coordinates
+//    // VBA = Vertex Array Object, stores attribute settings and used VBO
+//    GLuint triangleVBO, triangleVAO, triangleEBO;
+//    // Set up vertex data for a triangle and configure vertex attributes
+//    float vertices[] = {
+//            // Positions         // Colors
+//            -0.4f, -0.0f, 0.0f,  1.0f, 0.0f, 0.0f,  // Bottom left, red
+//            0.4f, -0.0f, 0.0f,  0.0f, 1.0f, 0.0f,  // Bottom right, green
+//            0.0f,  1.0f, 0.0f,  0.0f, 0.0f, 1.0f   // Top, blue
+//    };
+//
+//    setupBuffers(triangleVAO, triangleVBO, vertices, sizeof(vertices));
+//
+//    float floorVertices[] = {
+//            -10.0f, 0.0f, -10.0f, 0.5f, 0.5f, 0.5f,
+//            10.0f, 0.0f, -10.0f, 0.5f, 0.5f, 0.5f,
+//            10.0f, 0.0f, 10.0f, 0.5f, 0.5f, 0.5f,
+//            -10.0f, 0.0f, 10.0f, 0.5f, 0.5f, 0.5f,
+//    };
+//
+//    unsigned int floorIndices[] = {
+//            0, 1, 2,
+//            2, 3, 0
+//    };
+//
+//    GLuint floorVAO, floorVBO, floorEBO;
+//
+//    setupBuffers(floorVAO, floorVBO, floorEBO, floorVertices, sizeof(floorVertices), floorIndices, sizeof(floorIndices));
+//
+//    // Initialize font rendering
+//    TextRenderer textRenderer("../assets/fonts/MetalFight.ttf", 800, 600);
+//
+//    // Initial matrices for model, view, clip
+//    auto model = glm::mat4(1.0f);
+//    glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+//    glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+//
+//    shaderProgram.setUniforms(model, view, projection);
+//
+//    // Initial matrices for model, view, clip
+//    auto textModel = glm::mat4(1.0f);
+//    glm::mat4 textView = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+//    glm::mat4 textProjection = glm::ortho(0.0f, static_cast<GLfloat>(windowWidth), 0.0f, static_cast<GLfloat>(windowHeight));
+//
+//    textShaderProgram.setUniforms(textModel, textView, textProjection);
+//
+//    // Render loop
+//    while (!glfwWindowShouldClose(window)) {
+//        // Process input (keyboard, mouse, etc.)
+//        processInput(window);
+//
+//        // Clear the color and depth buffers to prepare for a new frame
+//        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//        shaderProgram.use();
+//
+//        // Update the view matrix based on the current camera position and orientation
+//        view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+//        shaderProgram.setUniforms(model, view, projection);
+//
+//        // Use the shader program and bind the VAO and draw objects
+//        glBindVertexArray(triangleVAO);
+//        glDrawArrays(GL_TRIANGLES, 0, 3);
+//        glBindVertexArray(floorVAO);
+//        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+//
+//        // Update window dimensions
+//        textShaderProgram.use();
+//        glUniformMatrix4fv(glGetUniformLocation(textShaderProgram.ID, "projection"), 1, GL_FALSE, glm::value_ptr(textProjection));
+//
+//        glfwGetWindowSize(window, &windowWidth, &windowHeight);
+//        textRenderer.RenderText("Hello World", windowWidth-20.0f, windowHeight-20.0f, 5.0f, glm::vec3(0.5f, 0.8f, 0.2f));
+//
+//        // Swap the front and back buffers to display the rendered frame
+//        glfwSwapBuffers(window);
+//        // Poll for and process events (like input)
+//        glfwPollEvents();
+//    }
+//
+//    // Clean up resources (shaderProgram has destructor)
+//    glDeleteVertexArrays(1, &triangleVAO);
+//    glDeleteBuffers(1, &triangleVBO);
+//    glDeleteVertexArrays(1, &floorVAO);
+//    glDeleteBuffers(1, &floorVBO);
+//    glDeleteBuffers(1, &floorEBO);
+//
+//    // Terminate GLFW to clean up allocated resources
+//    glfwTerminate();
+//    return 0;
+//}
+//

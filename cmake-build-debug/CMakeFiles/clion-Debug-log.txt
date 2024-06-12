@@ -1,4 +1,4 @@
-C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=C:/Users/ricky/AppData/Local/Programs/CLion/bin/ninja/win/x64/ninja.exe "-DCMAKE_INCLUDE_PATH=C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/SDL2/include" "-DCMAKE_LIBRARY_PATH=C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/SDL2/lib/x64" -G Ninja -S "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz" -B "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug"
+C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=C:/Users/ricky/AppData/Local/Programs/CLion/bin/ninja/win/x64/ninja.exe -G Ninja -S "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz" -B "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug"
 -- Including Win32 support
 -- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE) 
 -- Documentation generation requires Doxygen 1.9.8 or later

@@ -49,11 +49,51 @@ cmake_ninja_workdir = C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Docum
 
 build cmake_object_order_depends_target_BattleBeyz: phony || cmake_object_order_depends_target_glfw
 
+build CMakeFiles/BattleBeyz.dir/src/Buffers.cpp.obj: CXX_COMPILER__BattleBeyz_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/src/Buffers.cpp || cmake_object_order_depends_target_BattleBeyz
+  DEFINES = -DGLEW_STATIC
+  DEP_FILE = CMakeFiles\BattleBeyz.dir\src\Buffers.cpp.obj.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include"
+  OBJECT_DIR = CMakeFiles\BattleBeyz.dir
+  OBJECT_FILE_DIR = CMakeFiles\BattleBeyz.dir\src
+
+build CMakeFiles/BattleBeyz.dir/src/Initialize.cpp.obj: CXX_COMPILER__BattleBeyz_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/src/Initialize.cpp || cmake_object_order_depends_target_BattleBeyz
+  DEFINES = -DGLEW_STATIC
+  DEP_FILE = CMakeFiles\BattleBeyz.dir\src\Initialize.cpp.obj.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include"
+  OBJECT_DIR = CMakeFiles\BattleBeyz.dir
+  OBJECT_FILE_DIR = CMakeFiles\BattleBeyz.dir\src
+
+build CMakeFiles/BattleBeyz.dir/src/ShaderProgram.cpp.obj: CXX_COMPILER__BattleBeyz_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/src/ShaderProgram.cpp || cmake_object_order_depends_target_BattleBeyz
+  DEFINES = -DGLEW_STATIC
+  DEP_FILE = CMakeFiles\BattleBeyz.dir\src\ShaderProgram.cpp.obj.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include"
+  OBJECT_DIR = CMakeFiles\BattleBeyz.dir
+  OBJECT_FILE_DIR = CMakeFiles\BattleBeyz.dir\src
+
+build CMakeFiles/BattleBeyz.dir/src/ShaderSource.cpp.obj: CXX_COMPILER__BattleBeyz_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/src/ShaderSource.cpp || cmake_object_order_depends_target_BattleBeyz
+  DEFINES = -DGLEW_STATIC
+  DEP_FILE = CMakeFiles\BattleBeyz.dir\src\ShaderSource.cpp.obj.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include"
+  OBJECT_DIR = CMakeFiles\BattleBeyz.dir
+  OBJECT_FILE_DIR = CMakeFiles\BattleBeyz.dir\src
+
+build CMakeFiles/BattleBeyz.dir/src/TextRenderer.cpp.obj: CXX_COMPILER__BattleBeyz_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/src/TextRenderer.cpp || cmake_object_order_depends_target_BattleBeyz
+  DEFINES = -DGLEW_STATIC
+  DEP_FILE = CMakeFiles\BattleBeyz.dir\src\TextRenderer.cpp.obj.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include"
+  OBJECT_DIR = CMakeFiles\BattleBeyz.dir
+  OBJECT_FILE_DIR = CMakeFiles\BattleBeyz.dir\src
+
 build CMakeFiles/BattleBeyz.dir/src/main.cpp.obj: CXX_COMPILER__BattleBeyz_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/src/main.cpp || cmake_object_order_depends_target_BattleBeyz
   DEFINES = -DGLEW_STATIC
   DEP_FILE = CMakeFiles\BattleBeyz.dir\src\main.cpp.obj.d
   FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include"
   OBJECT_DIR = CMakeFiles\BattleBeyz.dir
   OBJECT_FILE_DIR = CMakeFiles\BattleBeyz.dir\src
 
@@ -65,9 +105,9 @@ build CMakeFiles/BattleBeyz.dir/src/main.cpp.obj: CXX_COMPILER__BattleBeyz_unsca
 #############################################
 # Link the executable BattleBeyz.exe
 
-build BattleBeyz.exe: CXX_EXECUTABLE_LINKER__BattleBeyz_Debug CMakeFiles/BattleBeyz.dir/src/main.cpp.obj | lib/glfw-3.4/src/libglfw3.a || lib/glfw-3.4/src/libglfw3.a
+build BattleBeyz.exe: CXX_EXECUTABLE_LINKER__BattleBeyz_Debug CMakeFiles/BattleBeyz.dir/src/Buffers.cpp.obj CMakeFiles/BattleBeyz.dir/src/Initialize.cpp.obj CMakeFiles/BattleBeyz.dir/src/ShaderProgram.cpp.obj CMakeFiles/BattleBeyz.dir/src/ShaderSource.cpp.obj CMakeFiles/BattleBeyz.dir/src/TextRenderer.cpp.obj CMakeFiles/BattleBeyz.dir/src/main.cpp.obj | lib/glfw-3.4/src/libglfw3.a C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/freetype-2.13.2/dll/win64/freetype.lib C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/lib/freetype-2.13.2/dll/win64/freetype.lib || lib/glfw-3.4/src/libglfw3.a
   FLAGS = -g
-  LINK_LIBRARIES = lib/glfw-3.4/src/libglfw3.a  -lglew32s  -lopengl32  -lglu32  -lglu32  -lopengl32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  LINK_LIBRARIES = lib/glfw-3.4/src/libglfw3.a  -lglew32s  -lopengl32  -lglu32  "C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/dll/win64/freetype.lib"  -lglu32  -lopengl32  "C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/dll/win64/freetype.lib"  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   LINK_PATH = -LC:/Users/ricky/ONEDRI~1/DOCUME~1/BATTLE~1/lib/GLEW-2~2.0/lib/Release/x64
   OBJECT_DIR = CMakeFiles\BattleBeyz.dir
   POST_BUILD = cd .
@@ -75,6 +115,30 @@ build BattleBeyz.exe: CXX_EXECUTABLE_LINKER__BattleBeyz_Debug CMakeFiles/BattleB
   TARGET_FILE = BattleBeyz.exe
   TARGET_IMPLIB = libBattleBeyz.dll.a
   TARGET_PDB = BattleBeyz.exe.dbg
+
+
+#############################################
+# Utility command for package
+
+build CMakeFiles/package.util: CUSTOM_COMMAND all
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cpack.exe --config ./CPackConfig.cmake"
+  DESC = Run CPack packaging tool...
+  pool = console
+  restat = 1
+
+build package: phony CMakeFiles/package.util
+
+
+#############################################
+# Utility command for package_source
+
+build CMakeFiles/package_source.util: CUSTOM_COMMAND
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cpack.exe --config ./CPackSourceConfig.cmake "C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/CPackSourceConfig.cmake""
+  DESC = Run CPack packaging tool for source...
+  pool = console
+  restat = 1
+
+build package_source: phony CMakeFiles/package_source.util
 
 
 #############################################
@@ -151,6 +215,30 @@ build install/strip: phony CMakeFiles/install/strip.util
 # Utility command for uninstall
 
 build lib/glfw-3.4/uninstall: phony lib/glfw-3.4/CMakeFiles/uninstall
+
+
+#############################################
+# Utility command for package
+
+build lib/glfw-3.4/CMakeFiles/package.util: CUSTOM_COMMAND lib/glfw-3.4/all
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cpack.exe --config ./CPackConfig.cmake"
+  DESC = Run CPack packaging tool...
+  pool = console
+  restat = 1
+
+build lib/glfw-3.4/package: phony lib/glfw-3.4/CMakeFiles/package.util
+
+
+#############################################
+# Utility command for package_source
+
+build lib/glfw-3.4/CMakeFiles/package_source.util: CUSTOM_COMMAND
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cpack.exe --config ./CPackSourceConfig.cmake "C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/CPackSourceConfig.cmake""
+  DESC = Run CPack packaging tool for source...
+  pool = console
+  restat = 1
+
+build lib/glfw-3.4/package_source: phony lib/glfw-3.4/CMakeFiles/package_source.util
 
 
 #############################################
@@ -242,7 +330,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/context.c.obj: C_COMPILER__glfw_unsca
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\context.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -250,7 +338,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/init.c.obj: C_COMPILER__glfw_unscanne
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\init.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -258,7 +346,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/input.c.obj: C_COMPILER__glfw_unscann
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\input.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -266,7 +354,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/monitor.c.obj: C_COMPILER__glfw_unsca
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\monitor.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -274,7 +362,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/platform.c.obj: C_COMPILER__glfw_unsc
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\platform.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -282,7 +370,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/vulkan.c.obj: C_COMPILER__glfw_unscan
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\vulkan.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -290,7 +378,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/window.c.obj: C_COMPILER__glfw_unscan
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\window.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -298,7 +386,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/egl_context.c.obj: C_COMPILER__glfw_u
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\egl_context.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -306,7 +394,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/osmesa_context.c.obj: C_COMPILER__glf
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\osmesa_context.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -314,7 +402,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/null_init.c.obj: C_COMPILER__glfw_uns
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\null_init.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -322,7 +410,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/null_monitor.c.obj: C_COMPILER__glfw_
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\null_monitor.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -330,7 +418,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/null_window.c.obj: C_COMPILER__glfw_u
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\null_window.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -338,7 +426,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/null_joystick.c.obj: C_COMPILER__glfw
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\null_joystick.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -346,7 +434,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_module.c.obj: C_COMPILER__glfw_
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\win32_module.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -354,7 +442,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_time.c.obj: C_COMPILER__glfw_un
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\win32_time.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -362,7 +450,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_thread.c.obj: C_COMPILER__glfw_
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\win32_thread.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -370,7 +458,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_init.c.obj: C_COMPILER__glfw_un
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\win32_init.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -378,7 +466,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_joystick.c.obj: C_COMPILER__glf
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\win32_joystick.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -386,7 +474,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_monitor.c.obj: C_COMPILER__glfw
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\win32_monitor.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -394,7 +482,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_window.c.obj: C_COMPILER__glfw_
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\win32_window.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -402,7 +490,7 @@ build lib/glfw-3.4/src/CMakeFiles/glfw.dir/wgl_context.c.obj: C_COMPILER__glfw_u
   DEFINES = -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE
   DEP_FILE = lib\glfw-3.4\src\CMakeFiles\glfw.dir\wgl_context.c.obj.d
   FLAGS = -g -std=c99 -fdiagnostics-color=always -Wall
-  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/src" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4/src"
   OBJECT_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
   OBJECT_FILE_DIR = lib\glfw-3.4\src\CMakeFiles\glfw.dir
 
@@ -427,6 +515,30 @@ build lib/glfw-3.4/src/libglfw3.a: C_STATIC_LIBRARY_LINKER__glfw_Debug lib/glfw-
 # Utility command for update_mappings
 
 build lib/glfw-3.4/src/update_mappings: phony lib/glfw-3.4/src/CMakeFiles/update_mappings
+
+
+#############################################
+# Utility command for package
+
+build lib/glfw-3.4/src/CMakeFiles/package.util: CUSTOM_COMMAND lib/glfw-3.4/src/all
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cpack.exe --config ./CPackConfig.cmake"
+  DESC = Run CPack packaging tool...
+  pool = console
+  restat = 1
+
+build lib/glfw-3.4/src/package: phony lib/glfw-3.4/src/CMakeFiles/package.util
+
+
+#############################################
+# Utility command for package_source
+
+build lib/glfw-3.4/src/CMakeFiles/package_source.util: CUSTOM_COMMAND
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cpack.exe --config ./CPackSourceConfig.cmake "C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/CPackSourceConfig.cmake""
+  DESC = Run CPack packaging tool for source...
+  pool = console
+  restat = 1
+
+build lib/glfw-3.4/src/package_source: phony lib/glfw-3.4/src/CMakeFiles/package_source.util
 
 
 #############################################
@@ -505,6 +617,30 @@ build lib/glfw-3.4/src/CMakeFiles/update_mappings | ${cmake_ninja_workdir}lib/gl
 # Write statements declared in CMakeLists.txt:
 # C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/CMakeLists.txt
 # =============================================================================
+
+
+#############################################
+# Utility command for package
+
+build lib/glfw-3.4/docs/CMakeFiles/package.util: CUSTOM_COMMAND lib/glfw-3.4/docs/all
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cpack.exe --config ./CPackConfig.cmake"
+  DESC = Run CPack packaging tool...
+  pool = console
+  restat = 1
+
+build lib/glfw-3.4/docs/package: phony lib/glfw-3.4/docs/CMakeFiles/package.util
+
+
+#############################################
+# Utility command for package_source
+
+build lib/glfw-3.4/docs/CMakeFiles/package_source.util: CUSTOM_COMMAND
+  COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug" && C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cpack.exe --config ./CPackSourceConfig.cmake "C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/CPackSourceConfig.cmake""
+  DESC = Run CPack packaging tool for source...
+  pool = console
+  restat = 1
+
+build lib/glfw-3.4/docs/package_source: phony lib/glfw-3.4/docs/CMakeFiles/package_source.util
 
 
 #############################################
