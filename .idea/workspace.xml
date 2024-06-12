@@ -25,28 +25,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="14d88e8d-1ec0-46b9-9879-d2031833b74b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Utils.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Utils.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-35c1ee804687981d9194.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2024-06-12T19-03-18-0920.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/target-BattleBeyz-Debug-15bd4821ffa0cc39b7d0.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/BattleBeyz.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/BattleBeyz.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/BattleBeyz.dir/src/ShaderProgram.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/BattleBeyz.dir/src/ShaderProgram.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/BattleBeyz.dir/src/ShaderSource.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/BattleBeyz.dir/src/ShaderSource.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/BattleBeyz.dir/src/TextRenderer.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/BattleBeyz.dir/src/TextRenderer.cpp.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/BattleBeyz.dir/src/main.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/BattleBeyz.dir/src/main.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ShaderProgram.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ShaderProgram.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ShaderProgram.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ShaderProgram.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ShaderSource.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ShaderSource.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ShaderSource.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ShaderSource.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TextRenderer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/TextRenderer.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TextRenderer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/TextRenderer.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
@@ -161,7 +144,7 @@
       <workItem from="1718205337402" duration="444000" />
       <workItem from="1718205792523" duration="58000" />
       <workItem from="1718205899283" duration="2576000" />
-      <workItem from="1718217419972" duration="5514000" />
+      <workItem from="1718217419972" duration="7259000" />
     </task>
     <servers />
   </component>

@@ -13,8 +13,7 @@ public:
     TextRenderer(const char* fontPath, unsigned int VAO, unsigned int VBO);
     ~TextRenderer();
     void RenderText(const std::string& text, float x, float y, float scale, const glm::vec3& color);
-
-    ShaderProgram * getShaderProgram();
+    ShaderProgram* getShaderProgram();
 
 private:
     FT_Library ft{};
