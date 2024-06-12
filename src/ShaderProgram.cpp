@@ -1,9 +1,16 @@
 #include "ShaderProgram.h"
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
-ShaderProgram::ShaderProgram(const char* vertexSource, const char* fragmentSource) {
+ShaderProgram::ShaderProgram(const char* vertexPath, const char* fragmentPath) {
+    // Read shader source files
+    std::string vertexCode = readFile(vertexPath);
+    std::string fragmentCode = readFile(fragmentPath);
+
     // Compile and link shaders
-    GLuint vertexShader = compileShader(GL_VERTEX_SHADER, vertexSource);
-    GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
+    GLuint vertexShader = compileShader(GL_VERTEX_SHADER, vertexCode.c_str());
+    GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentCode.c_str());
     ID = glCreateProgram();
     glAttachShader(ID, vertexShader);
     glAttachShader(ID, fragmentShader);
@@ -26,15 +33,11 @@ ShaderProgram::ShaderProgram(const char* vertexSource, const char* fragmentSourc
     projectionLoc = glGetUniformLocation(ID, "projection");
 }
 
-void ShaderProgram::use() const {
-    glUseProgram(ID);
-}
-
-void ShaderProgram::setUniforms(glm::mat4 model, glm::mat4 view, glm::mat4 projection) const {
-    use(); // Activate the shader program
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+std::string ShaderProgram::readFile(const char* filePath) const {
+    std::ifstream file(filePath);
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    return buffer.str();
 }
 
 GLuint ShaderProgram::compileShader(GLenum type, const char* source) {
@@ -53,6 +56,17 @@ GLuint ShaderProgram::compileShader(GLenum type, const char* source) {
     return shader;
 }
 
+void ShaderProgram::use() const {
+    glUseProgram(ID);
+}
+
+void ShaderProgram::setUniforms(glm::mat4 model, glm::mat4 view, glm::mat4 projection) const {
+    use(); // Activate the shader program
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+}
+
 ShaderProgram::~ShaderProgram() {
     glDeleteProgram(ID);
 }
@@ -69,4 +83,3 @@ void ShaderProgram::setUniformVec3(const std::string &name, const glm::vec3 &val
 void ShaderProgram::setUniform1i(const std::string &name, int value) const {
     glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
 }
-

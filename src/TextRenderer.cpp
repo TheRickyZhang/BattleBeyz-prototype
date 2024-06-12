@@ -1,5 +1,8 @@
 #include "TextRenderer.h"
+#include "ShaderProgram.h"
 #include <iostream>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 TextRenderer::TextRenderer(const char* fontPath, unsigned int VAO, unsigned int VBO)
         : VAO(VAO), VBO(VBO) {
@@ -22,7 +25,19 @@ TextRenderer::TextRenderer(const char* fontPath, unsigned int VAO, unsigned int 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+    initRenderData();
+}
+
+TextRenderer::~TextRenderer() {
+    FT_Done_Face(face);
+    FT_Done_FreeType(ft);
+    delete shaderProgram;  // Clean up the shader program
+}
+
+void TextRenderer::initRenderData() {
+    glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
+
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, nullptr, GL_DYNAMIC_DRAW);
@@ -30,18 +45,23 @@ TextRenderer::TextRenderer(const char* fontPath, unsigned int VAO, unsigned int 
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), nullptr);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-}
 
-TextRenderer::~TextRenderer() {
-    FT_Done_Face(face);
-    FT_Done_FreeType(ft);
+    shaderProgram = new ShaderProgram("../assets/shaders/text.vs", "../assets/shaders/text.fs");  // Initialize ShaderProgram
+
+    // Set up projection matrix
+    glm::mat4 projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
+    shaderProgram->use();
+    shaderProgram->setUniformMat4("projection", projection);
 }
 
 void TextRenderer::RenderText(const std::string& text, float x, float y, float scale, const glm::vec3& color) {
-    glUseProgram(shaderID);
-    glUniform3f(glGetUniformLocation(shaderID, "textColor"), color.x, color.y, color.z);
+    shaderProgram->use();
+    glUniform3f(glGetUniformLocation(shaderProgram->ID, "textColor"), color.x, color.y, color.z);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(VAO);
+
+    // Set pixel alignment to 1 byte
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
     std::string::const_iterator c;
     for (c = text.begin(); c != text.end(); c++) {
@@ -79,4 +99,11 @@ void TextRenderer::RenderText(const std::string& text, float x, float y, float s
     }
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
+
+    // Reset pixel alignment to default
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+}
+
+ShaderProgram* TextRenderer::getShaderProgram() {
+    return shaderProgram;
 }

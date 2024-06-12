@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <GL/glew.h>
 #include "ShaderProgram.h"
+#include "Utils.h"
 
 class TextRenderer {
 public:
@@ -13,10 +14,14 @@ public:
     ~TextRenderer();
     void RenderText(const std::string& text, float x, float y, float scale, const glm::vec3& color);
 
+    ShaderProgram * getShaderProgram();
+
 private:
-    FT_Library ft;
-    FT_Face face;
-    GLuint textureID;
+    FT_Library ft{};
+    FT_Face face{};
+    GLuint textureID{};
     GLuint VAO, VBO;
-    GLuint shaderID; // You need to set this shaderID from your main function or shader program
+    ShaderProgram* shaderProgram{}; // Shader program for rendering text
+
+    void initRenderData();
 };

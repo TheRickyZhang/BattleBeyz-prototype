@@ -47,8 +47,10 @@ add_executable(BattleBeyz ${SOURCES}
         src/Initialize.h
         src/TextRenderer.cpp
         src/TextRenderer.h
-        src/ShaderSource.cpp
         src/ShaderSource.h
+        src/Utils.cpp
+        src/Utils.h
+        src/ShaderSource.cpp
 )
 
 # Link libraries

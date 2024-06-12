@@ -54,8 +54,18 @@ int main() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    // Initialize VAO and VBO for TextRenderer
+    unsigned int VAO, VBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+
     // Initialize TextRenderer
-    TextRenderer textRenderer("../assets/fonts/MetalFight.ttf", 800, 600);
+    TextRenderer textRenderer("../assets/fonts/MetalFight.ttf", VAO, VBO);
+
+    // Set up projection matrix
+    glm::mat4 projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
+    textRenderer.getShaderProgram()->use();
+    textRenderer.getShaderProgram()->setUniformMat4("projection", projection);
 
     // Main render loop
     while (!glfwWindowShouldClose(window)) {
@@ -63,11 +73,11 @@ int main() {
         processInput(window);
 
         // Clear the screen
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Render text
-        textRenderer.RenderText("Hello, world!", 25.0f, 25.0f, 1.0f, glm::vec3(0.5f, 0.8f, 0.2f));
+        textRenderer.RenderText("Hello, world!", 25.0f, 25.0f, 2.0f, glm::vec3(0.5f, 0.8f, 0.2f));
 
         // Swap buffers and poll events
         glfwSwapBuffers(window);
@@ -78,6 +88,7 @@ int main() {
     glfwTerminate();
     return 0;
 }
+
 
 
 //#include <GL/glew.h>
