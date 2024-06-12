@@ -33,10 +33,6 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // For MacOS
-#endif
-
     // Create a GLFW window
     GLFWwindow* window = glfwCreateWindow(800, 600, "Basic Text Renderer", nullptr, nullptr);
     if (!window) {
@@ -82,7 +78,6 @@ int main() {
     glfwTerminate();
     return 0;
 }
-
 
 
 //#include <GL/glew.h>

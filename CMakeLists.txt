@@ -4,9 +4,6 @@ project(BattleBeyz)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Disable Doxygen documentation
-set(BUILD_DOCS OFF CACHE BOOL "Build documentation" FORCE)
-
 # Add include directories
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/lib/glew-2.2.0/include)
@@ -30,13 +27,12 @@ set(GLEW_DIR ${PROJECT_SOURCE_DIR}/lib/glew-2.2.0)
 link_directories(${GLEW_DIR}/lib/Release/x64)  # Adjust the path if needed
 add_definitions(-DGLEW_STATIC)
 
-# Manually specify Freetype paths
-set(FREETYPE_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/lib/freetype-2.13.2/include")
-set(FREETYPE_LIBRARIES "${PROJECT_SOURCE_DIR}/lib/freetype-2.13.2/dll/win64/freetype.lib")
-include_directories(${FREETYPE_INCLUDE_DIRS})
+# Add FreeType
+set(FREETYPE_DIR ${PROJECT_SOURCE_DIR}/lib/freetype-2.13.2)
+link_directories(${FREETYPE_DIR}/dll/win64)
 
 # Add external libraries
-set(LIBS glfw glew32s ${OPENGL_LIBRARIES} ${FREETYPE_LIBRARIES} glu32 opengl32)
+set(LIBS glfw glew32s ${OPENGL_LIBRARIES} freetype glu32 opengl32)
 
 # Add assets directory to be copied to the build directory
 file(COPY ${PROJECT_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR})

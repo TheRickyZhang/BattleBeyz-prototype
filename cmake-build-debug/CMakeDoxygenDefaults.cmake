@@ -94,7 +94,7 @@ if(NOT DEFINED DOXYGEN_MARKDOWN_SUPPORT)
     set(DOXYGEN_MARKDOWN_SUPPORT YES)
 endif()
 if(NOT DEFINED DOXYGEN_TOC_INCLUDE_HEADINGS)
-    set(DOXYGEN_TOC_INCLUDE_HEADINGS 5)
+    set(DOXYGEN_TOC_INCLUDE_HEADINGS 6)
 endif()
 if(NOT DEFINED DOXYGEN_MARKDOWN_ID_STYLE)
     set(DOXYGEN_MARKDOWN_ID_STYLE DOXYGEN)
@@ -286,8 +286,12 @@ if(NOT DEFINED DOXYGEN_FILE_PATTERNS)
     set(DOXYGEN_FILE_PATTERNS *.c 
                          *.cc 
                          *.cxx 
+                         *.cxxm 
                          *.cpp 
+                         *.cppm 
+                         *.ccm 
                          *.c++ 
+                         *.c++m 
                          *.java 
                          *.ii 
                          *.ixx 
@@ -302,6 +306,7 @@ if(NOT DEFINED DOXYGEN_FILE_PATTERNS)
                          *.hxx 
                          *.hpp 
                          *.h++ 
+                         *.ixx 
                          *.l 
                          *.cs 
                          *.d 
@@ -375,6 +380,12 @@ endif()
 if(NOT DEFINED DOXYGEN_VERBATIM_HEADERS)
     set(DOXYGEN_VERBATIM_HEADERS YES)
 endif()
+if(NOT DEFINED DOXYGEN_CLANG_ASSISTED_PARSING)
+    set(DOXYGEN_CLANG_ASSISTED_PARSING NO)
+endif()
+if(NOT DEFINED DOXYGEN_CLANG_ADD_INC_PATHS)
+    set(DOXYGEN_CLANG_ADD_INC_PATHS YES)
+endif()
 if(NOT DEFINED DOXYGEN_ALPHABETICAL_INDEX)
     set(DOXYGEN_ALPHABETICAL_INDEX YES)
 endif()
@@ -404,6 +415,12 @@ if(NOT DEFINED DOXYGEN_HTML_DYNAMIC_MENUS)
 endif()
 if(NOT DEFINED DOXYGEN_HTML_DYNAMIC_SECTIONS)
     set(DOXYGEN_HTML_DYNAMIC_SECTIONS NO)
+endif()
+if(NOT DEFINED DOXYGEN_HTML_CODE_FOLDING)
+    set(DOXYGEN_HTML_CODE_FOLDING YES)
+endif()
+if(NOT DEFINED DOXYGEN_HTML_COPY_CLIPBOARD)
+    set(DOXYGEN_HTML_COPY_CLIPBOARD YES)
 endif()
 if(NOT DEFINED DOXYGEN_HTML_INDEX_NUM_ENTRIES)
     set(DOXYGEN_HTML_INDEX_NUM_ENTRIES 100)
@@ -575,6 +592,15 @@ if(NOT DEFINED DOXYGEN_DOCBOOK_OUTPUT)
 endif()
 if(NOT DEFINED DOXYGEN_GENERATE_AUTOGEN_DEF)
     set(DOXYGEN_GENERATE_AUTOGEN_DEF NO)
+endif()
+if(NOT DEFINED DOXYGEN_GENERATE_SQLITE3)
+    set(DOXYGEN_GENERATE_SQLITE3 NO)
+endif()
+if(NOT DEFINED DOXYGEN_SQLITE3_OUTPUT)
+    set(DOXYGEN_SQLITE3_OUTPUT sqlite3)
+endif()
+if(NOT DEFINED DOXYGEN_SQLITE3_RECREATE_DB)
+    set(DOXYGEN_SQLITE3_RECREATE_DB YES)
 endif()
 if(NOT DEFINED DOXYGEN_GENERATE_PERLMOD)
     set(DOXYGEN_GENERATE_PERLMOD NO)

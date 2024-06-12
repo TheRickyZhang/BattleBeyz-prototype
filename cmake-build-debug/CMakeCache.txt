@@ -314,9 +314,6 @@ CMAKE_STRIP:FILEPATH=C:/Users/ricky/AppData/Local/Programs/CLion/bin/mingw/bin/s
 //Path to a program.
 CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 
-//Vcpkg toolchain file
-CMAKE_TOOLCHAIN_FILE:STRING=C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/vcpkg/scripts/buildsystems/vcpkg.cmake
-
 //If this value is on, makefiles will be generated without the
 // .SILENT directive, and all commands will be echoed to the console
 // during the make.  This is useful for debugging only. With Visual
@@ -324,7 +321,7 @@ CMAKE_TOOLCHAIN_FILE:STRING=C:/Users/ricky/OneDrive - University of Florida/Docu
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Doxygen documentation generation tool (https://www.doxygen.nl)
-DOXYGEN_EXECUTABLE:FILEPATH=DOXYGEN_EXECUTABLE-NOTFOUND
+DOXYGEN_EXECUTABLE:FILEPATH=C:/Program Files/doxygen/bin/doxygen.exe
 
 //Value Computed by CMake
 GLFW_BINARY_DIR:STATIC=C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug/lib/glfw-3.4
@@ -362,9 +359,6 @@ OPENGL_gl_LIBRARY:STRING=opengl32
 
 //GLU library for win32
 OPENGL_glu_LIBRARY:STRING=glu32
-
-//The directory containing a CMake configuration file for SDL2.
-SDL2_DIR:PATH=SDL2_DIR-NOTFOUND
 
 
 ########################
@@ -563,6 +557,8 @@ CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 DINPUT_H_FOUND:INTERNAL=1
 //ADVANCED property for variable: DOXYGEN_EXECUTABLE
 DOXYGEN_EXECUTABLE-ADVANCED:INTERNAL=1
+//Details about finding Doxygen
+FIND_PACKAGE_MESSAGE_DETAILS_Doxygen:INTERNAL=[C:/Program Files/doxygen/bin/doxygen.exe][cfound components: doxygen ][v1.11.0()]
 //Details about finding OpenGL
 FIND_PACKAGE_MESSAGE_DETAILS_OpenGL:INTERNAL=[opengl32][c ][v()]
 //Details about finding Threads
