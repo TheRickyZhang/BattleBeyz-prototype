@@ -26,7 +26,7 @@ add_subdirectory(${GLFW_DIR})
 
 # Add GLEW
 set(GLEW_DIR ${PROJECT_SOURCE_DIR}/lib/glew-2.2.0)
-link_directories(${GLEW_DIR}/lib/Release/x64)  # Adjust the path if needed
+link_directories(${GLEW_DIR}/lib/Release/x64)
 add_definitions(-DGLEW_STATIC)
 
 # Add FreeType

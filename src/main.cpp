@@ -1,5 +1,5 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+//#include <GL/glew.h>
+//#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -20,7 +20,10 @@ glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
+// Window dimensions
 int windowWidth, windowHeight;
+int minWidth, minHeight;
+const float aspectRatio = 16.0f / 9.0f;
 
 // Last known mouse positions (initialized to center of the screen)
 double lastX = 400, lastY = 300;
@@ -35,22 +38,37 @@ double roll = 0.0f;
 const float sensitivity = 0.1f;
 float cameraSpeed = 0.05f;  // Speed of the camera movement per frame
 
-// Initialize ShaderProgram for 3D objects
-ShaderProgram shaderProgram("../assets/shaders/main.vs", "../assets/shaders/main.fs");
+glm::mat4 model;
+glm::mat4 view;
+glm::mat4 projection;
 
-// Initialize font rendering
-TextRenderer textRenderer("../assets/fonts/MetalFight.ttf", 800, 600);
+// Declare globally for callback functions to use
+ShaderProgram* shaderProgram;
 
-// Callback function for when the window is resized
+// Callback function to adjust the viewport when the window is resized
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    glViewport(0, 0, width, height);
+    if (width == windowWidth && height == windowHeight) {
+        return;
+    }
     windowWidth = width;
     windowHeight = height;
-//    float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
-//    projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
-//    shaderProgram.use();
-//    shaderProgram.setUniformMat4("projection", projection);
+    int newWidth = width;
+    int newHeight = static_cast<int>(width / aspectRatio);
+    if (newHeight > height) {
+        newHeight = height;
+        newWidth = static_cast<int>(height * aspectRatio);
+    }
+    // Adjust window size to maintain the aspect ratio
+    if (newWidth != width || newHeight != height) {
+        glfwSetWindowSize(window, newWidth, newHeight);
+    }
+
+    glViewport(0, 0, newWidth, newHeight);
+    projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
+    shaderProgram->use();
+    shaderProgram->setUniformMat4("projection", projection);
 }
+
 
 // Change camera speed or zoom in/out
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
@@ -141,6 +159,11 @@ int main() {
         glfwTerminate();
         return -1;
     }
+
+    minWidth = 800;
+    minHeight = static_cast<int>(minWidth / aspectRatio);
+    glfwSetWindowSizeLimits(window, minWidth, minHeight, GLFW_DONT_CARE, GLFW_DONT_CARE);
+
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
@@ -157,6 +180,12 @@ int main() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
+
+    // Initialize ShaderProgram for 3D objects
+    shaderProgram = new ShaderProgram("../assets/shaders/main.vs", "../assets/shaders/main.fs");
+
+// Initialize font rendering
+    TextRenderer textRenderer("../assets/fonts/MetalFight.ttf", 800, 600);
 
     // Initialize VAO and VBO for 3D objects
     GLuint triangleVAO, triangleVBO;
@@ -184,14 +213,14 @@ int main() {
 
     // Initial matrices for model, view, and projection
     // Identity matrix
-    auto model = glm::mat4(1.0f);
+    model = glm::mat4(1.0f);
     // Position camera at (0, 0, 3) and look at (0, 0, 0) with the up vector pointing in the positive y direction
-    glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     // Project 45 degree view with 4:3 aspect ratio
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
     // Initialize default shader program with the model, view, and projection matrices. Also sets to use.
-    shaderProgram.setUniforms(model, view, projection);
+    shaderProgram->setUniforms(model, view, projection);
 
     // Main input loop
     while (!glfwWindowShouldClose(window)) {
@@ -201,12 +230,12 @@ int main() {
         // Clear the color and depth buffers to prepare for a new frame
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        shaderProgram.use();
+        shaderProgram->use();
         // Update the view matrix based on the current camera position and orientation
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-        shaderProgram.setUniformMat4("view", view);
-        shaderProgram.setUniformMat4("projection", projection);
-        shaderProgram.setUniformMat4("model", model);
+        shaderProgram->setUniformMat4("view", view);
+        shaderProgram->setUniformMat4("projection", projection);
+        shaderProgram->setUniformMat4("model", model);
 
         // Render the floor
         glBindVertexArray(floorVAO);
