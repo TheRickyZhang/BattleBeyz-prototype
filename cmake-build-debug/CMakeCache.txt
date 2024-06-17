@@ -14,9 +14,6 @@
 # EXTERNAL cache entries
 ########################
 
-//Build documentation
-BUILD_DOCS:BOOL=OFF
-
 //Build shared libraries
 BUILD_SHARED_LIBS:BOOL=OFF
 

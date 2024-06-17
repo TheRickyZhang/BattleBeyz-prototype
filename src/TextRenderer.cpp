@@ -1,5 +1,6 @@
 #include "TextRenderer.h"
 #include "ShaderProgram.h"
+
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -18,6 +19,7 @@ TextRenderer::TextRenderer(const char* fontPath, unsigned int VAO, unsigned int 
 
     FT_Set_Pixel_Sizes(face, 0, 48);
 
+    // Boilerplate text initialization
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -40,20 +42,29 @@ void TextRenderer::initRenderData() {
 
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+    // Allocate memory for 6 vertices with {x, y, z, w} coordinates. Dynamic draw = change frequently
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, nullptr, GL_DYNAMIC_DRAW);
+
+    // Start at index 0
     glEnableVertexAttribArray(0);
+
+    // Start at 0, 4 coords per attribute, float, don't normalize, byte offset, first component offset
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), nullptr);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    shaderProgram = new ShaderProgram("../assets/shaders/text.vs", "../assets/shaders/text.fs");  // Initialize ShaderProgram
+//    shaderProgram = new ShaderProgram("../assets/shaders/text.vs", "../assets/shaders/text.fs");
+    shaderProgram = new ShaderProgram(TEXT_VERTEX_SHADER_PATH, TEXT_FRAGMENT_SHADER_PATH);
 
-    // Set up projection matrix
+
+    // Set up projection matrix as default size.
     glm::mat4 projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
     shaderProgram->use();
     shaderProgram->setUniformMat4("projection", projection);
 }
 
+// Black box render text function
 void TextRenderer::RenderText(const std::string& text, float x, float y, float scale, const glm::vec3& color) {
     shaderProgram->use();
     glUniform3f(glGetUniformLocation(shaderProgram->ID, "textColor"), color.x, color.y, color.z);
@@ -106,4 +117,10 @@ void TextRenderer::RenderText(const std::string& text, float x, float y, float s
 
 ShaderProgram* TextRenderer::getShaderProgram() {
     return shaderProgram;
+}
+
+void TextRenderer::Resize(int width, int height) {
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height));
+    shaderProgram->use();
+    shaderProgram->setUniformMat4("projection", projection);
 }

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(BattleBeyz)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
@@ -47,10 +49,9 @@ add_executable(BattleBeyz ${SOURCES}
         src/Initialize.h
         src/TextRenderer.cpp
         src/TextRenderer.h
-        src/ShaderSource.h
+        src/ShaderPath.h
         src/Utils.cpp
         src/Utils.h
-        src/ShaderSource.cpp
 )
 
 # Link libraries

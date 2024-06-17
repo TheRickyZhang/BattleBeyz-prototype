@@ -33,7 +33,7 @@ ShaderProgram::ShaderProgram(const char* vertexPath, const char* fragmentPath) {
     projectionLoc = glGetUniformLocation(ID, "projection");
 }
 
-std::string ShaderProgram::readFile(const char* filePath) const {
+std::string ShaderProgram::readFile(const char* filePath) {
     std::ifstream file(filePath);
     std::stringstream buffer;
     buffer << file.rdbuf();
@@ -71,7 +71,7 @@ ShaderProgram::~ShaderProgram() {
     glDeleteProgram(ID);
 }
 
-// Utility uniform functions
+// Utility uniform functions: specify name and value of uniform (ex fields like color)
 void ShaderProgram::setUniformMat4(const std::string &name, const glm::mat4 &mat) const {
     glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(mat));
 }

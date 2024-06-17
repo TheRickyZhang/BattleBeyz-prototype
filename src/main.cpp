@@ -6,29 +6,24 @@
 
 #include "ShaderProgram.h"
 #include "TextRenderer.h"
-#include "ShaderSource.h"
+#include "ShaderPath.h"
 
 #include <iostream>
 #include <sstream>
 #include "Buffers.h"
 #include <iomanip>
 
-
 // GLOBAL VARIABLES
-
-
-// Callback function for when the window is resized
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    glViewport(0, 0, width, height);
-}
 
 // Initial camera values
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-// Last mouse positions
-double lastX = 400, lastY = 300; // Assuming initial cursor position at the center of the screen
+int windowWidth, windowHeight;
+
+// Last known mouse positions (initialized to center of the screen)
+double lastX = 400, lastY = 300;
 bool firstMouse = true;
 
 // Euler angles for rotation
@@ -38,25 +33,51 @@ double roll = 0.0f;
 
 // Sensitivity
 const float sensitivity = 0.1f;
+float cameraSpeed = 0.05f;  // Speed of the camera movement per frame
+
+// Initialize ShaderProgram for 3D objects
+ShaderProgram shaderProgram("../assets/shaders/main.vs", "../assets/shaders/main.fs");
+
+// Initialize font rendering
+TextRenderer textRenderer("../assets/fonts/MetalFight.ttf", 800, 600);
+
+// Callback function for when the window is resized
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+    glViewport(0, 0, width, height);
+    windowWidth = width;
+    windowHeight = height;
+//    float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
+//    projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
+//    shaderProgram.use();
+//    shaderProgram.setUniformMat4("projection", projection);
+}
+
+// Change camera speed or zoom in/out
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+    // change camera speed
+    cameraSpeed += yoffset * 0.01f;
+    if (cameraSpeed < 0.01f)
+        cameraSpeed = 0.01f;
+    if (cameraSpeed > 1.0f)
+        cameraSpeed = 1.0f;
+}
 
 // Function to handle mouse movement
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
-    // Check if the right mouse button is held down
+    // Right mouse button = rotate camera
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
         if (firstMouse) {
             lastX = xpos;
             lastY = ypos;
             firstMouse = false;
         }
-
         double xoffset = xpos - lastX;
-        double yoffset = lastY - ypos; // Reversed since y-coordinates go from bottom to top
+        double yoffset = lastY - ypos; // Y-reversed
         lastX = xpos;
         lastY = ypos;
 
         xoffset *= sensitivity;
         yoffset *= sensitivity;
-
         yaw += xoffset;
         pitch += yoffset;
 
@@ -80,8 +101,6 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 
 // Function to process input from the keyboard
 void processInput(GLFWwindow* window) {
-    const float cameraSpeed = 0.05f;  // Speed of the camera movement per frame
-
     // Calculate right vector based on current front and up vectors
     glm::vec3 cameraRight = glm::normalize(glm::cross(cameraFront, cameraUp));
 
@@ -115,7 +134,7 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    // Create a GLFW window
+    // Create a GLFW window. Note you NEED to call these functions to take in input from mouse and keyboard
     GLFWwindow* window = glfwCreateWindow(800, 600, "BattleBeyz", nullptr, nullptr);
     if (!window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
@@ -125,6 +144,7 @@ int main() {
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
 
     // Initialize GLEW
     glewExperimental = GL_TRUE;
@@ -133,12 +153,10 @@ int main() {
         return -1;
     }
 
-    // Configure OpenGL state
+    // Set color blinding and depth testing
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    // Initialize ShaderProgram for 3D objects
-    ShaderProgram shaderProgram("../assets/shaders/main.vs", "../assets/shaders/main.fs");
+    glEnable(GL_DEPTH_TEST);
 
     // Initialize VAO and VBO for 3D objects
     GLuint triangleVAO, triangleVBO;
@@ -164,20 +182,18 @@ int main() {
     };
     setupBuffers(floorVAO, floorVBO, floorEBO, floorVertices, sizeof(floorVertices), floorIndices, sizeof(floorIndices));
 
-    // Initialize font rendering
-    TextRenderer textRenderer("../assets/fonts/MetalFight.ttf", 800, 600);
-
     // Initial matrices for model, view, and projection
+    // Identity matrix
     auto model = glm::mat4(1.0f);
+    // Position camera at (0, 0, 3) and look at (0, 0, 0) with the up vector pointing in the positive y direction
     glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    // Project 45 degree view with 4:3 aspect ratio
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
-    auto modelTriangle = glm::mat4(1.0f);
-    modelTriangle = glm::translate(modelTriangle, glm::vec3(0.0f, 0.0f, 0.5f)); // Move triangle closer to the camera
-
-    shaderProgram.use();
+    // Initialize default shader program with the model, view, and projection matrices. Also sets to use.
     shaderProgram.setUniforms(model, view, projection);
 
+    // Main input loop
     while (!glfwWindowShouldClose(window)) {
         // Process input (keyboard, mouse, etc.)
         processInput(window);
@@ -185,19 +201,18 @@ int main() {
         // Clear the color and depth buffers to prepare for a new frame
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        shaderProgram.use();
         // Update the view matrix based on the current camera position and orientation
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-        shaderProgram.use();
         shaderProgram.setUniformMat4("view", view);
         shaderProgram.setUniformMat4("projection", projection);
+        shaderProgram.setUniformMat4("model", model);
 
         // Render the floor
-        shaderProgram.setUniformMat4("model", model);
         glBindVertexArray(floorVAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         // Render the triangle
-        shaderProgram.setUniformMat4("model", modelTriangle);
         glBindVertexArray(triangleVAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -210,11 +225,8 @@ int main() {
         std::string cameraPosStr = ss.str();
 
         // Render the camera position
-        int windowWidth, windowHeight;
         glfwGetWindowSize(window, &windowWidth, &windowHeight);
-        glm::mat4 textProjection = glm::ortho(0.0f, static_cast<GLfloat>(windowWidth), 0.0f, static_cast<GLfloat>(windowHeight));
-        textRenderer.getShaderProgram()->use();
-        textRenderer.getShaderProgram()->setUniformMat4("projection", textProjection);
+        textRenderer.Resize(windowWidth, windowHeight);
         textRenderer.RenderText(cameraPosStr, 25.0f, windowHeight - 50.0f, 1.0f, glm::vec3(0.5f, 0.8f, 0.2f));
 
         // Swap buffers and poll events
