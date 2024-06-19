@@ -11,6 +11,7 @@
 #include <iostream>
 #include <sstream>
 #include "Buffers.h"
+#include "Stadium.h"
 #include <iomanip>
 
 // GLOBAL VARIABLES
@@ -43,8 +44,7 @@ glm::mat4 view;
 glm::mat4 projection;
 
 // Declare globally for callback functions to use
-ShaderProgram* basicShader;
-//ShaderProgram* objectShader;
+ShaderProgram* objectShader;
 
 // Callback function to adjust the viewport when the window is resized
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -66,8 +66,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 
     glViewport(0, 0, newWidth, newHeight);
     projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
-    basicShader->use();
-    basicShader->setUniformMat4("projection", projection);
+    objectShader->use();
+    objectShader->setUniformMat4("projection", projection);
 }
 
 
@@ -183,7 +183,7 @@ int main() {
     glEnable(GL_DEPTH_TEST);
 
     // Initialize ShaderProgram for 3D objects
-    basicShader = new ShaderProgram("../assets/shaders/object.vs", "../assets/shaders/object.fs");
+    objectShader = new ShaderProgram("../assets/shaders/object.vs", "../assets/shaders/object.fs");
 
 // Initialize font rendering
     TextRenderer textRenderer("../assets/fonts/paladins.ttf", 800, 600);
@@ -220,6 +220,22 @@ int main() {
     };
     setupBuffers(floorVAO, floorVBO, floorEBO, floorVertices, sizeof(floorVertices), floorIndices, sizeof(floorIndices));
 
+    // Initialize VAO, VBO, and EBO for the floor
+    GLuint stadiumVAO = 0, stadiumVBO = 0, stadiumEBO = 0;
+//    glGenVertexArrays(1, &stadiumVAO);
+//    glGenBuffers(1, &stadiumVBO);
+//    glGenBuffers(1, &stadiumEBO);
+    // Create the Stadium object
+    auto stadiumPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 stadiumColor = glm::vec3(0.8f, 0.8f, 0.8f);
+    float stadiumRadius = 4.0f;
+    float stadiumCurvature = 0.01f;
+    int numRings = 3;
+    int sectionsPerRing = 8;
+
+    Stadium stadium(stadiumVAO, stadiumVBO, stadiumEBO, stadiumPosition, stadiumColor,
+                    stadiumRadius, stadiumCurvature, numRings, sectionsPerRing);
+
     // Initial matrices for model, view, and projection
     // Identity matrix
     model = glm::mat4(1.0f);
@@ -229,7 +245,7 @@ int main() {
     projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
     // Initialize default shader program with the model, view, and projection matrices. Also sets to use.
-    basicShader->setUniforms(model, view, projection);
+    objectShader->setUniforms(model, view, projection);
 
     // Main input loop
     while (!glfwWindowShouldClose(window)) {
@@ -239,25 +255,28 @@ int main() {
         // Clear the color and depth buffers to prepare for a new frame
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        basicShader->use();
+        objectShader->use();
         // Update the view matrix based on the current camera position and orientation
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-        basicShader->setUniformMat4("view", view);
-        basicShader->setUniformMat4("projection", projection);
-        basicShader->setUniformMat4("model", model);
+        objectShader->setUniformMat4("view", view);
+        objectShader->setUniformMat4("projection", projection);
+        objectShader->setUniformMat4("model", model);
 
         // Set light properties and view position
-        basicShader->setUniformVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-        basicShader->setUniformVec3("lightPos", glm::vec3(0.0f, 1e6f, 0.0f)); // Light position very high in the y-direction
-        basicShader->setUniformVec3("viewPos", cameraPos);
+        objectShader->setUniformVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+        objectShader->setUniformVec3("lightPos", glm::vec3(0.0f, 1e6f, 0.0f)); // Light position very high in the y-direction
+        objectShader->setUniformVec3("viewPos", cameraPos);
 
         // Render the floor
         glBindVertexArray(floorVAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
-        // Render the triangle
-        glBindVertexArray(tetrahedronVAO);
-        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
+//        // Render the triangle
+//        glBindVertexArray(tetrahedronVAO);
+//        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
+
+        // Update and render the stadium
+        stadium.render(*objectShader);
 
         // Inside the main render loop, before rendering the text. TOFIX: doesn't render negative sign correctly
         std::stringstream ss;

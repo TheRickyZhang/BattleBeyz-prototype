@@ -29,31 +29,79 @@ protected:
 
     virtual void generateMeshData() = 0; // Pure virtual function
 
-    void setupBuffers();
-};
+    void setupBuffers() {
+        // Convert vertices, normals, texCoords, and tangents to a single array for VBO
+        std::vector<float> vertexData;
+        for (size_t i = 0; i < vertices.size(); ++i) {
+            // Vertex positions
+            vertexData.push_back(vertices[i].x);
+            vertexData.push_back(vertices[i].y);
+            vertexData.push_back(vertices[i].z);
+            // Normals
+            if (!normals.empty()) {
+                vertexData.push_back(normals[i].x);
+                vertexData.push_back(normals[i].y);
+                vertexData.push_back(normals[i].z);
+            }
+            // Texture coordinates
+            if (!texCoords.empty()) {
+                vertexData.push_back(texCoords[i].x);
+                vertexData.push_back(texCoords[i].y);
+            }
+            // Tangents
+            if (!tangents.empty()) {
+                vertexData.push_back(tangents[i].x);
+                vertexData.push_back(tangents[i].y);
+                vertexData.push_back(tangents[i].z);
+            }
+        }
 
-void GameObject::setupBuffers() {
-    // Convert vertices, normals, and texCoords to a single array for VBO
-    std::vector<float> vertexData;
-    for (size_t i = 0; i < vertices.size(); ++i) {
-        vertexData.push_back(vertices[i].x);
-        vertexData.push_back(vertices[i].y);
-        vertexData.push_back(vertices[i].z);
+        // Generate and bind VAO
+        glGenVertexArrays(1, &VAO);
+        glBindVertexArray(VAO);
+
+        // Generate and bind VBO
+        glGenBuffers(1, &VBO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(float), vertexData.data(), GL_STATIC_DRAW);
+
+        // Generate and bind EBO if indices are provided
+        if (!indices.empty()) {
+            glGenBuffers(1, &EBO);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
+        }
+
+        // Set vertex attribute pointers
+        size_t stride = 3 * sizeof(float); // Position always present
+        if (!normals.empty()) stride += 3 * sizeof(float);
+        if (!texCoords.empty()) stride += 2 * sizeof(float);
+        if (!tangents.empty()) stride += 3 * sizeof(float);
+
+        // Position attribute
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
+        glEnableVertexAttribArray(0);
+
+        size_t offset = 3 * sizeof(float);
         if (!normals.empty()) {
-            vertexData.push_back(normals[i].x);
-            vertexData.push_back(normals[i].y);
-            vertexData.push_back(normals[i].z);
+            // Normal attribute
+            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+            glEnableVertexAttribArray(1);
+            offset += 3 * sizeof(float);
         }
         if (!texCoords.empty()) {
-            vertexData.push_back(texCoords[i].x);
-            vertexData.push_back(texCoords[i].y);
+            // Texture Coord attribute
+            glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+            glEnableVertexAttribArray(2);
+            offset += 2 * sizeof(float);
         }
-    }
+        if (!tangents.empty()) {
+            // Tangent attribute
+            glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+            glEnableVertexAttribArray(3);
+        }
 
-    // Decide which setupBuffers function to call based on whether indices are provided
-    if (!indices.empty()) {
-        ::setupBuffers(VAO, VBO, EBO, vertexData.data(), vertexData.size() * sizeof(float), indices.data(), indices.size() * sizeof(unsigned int));
-    } else {
-        ::setupBuffers(VAO, VBO, vertexData.data(), vertexData.size() * sizeof(float));
+        // Unbind VAO
+        glBindVertexArray(0);
     }
-}
+};
