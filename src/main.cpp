@@ -43,7 +43,8 @@ glm::mat4 view;
 glm::mat4 projection;
 
 // Declare globally for callback functions to use
-ShaderProgram* shaderProgram;
+ShaderProgram* basicShader;
+//ShaderProgram* objectShader;
 
 // Callback function to adjust the viewport when the window is resized
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -65,8 +66,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 
     glViewport(0, 0, newWidth, newHeight);
     projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
-    shaderProgram->use();
-    shaderProgram->setUniformMat4("projection", projection);
+    basicShader->use();
+    basicShader->setUniformMat4("projection", projection);
 }
 
 
@@ -182,28 +183,36 @@ int main() {
     glEnable(GL_DEPTH_TEST);
 
     // Initialize ShaderProgram for 3D objects
-    shaderProgram = new ShaderProgram("../assets/shaders/main.vs", "../assets/shaders/main.fs");
+    basicShader = new ShaderProgram("../assets/shaders/object.vs", "../assets/shaders/object.fs");
 
 // Initialize font rendering
-    TextRenderer textRenderer("../assets/fonts/MetalFight.ttf", 800, 600);
+    TextRenderer textRenderer("../assets/fonts/paladins.ttf", 800, 600);
 
-    // Initialize VAO and VBO for 3D objects
-    GLuint triangleVAO, triangleVBO;
-    float vertices[] = {
-            // Positions         // Colors
-            -0.4f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f,  // Bottom left, red
-            0.4f, 1.0f, 0.0f,  0.0f, 1.0f, 0.0f,  // Bottom right, green
-            0.0f,  2.0f, 0.0f,  0.0f, 0.0f, 1.0f   // Top, blue
+    GLuint tetrahedronVAO, tetrahedronVBO, tetrahedronEBO;
+    float tetrahedronVertices[] = {
+            // Positions         // Normals        // TexCoords // Colors
+            0.0f,  1.0f,  0.0f,  0.0f,  0.5773f,  0.0f,  0.0f, 0.0f,  1.0f, 0.0f, 0.0f, // Top vertex (Red)
+            0.0f,  0.0f, -1.0f,  0.0f,  0.5773f, -0.8165f, 0.0f, 0.0f,  0.0f, 1.0f, 0.0f, // Front vertex (Green)
+            -1.0f,  0.0f,  1.0f, -0.8165f,  0.5773f,  0.0f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f, // Left vertex (Blue)
+            1.0f,  0.0f,  1.0f,  0.8165f,  0.5773f,  0.0f,  0.0f, 0.0f,  1.0f, 1.0f, 0.0f  // Right vertex (Yellow)
     };
-    setupBuffers(triangleVAO, triangleVBO, vertices, sizeof(vertices));
+
+    unsigned int tetrahedronIndices[] = {
+            0, 1, 2, // Front face
+            0, 1, 3, // Right face
+            0, 2, 3, // Left face
+            1, 2, 3  // Bottom face
+    };
+    setupBuffers(tetrahedronVAO, tetrahedronVBO, tetrahedronEBO, tetrahedronVertices, sizeof(tetrahedronVertices), tetrahedronIndices, sizeof(tetrahedronIndices));
 
     // Initialize VAO, VBO, and EBO for the floor
     GLuint floorVAO, floorVBO, floorEBO;
     float floorVertices[] = {
-            -10.0f, 0.0f, -10.0f, 0.5f, 0.5f, 0.5f,
-            10.0f, 0.0f, -10.0f, 0.5f, 0.5f, 0.5f,
-            10.0f, 0.0f,  10.0f, 0.5f, 0.5f, 0.5f,
-            -10.0f, 0.0f,  10.0f, 0.5f, 0.5f, 0.5f,
+            // Positions         // Normals        // TexCoords  // Colors
+            -10.0f, 0.0f, -10.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.5f, 0.5f,
+            10.0f, 0.0f, -10.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.5f, 0.5f, 0.5f,
+            10.0f, 0.0f,  10.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.5f, 0.5f, 0.5f,
+            -10.0f, 0.0f,  10.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.5f, 0.5f, 0.5f,
     };
     unsigned int floorIndices[] = {
             0, 1, 2,
@@ -220,7 +229,7 @@ int main() {
     projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
     // Initialize default shader program with the model, view, and projection matrices. Also sets to use.
-    shaderProgram->setUniforms(model, view, projection);
+    basicShader->setUniforms(model, view, projection);
 
     // Main input loop
     while (!glfwWindowShouldClose(window)) {
@@ -230,22 +239,27 @@ int main() {
         // Clear the color and depth buffers to prepare for a new frame
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        shaderProgram->use();
+        basicShader->use();
         // Update the view matrix based on the current camera position and orientation
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-        shaderProgram->setUniformMat4("view", view);
-        shaderProgram->setUniformMat4("projection", projection);
-        shaderProgram->setUniformMat4("model", model);
+        basicShader->setUniformMat4("view", view);
+        basicShader->setUniformMat4("projection", projection);
+        basicShader->setUniformMat4("model", model);
+
+        // Set light properties and view position
+        basicShader->setUniformVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+        basicShader->setUniformVec3("lightPos", glm::vec3(0.0f, 1e6f, 0.0f)); // Light position very high in the y-direction
+        basicShader->setUniformVec3("viewPos", cameraPos);
 
         // Render the floor
         glBindVertexArray(floorVAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         // Render the triangle
-        glBindVertexArray(triangleVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindVertexArray(tetrahedronVAO);
+        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 
-        // Inside the main render loop, before rendering the text
+        // Inside the main render loop, before rendering the text. TOFIX: doesn't render negative sign correctly
         std::stringstream ss;
         ss << std::fixed << std::setprecision(2);
         ss << "X: " << cameraPos.x << " "
@@ -264,8 +278,9 @@ int main() {
     }
 
     // Clean up resources
-    glDeleteVertexArrays(1, &triangleVAO);
-    glDeleteBuffers(1, &triangleVBO);
+    glDeleteVertexArrays(1, &tetrahedronVAO);
+    glDeleteBuffers(1, &tetrahedronVBO);
+    glDeleteBuffers(1, &tetrahedronEBO);
     glDeleteVertexArrays(1, &floorVAO);
     glDeleteBuffers(1, &floorVBO);
     glDeleteBuffers(1, &floorEBO);

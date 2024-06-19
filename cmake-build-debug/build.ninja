@@ -73,6 +73,14 @@ build CMakeFiles/BattleBeyz.dir/src/ShaderProgram.cpp.obj: CXX_COMPILER__BattleB
   OBJECT_DIR = CMakeFiles\BattleBeyz.dir
   OBJECT_FILE_DIR = CMakeFiles\BattleBeyz.dir\src
 
+build CMakeFiles/BattleBeyz.dir/src/Stadium.cpp.obj: CXX_COMPILER__BattleBeyz_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/src/Stadium.cpp || cmake_object_order_depends_target_BattleBeyz
+  DEFINES = -DGLEW_STATIC
+  DEP_FILE = CMakeFiles\BattleBeyz.dir\src\Stadium.cpp.obj.d
+  FLAGS = -static-libgcc -static-libstdc++ -g -std=gnu++17 -fdiagnostics-color=always
+  INCLUDES = -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glew-2.2.0/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/include" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glm-1.0.1" -I"C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/freetype-2.13.2/include"
+  OBJECT_DIR = CMakeFiles\BattleBeyz.dir
+  OBJECT_FILE_DIR = CMakeFiles\BattleBeyz.dir\src
+
 build CMakeFiles/BattleBeyz.dir/src/TextRenderer.cpp.obj: CXX_COMPILER__BattleBeyz_unscanned_Debug C$:/Users/ricky/OneDrive$ -$ University$ of$ Florida/Documents/BattleBeyz/src/TextRenderer.cpp || cmake_object_order_depends_target_BattleBeyz
   DEFINES = -DGLEW_STATIC
   DEP_FILE = CMakeFiles\BattleBeyz.dir\src\TextRenderer.cpp.obj.d
@@ -105,7 +113,7 @@ build CMakeFiles/BattleBeyz.dir/src/main.cpp.obj: CXX_COMPILER__BattleBeyz_unsca
 #############################################
 # Link the executable BattleBeyz.exe
 
-build BattleBeyz.exe: CXX_EXECUTABLE_LINKER__BattleBeyz_Debug CMakeFiles/BattleBeyz.dir/src/Buffers.cpp.obj CMakeFiles/BattleBeyz.dir/src/Initialize.cpp.obj CMakeFiles/BattleBeyz.dir/src/ShaderProgram.cpp.obj CMakeFiles/BattleBeyz.dir/src/TextRenderer.cpp.obj CMakeFiles/BattleBeyz.dir/src/Utils.cpp.obj CMakeFiles/BattleBeyz.dir/src/main.cpp.obj | lib/glfw-3.4/src/libglfw3.a || lib/glfw-3.4/src/libglfw3.a
+build BattleBeyz.exe: CXX_EXECUTABLE_LINKER__BattleBeyz_Debug CMakeFiles/BattleBeyz.dir/src/Buffers.cpp.obj CMakeFiles/BattleBeyz.dir/src/Initialize.cpp.obj CMakeFiles/BattleBeyz.dir/src/ShaderProgram.cpp.obj CMakeFiles/BattleBeyz.dir/src/Stadium.cpp.obj CMakeFiles/BattleBeyz.dir/src/TextRenderer.cpp.obj CMakeFiles/BattleBeyz.dir/src/Utils.cpp.obj CMakeFiles/BattleBeyz.dir/src/main.cpp.obj | lib/glfw-3.4/src/libglfw3.a || lib/glfw-3.4/src/libglfw3.a
   FLAGS = -static-libgcc -static-libstdc++ -g
   LINK_LIBRARIES = lib/glfw-3.4/src/libglfw3.a  -lglew32s  -lopengl32  -lglu32  -lfreetype  -lglu32  -lopengl32  -lfreetype  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   LINK_PATH = -LC:/Users/ricky/ONEDRI~1/DOCUME~1/BATTLE~1/lib/GLEW-2~2.0/lib/Release/x64   -LC:/Users/ricky/ONEDRI~1/DOCUME~1/BATTLE~1/lib/FREETY~1.2/dll/win64

@@ -52,6 +52,9 @@ add_executable(BattleBeyz ${SOURCES}
         src/ShaderPath.h
         src/Utils.cpp
         src/Utils.h
+        src/GameObject.h
+        src/Stadium.cpp
+        src/Stadium.h
 )
 
 # Link libraries
