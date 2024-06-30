@@ -13,4 +13,5 @@ void setupBuffers(unsigned int &VAO, unsigned int &VBO, unsigned int &EBO,
                   const unsigned int* indices, size_t indicesSize);
 
 // Overloaded version with no EBO
-void setupBuffers(unsigned int &VAO, unsigned int &VBO, const float* vertices, size_t verticesSize);
+void setupBuffersTexturesOnly(unsigned int &VAO, unsigned int &VBO, unsigned int &EBO, const float* vertices,
+                  size_t verticesSize, const unsigned int* indices, size_t indicesSize);

@@ -12,6 +12,7 @@ include_directories(${PROJECT_SOURCE_DIR}/lib/glew-2.2.0/include)
 include_directories(${PROJECT_SOURCE_DIR}/lib/glfw-3.4/include)
 include_directories(${PROJECT_SOURCE_DIR}/lib/glm-1.0.1)
 include_directories(${PROJECT_SOURCE_DIR}/lib/freetype-2.13.2/include)
+include_directories(${PROJECT_SOURCE_DIR}/lib/stb)
 
 # Add source files
 file(GLOB_RECURSE SOURCES "src/*.cpp")
@@ -55,6 +56,8 @@ add_executable(BattleBeyz ${SOURCES}
         src/GameObject.h
         src/Stadium.cpp
         src/Stadium.h
+        src/Texture.cpp
+        src/Texture.h
 )
 
 # Link libraries

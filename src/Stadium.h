@@ -5,7 +5,7 @@
 class Stadium : public GameObject {
 public:
     Stadium(unsigned int vao, unsigned int vbo, unsigned int ebo, const glm::vec3& pos,
-            const glm::vec3& col, float radius, float curvature, int numRings, int verticesPerRing);
+            const glm::vec3& col, float radius, float curvature, int numRings, int verticesPerRing, float textureScale = 1.0f);
 
     void update() override {}
     void initializeMesh() override;
@@ -19,4 +19,6 @@ private:
     float curvature;
     int verticesPerRing;
     int numRings;
+
+    float textureScale = 1.0f;
 };

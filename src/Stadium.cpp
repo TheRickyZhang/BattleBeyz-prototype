@@ -7,8 +7,9 @@
 #include <numeric>
 
 Stadium::Stadium(unsigned int vao, unsigned int vbo, unsigned int ebo, const glm::vec3& pos, const glm::vec3& col,
-                 float radius, float curvature, int numRings, int verticesPerRing)
-        : GameObject(vao, vbo, ebo, pos, col), radius(radius), curvature(curvature), numRings(numRings), verticesPerRing(verticesPerRing) {
+                 float radius, float curvature, int numRings, int verticesPerRing, float textureScale)
+        : GameObject(vao, vbo, ebo, pos, col), radius(radius), curvature(curvature), numRings(numRings),
+        verticesPerRing(verticesPerRing), textureScale(textureScale) {
     Stadium::initializeMesh();
     std::cout << "Stadium color: (" << color.x << ", " << color.y << ", " << color.z << ")\n";
 }
@@ -27,7 +28,7 @@ void Stadium::generateMeshData() {
 
     // Generate vertices
     for (int rIdx = 1; rIdx <= numRings; ++rIdx) {
-        float r = pow(static_cast<float>(rIdx) / numRings, 0.7) * radius;
+        float r = pow(static_cast<float>(rIdx) / numRings, 0.5) * radius;
         for (int thetaIdx = 0; thetaIdx < verticesPerRing; ++thetaIdx) {
             float theta = 2.0f * M_PI * static_cast<float>(thetaIdx) / static_cast<float>(verticesPerRing);
             float x = r * std::cos(theta);
@@ -35,8 +36,8 @@ void Stadium::generateMeshData() {
             float y = std::pow(r, 2.0f) * curvature; // Use r for y calculation
 
             vertices.emplace_back(x, y, z);
-            texCoords.emplace_back(static_cast<float>(thetaIdx) / static_cast<float>(verticesPerRing),
-                                   static_cast<float>(rIdx) / static_cast<float>(numRings));
+            texCoords.emplace_back(textureScale * (r / radius * std::cos(theta)) + 0.5f,
+                                   textureScale * (r / radius * std::sin(theta)) + 0.5f);
         }
     }
 

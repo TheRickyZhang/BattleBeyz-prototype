@@ -6,6 +6,7 @@
 
 #include "ShaderProgram.h"
 #include "TextRenderer.h"
+#include "Texture.h"
 #include "ShaderPath.h"
 
 #include <iostream>
@@ -13,6 +14,7 @@
 #include "Buffers.h"
 #include "Stadium.h"
 #include <iomanip>
+#include <algorithm>
 
 // GLOBAL VARIABLES
 
@@ -188,13 +190,19 @@ int main() {
 // Initialize font rendering
     TextRenderer textRenderer("../assets/fonts/paladins.ttf", 800, 600);
 
+    // Initialize textures. Note that texture1 is primary texture
+    Texture hexagonPattern("../assets/images/Hexagon.jpg", "texture1");
+    Texture smallHexagonPattern("../assets/images/HexagonSmall.jpg", "texture1");
+    std::cout << "Texture ID: " << hexagonPattern.ID << std::endl;
+    std::cout << "Texture ID: " << smallHexagonPattern.ID << std::endl;
+
     GLuint tetrahedronVAO, tetrahedronVBO, tetrahedronEBO;
     float tetrahedronVertices[] = {
-            // Positions         // Normals        // TexCoords // Colors
-            0.0f,  1.0f,  0.0f,  0.0f,  0.5773f,  0.0f,  0.0f, 0.0f,  1.0f, 0.0f, 0.0f, // Top vertex (Red)
-            0.0f,  0.0f, -1.0f,  0.0f,  0.5773f, -0.8165f, 0.0f, 0.0f,  0.0f, 1.0f, 0.0f, // Front vertex (Green)
+            // Positions 0-2                // Normals 3-5                      // TexCoords  6-7          // Colors 8-10
+            0.0f,  1.0f,  0.0f,  0.0f,  0.5773f,  0.0f,  0.5f, 1.0f,  1.0f, 0.0f, 0.0f, // Top vertex (Red)
+            0.0f,  0.0f, -1.0f,  0.0f,  0.5773f, -0.8165f, 0.5f, 0.0f,  0.0f, 1.0f, 0.0f, // Front vertex (Green)
             -1.0f,  0.0f,  1.0f, -0.8165f,  0.5773f,  0.0f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f, // Left vertex (Blue)
-            1.0f,  0.0f,  1.0f,  0.8165f,  0.5773f,  0.0f,  0.0f, 0.0f,  1.0f, 1.0f, 0.0f  // Right vertex (Yellow)
+            1.0f,  0.0f,  1.0f,  0.8165f,  0.5773f,  0.0f,  1.0f, 0.0f,  1.0f, 1.0f, 0.0f  // Right vertex (Yellow)
     };
 
     unsigned int tetrahedronIndices[] = {
@@ -208,12 +216,13 @@ int main() {
     // Initialize VAO, VBO, and EBO for the floor
     GLuint floorVAO, floorVBO, floorEBO;
     float floorVertices[] = {
-            // Positions 0-2         // Normals 3-5       // TexCoords  6-7   // Colors 8-10
+            // Positions        // Normals       // TexCoords // Colors
             -10.0f, 0.0f, -10.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.5f, 0.5f,
-            10.0f, 0.0f, -10.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.5f, 0.5f, 0.5f,
-            10.0f, 0.0f,  10.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.5f, 0.5f, 0.5f,
-            -10.0f, 0.0f,  10.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.5f, 0.5f, 0.5f,
+            10.0f, 0.0f, -10.0f, 0.0f, 1.0f, 0.0f, 4.0f, 0.0f, 0.5f, 0.5f, 0.5f,
+            10.0f, 0.0f,  10.0f, 0.0f, 1.0f, 0.0f, 4.0f, 4.0f, 0.5f, 0.5f, 0.5f,
+            -10.0f, 0.0f,  10.0f, 0.0f, 1.0f, 0.0f, 0.0f, 4.0f, 0.5f, 0.5f, 0.5f,
     };
+
     unsigned int floorIndices[] = {
             0, 1, 2,
             2, 3, 0
@@ -222,19 +231,17 @@ int main() {
 
     // Initialize VAO, VBO, and EBO for the floor
     GLuint stadiumVAO = 0, stadiumVBO = 0, stadiumEBO = 0;
-//    glGenVertexArrays(1, &stadiumVAO);
-//    glGenBuffers(1, &stadiumVBO);
-//    glGenBuffers(1, &stadiumEBO);
     // Create the Stadium object
     auto stadiumPosition = glm::vec3(0.0f, 1.0f, 0.0f);
     glm::vec3 stadiumColor = glm::vec3(1.0f, 0.0f, 0.0f);
     float stadiumRadius = 4.0f;
     float stadiumCurvature = 0.02f;
-    int numRings = 3;
-    int sectionsPerRing = 8;
+    int numRings = 10;
+    int sectionsPerRing = 16;
+    float stadiumTextureScale = 1.5f;
 
     Stadium stadium(stadiumVAO, stadiumVBO, stadiumEBO, stadiumPosition, stadiumColor,
-                    stadiumRadius, stadiumCurvature, numRings, sectionsPerRing);
+                    stadiumRadius, stadiumCurvature, numRings, sectionsPerRing, stadiumTextureScale);
 
     // Initial matrices for model, view, and projection
     // Identity matrix
@@ -255,23 +262,36 @@ int main() {
         // Clear the color and depth buffers to prepare for a new frame
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        // Use the shader program
         objectShader->use();
-        // Update the view matrix based on the current camera position and orientation
-        view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-        objectShader->setUniformMat4("view", view);
-        objectShader->setUniformMat4("projection", projection);
-        objectShader->setUniformMat4("model", model);
 
         // Set light properties and view position
         objectShader->setUniformVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
         objectShader->setUniformVec3("lightPos", glm::vec3(0.0f, 1e5f, 0.0f)); // Light position very high in the y-direction
         objectShader->setUniformVec3("viewPos", cameraPos);
 
+        // Update the view and projection matrices
+        view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+        objectShader->setUniformMat4("view", view);
+        objectShader->setUniformMat4("projection", projection);
+
         // Render the floor
+        model = glm::mat4(1.0f);
+        objectShader->setUniformMat4("model", model);
+        glActiveTexture(GL_TEXTURE0);
+        smallHexagonPattern.use();
+        objectShader->setInt("texture1", 0);
+
         glBindVertexArray(floorVAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
-        // Render the triangle
+        // Render the tetrahedron
+        model = glm::mat4(1.0f);
+        objectShader->setUniformMat4("model", model);
+        glActiveTexture(GL_TEXTURE0);
+        hexagonPattern.use();
+        objectShader->setInt("texture1", 0);
+
         glBindVertexArray(tetrahedronVAO);
         glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 
@@ -285,11 +305,12 @@ int main() {
            << "Y: " << cameraPos.y << " "
            << "Z: " << cameraPos.z;
         std::string cameraPosStr = ss.str();
+        std::replace(cameraPosStr.begin(), cameraPosStr.end(), '-', ';');
 
         // Render the camera position
         glfwGetWindowSize(window, &windowWidth, &windowHeight);
         textRenderer.Resize(windowWidth, windowHeight);
-        textRenderer.RenderText(cameraPosStr, 25.0f, windowHeight - 50.0f, 1.0f, glm::vec3(0.5f, 0.8f, 0.2f));
+        textRenderer.RenderText(cameraPosStr, 25.0f, windowHeight - 50.0f, 0.6f, glm::vec3(0.5f, 0.8f, 0.2f));
 
         // Swap buffers and poll events
         glfwSwapBuffers(window);
