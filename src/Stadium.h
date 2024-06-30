@@ -9,7 +9,7 @@ public:
 
     void update() override {}
     void initializeMesh() override;
-    void render(ShaderProgram& shader) override;
+    void render(ShaderProgram &shader, const glm::vec3 &viewPos, const glm::vec3 &lightColor, const glm::vec3 &lightPos) override;
 
 protected:
     void generateMeshData() override;

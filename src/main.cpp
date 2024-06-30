@@ -208,7 +208,7 @@ int main() {
     // Initialize VAO, VBO, and EBO for the floor
     GLuint floorVAO, floorVBO, floorEBO;
     float floorVertices[] = {
-            // Positions         // Normals        // TexCoords  // Colors
+            // Positions 0-2         // Normals 3-5       // TexCoords  6-7   // Colors 8-10
             -10.0f, 0.0f, -10.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.5f, 0.5f,
             10.0f, 0.0f, -10.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.5f, 0.5f, 0.5f,
             10.0f, 0.0f,  10.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.5f, 0.5f, 0.5f,
@@ -226,10 +226,10 @@ int main() {
 //    glGenBuffers(1, &stadiumVBO);
 //    glGenBuffers(1, &stadiumEBO);
     // Create the Stadium object
-    auto stadiumPosition = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 stadiumColor = glm::vec3(0.8f, 0.8f, 0.8f);
+    auto stadiumPosition = glm::vec3(0.0f, 1.0f, 0.0f);
+    glm::vec3 stadiumColor = glm::vec3(1.0f, 0.0f, 0.0f);
     float stadiumRadius = 4.0f;
-    float stadiumCurvature = 0.01f;
+    float stadiumCurvature = 0.02f;
     int numRings = 3;
     int sectionsPerRing = 8;
 
@@ -264,19 +264,19 @@ int main() {
 
         // Set light properties and view position
         objectShader->setUniformVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-        objectShader->setUniformVec3("lightPos", glm::vec3(0.0f, 1e6f, 0.0f)); // Light position very high in the y-direction
+        objectShader->setUniformVec3("lightPos", glm::vec3(0.0f, 1e5f, 0.0f)); // Light position very high in the y-direction
         objectShader->setUniformVec3("viewPos", cameraPos);
 
         // Render the floor
         glBindVertexArray(floorVAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
-//        // Render the triangle
-//        glBindVertexArray(tetrahedronVAO);
-//        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
+        // Render the triangle
+        glBindVertexArray(tetrahedronVAO);
+        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 
         // Update and render the stadium
-        stadium.render(*objectShader);
+        stadium.render(*objectShader, cameraPos, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1e6f, 0.0f));
 
         // Inside the main render loop, before rendering the text. TOFIX: doesn't render negative sign correctly
         std::stringstream ss;

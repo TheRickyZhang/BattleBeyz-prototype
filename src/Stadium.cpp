@@ -1,4 +1,5 @@
 #include "Stadium.h"
+#include "Buffers.h"
 #include <cmath>
 #include <algorithm>
 #include <iostream>
@@ -9,16 +10,19 @@ Stadium::Stadium(unsigned int vao, unsigned int vbo, unsigned int ebo, const glm
                  float radius, float curvature, int numRings, int verticesPerRing)
         : GameObject(vao, vbo, ebo, pos, col), radius(radius), curvature(curvature), numRings(numRings), verticesPerRing(verticesPerRing) {
     Stadium::initializeMesh();
+    std::cout << "Stadium color: (" << color.x << ", " << color.y << ", " << color.z << ")\n";
 }
 
 void Stadium::generateMeshData() {
+
     // Clear existing data
     vertices.clear();
     normals.clear();
     texCoords.clear();
     indices.clear();
+    tangents.clear();
 
-    vertices.emplace_back(position.x, position.y, position.z);
+    vertices.emplace_back(0, 0, 0);
     texCoords.emplace_back(0.5, 0.5);
 
     // Generate vertices
@@ -26,18 +30,18 @@ void Stadium::generateMeshData() {
         float r = pow(static_cast<float>(rIdx) / numRings, 0.7) * radius;
         for (int thetaIdx = 0; thetaIdx < verticesPerRing; ++thetaIdx) {
             float theta = 2.0f * M_PI * static_cast<float>(thetaIdx) / static_cast<float>(verticesPerRing);
-            float x = r * std::cos(theta) + position.x;
-            float z = r * std::sin(theta) + position.z; // Change y to z
-            float y = std::pow(r, 2.0f) * curvature + position.y; // Use r for y calculation
+            float x = r * std::cos(theta);
+            float z = r * std::sin(theta); // Change y to z
+            float y = std::pow(r, 2.0f) * curvature; // Use r for y calculation
 
             vertices.emplace_back(x, y, z);
             texCoords.emplace_back(static_cast<float>(thetaIdx) / static_cast<float>(verticesPerRing),
                                    static_cast<float>(rIdx) / static_cast<float>(numRings));
         }
     }
-    std::vector<glm::vec3> tangents(vertices.size(), glm::vec3(0.0f));
-    std::vector<glm::vec3> normals(vertices.size(), glm::vec3(0.0f));
 
+    normals.resize(vertices.size(), glm::vec3(0.0f));
+    tangents.resize(vertices.size(), glm::vec3(0.0f));
 
     // Draw from origin to first ring
     for (int i = 0; i < verticesPerRing; ++i) {
@@ -179,16 +183,46 @@ void Stadium::generateMeshData() {
 
 void Stadium::initializeMesh() {
     generateMeshData();
-    setupBuffers();
+    if(vertices.size() != normals.size() || vertices.size() != texCoords.size()) {
+        std::cerr << "Mesh data is inconsistent" << std::endl;
+        std::cout << "Vertices: " << vertices.size() << ", Normals: " << normals.size() << ", TexCoords: " << texCoords.size() << std::endl;
+        return;
+    }
+    for (size_t i = 0; i < vertices.size(); ++i) {
+        // Vertex positions
+        vertexData.push_back(vertices[i].x);
+        vertexData.push_back(vertices[i].y);
+        vertexData.push_back(vertices[i].z);
+        // Normal data
+        vertexData.push_back(normals[i].x);
+        vertexData.push_back(normals[i].y);
+        vertexData.push_back(normals[i].z);
+
+        // Texture coordinates
+        vertexData.push_back(texCoords[i].x);
+        vertexData.push_back(texCoords[i].y);
+
+        // Color data
+        vertexData.push_back(color.x);
+        vertexData.push_back(color.y);
+        vertexData.push_back(color.z);
+    }
+    std::cout << "Color: (" << color.x << ", " << color.y << ", " << color.z << ")\n";
+    ::setupBuffers(VAO, VBO, EBO, vertexData.data(), vertexData.size() * sizeof(float), indices.data(), indices.size() * sizeof(unsigned int));
 }
 
-void Stadium::render(ShaderProgram& shader) {
+void Stadium::render(ShaderProgram& shader, const glm::vec3& viewPos, const glm::vec3& lightColor, const glm::vec3& lightPos) {
     shader.use();
 
     // Bind appropriate uniforms (model, view, projection matrices)
     glm::mat4 model = glm::translate(glm::mat4(1.0f), position);
     shader.setUniformMat4("model", model);
+    shader.setUniformVec3("viewPos", viewPos);
+    shader.setUniformVec3("lightColor", lightColor);
+    shader.setUniformVec3("lightPos", lightPos);
     shader.setUniformVec3("objectColor", color);
+
+//    std::cout << "Rendering color: (" << color.x << ", " << color.y << ", " << color.z << ")\n";
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);

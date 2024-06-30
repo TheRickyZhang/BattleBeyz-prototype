@@ -26,9 +26,11 @@
   <component name="ChangeListManager">
     <list default="true" id="14d88e8d-1ec0-46b9-9879-d2031833b74b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/shaders/object.fs" beforeDir="false" afterPath="$PROJECT_DIR$/assets/shaders/object.fs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/BattleBeyz.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/BattleBeyz.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/BattleBeyz.dir/src/main.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/BattleBeyz.dir/src/main.cpp.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GameObject.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameObject.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Stadium.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stadium.cpp" afterDir="false" />
@@ -151,7 +153,7 @@
       <workItem from="1718604944011" duration="519000" />
       <workItem from="1718605487992" duration="3100000" />
       <workItem from="1718767272379" duration="9709000" />
-      <workItem from="1718819261089" duration="11219000" />
+      <workItem from="1718819261089" duration="18079000" />
     </task>
     <servers />
   </component>
