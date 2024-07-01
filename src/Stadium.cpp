@@ -4,12 +4,12 @@
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
-#include <numeric>
 
-Stadium::Stadium(unsigned int vao, unsigned int vbo, unsigned int ebo, const glm::vec3& pos, const glm::vec3& col,
-                 float radius, float curvature, int numRings, int verticesPerRing, float textureScale)
-        : GameObject(vao, vbo, ebo, pos, col), radius(radius), curvature(curvature), numRings(numRings),
-        verticesPerRing(verticesPerRing), textureScale(textureScale) {
+Stadium::Stadium(unsigned int vao, unsigned int vbo, unsigned int ebo, const glm::vec3 &pos, const glm::vec3 &col,
+                 const glm::vec3 &ringColor, const glm::vec3& crossColor, float radius, float curvature, int numRings, int verticesPerRing,
+                 float textureScale)
+        : GameObject(vao, vbo, ebo, pos, col), ringColor(ringColor), crossColor(crossColor), radius(radius), curvature(curvature),
+          numRings(numRings), verticesPerRing(verticesPerRing), textureScale(textureScale) {
     Stadium::initializeMesh();
     std::cout << "Stadium color: (" << color.x << ", " << color.y << ", " << color.z << ")\n";
 }
@@ -23,8 +23,15 @@ void Stadium::generateMeshData() {
     indices.clear();
     tangents.clear();
 
+    // Add center vertex first
     vertices.emplace_back(0, 0, 0);
     texCoords.emplace_back(0.5, 0.5);
+    colors.emplace_back(crossColor);
+
+    if(verticesPerRing % 4 != 0) {
+        std::cerr << "Vertices per ring must be a multiple of 4" << std::endl;
+        return;
+    }
 
     // Generate vertices
     for (int rIdx = 1; rIdx <= numRings; ++rIdx) {
@@ -38,6 +45,14 @@ void Stadium::generateMeshData() {
             vertices.emplace_back(x, y, z);
             texCoords.emplace_back(textureScale * (r / radius * std::cos(theta)) + 0.5f,
                                    textureScale * (r / radius * std::sin(theta)) + 0.5f);
+            // Set ring color for middle and end
+            if(rIdx == numRings / 4 || rIdx == numRings - 1) {
+                colors.emplace_back(ringColor);
+            } else if(thetaIdx == 0 || thetaIdx == verticesPerRing / 4 || thetaIdx == verticesPerRing / 2 || thetaIdx == 3 * verticesPerRing / 4) {
+                colors.emplace_back(crossColor);
+            } else {
+                colors.emplace_back(color);
+            }
         }
     }
 
@@ -145,28 +160,30 @@ void Stadium::generateMeshData() {
         }
     }
 
-    for (auto& normal : normals) {
+    for (auto &normal: normals) {
         normal = glm::normalize(normal);
     }
-    for (auto& tangent : tangents) {
+    for (auto &tangent: tangents) {
         tangent = glm::normalize(tangent);
     }
 
     // Print out the vertices
     std::cout << "Vertices: " << vertices.size() << std::endl;
-    for (const auto& vertex : vertices) {
-        std::cout << std::fixed << std::setprecision(2) << "(" << vertex.x << ", " << vertex.y << ", " << vertex.z << ") ";
+    for (const auto &vertex: vertices) {
+        std::cout << std::fixed << std::setprecision(2) << "(" << vertex.x << ", " << vertex.y << ", " << vertex.z
+                  << ") ";
     }
 
 // Print out the normals
     std::cout << "\nNormals: " << normals.size() << std::endl;
-    for (const auto& normal : normals) {
-        std::cout << std::fixed << std::setprecision(2) << "(" << normal.x << ", " << normal.y << ", " << normal.z << ") ";
+    for (const auto &normal: normals) {
+        std::cout << std::fixed << std::setprecision(2) << "(" << normal.x << ", " << normal.y << ", " << normal.z
+                  << ") ";
     }
 
 // Print out the texture coordinates
     std::cout << "\nTexture Coordinates: " << texCoords.size() << std::endl;
-    for (const auto& texCoord : texCoords) {
+    for (const auto &texCoord: texCoords) {
         std::cout << std::fixed << std::setprecision(2) << "(" << texCoord.x << ", " << texCoord.y << ") ";
     }
 
@@ -177,16 +194,18 @@ void Stadium::generateMeshData() {
     }
     // Print out the tangents
     std::cout << "\nTangents: " << tangents.size() << std::endl;
-    for (const auto& tangent : tangents) {
-        std::cout << std::fixed << std::setprecision(2) << "(" << tangent.x << ", " << tangent.y << ", " << tangent.z << ") ";
+    for (const auto &tangent: tangents) {
+        std::cout << std::fixed << std::setprecision(2) << "(" << tangent.x << ", " << tangent.y << ", " << tangent.z
+                  << ") ";
     }
 }
 
 void Stadium::initializeMesh() {
     generateMeshData();
-    if(vertices.size() != normals.size() || vertices.size() != texCoords.size()) {
+    if (vertices.size() != normals.size() || vertices.size() != texCoords.size()) {
         std::cerr << "Mesh data is inconsistent" << std::endl;
-        std::cout << "Vertices: " << vertices.size() << ", Normals: " << normals.size() << ", TexCoords: " << texCoords.size() << std::endl;
+        std::cout << "Vertices: " << vertices.size() << ", Normals: " << normals.size() << ", TexCoords: "
+                  << texCoords.size() << std::endl;
         return;
     }
     for (size_t i = 0; i < vertices.size(); ++i) {
@@ -204,15 +223,16 @@ void Stadium::initializeMesh() {
         vertexData.push_back(texCoords[i].y);
 
         // Color data
-        vertexData.push_back(color.x);
-        vertexData.push_back(color.y);
-        vertexData.push_back(color.z);
+        vertexData.push_back(colors[i].x);
+        vertexData.push_back(colors[i].y);
+        vertexData.push_back(colors[i].z);
     }
-    std::cout << "Color: (" << color.x << ", " << color.y << ", " << color.z << ")\n";
-    ::setupBuffers(VAO, VBO, EBO, vertexData.data(), vertexData.size() * sizeof(float), indices.data(), indices.size() * sizeof(unsigned int));
+    ::setupBuffers(VAO, VBO, EBO, vertexData.data(), vertexData.size() * sizeof(float), indices.data(),
+                   indices.size() * sizeof(unsigned int));
 }
 
-void Stadium::render(ShaderProgram& shader, const glm::vec3& viewPos, const glm::vec3& lightColor, const glm::vec3& lightPos) {
+void Stadium::render(ShaderProgram &shader, const glm::vec3 &viewPos, const glm::vec3 &lightColor,
+                     const glm::vec3 &lightPos) {
     shader.use();
 
     // Bind appropriate uniforms (model, view, projection matrices)

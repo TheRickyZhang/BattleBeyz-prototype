@@ -4,7 +4,7 @@
 #include <utility>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "../lib/stb/stb_image.h"  // Use the correct relative path
+#include "stb_image.h"
 
 Texture::Texture(const char* imagePath, std::string texType) : type(std::move(texType)), path(imagePath) {
     std::cout << "Loading texture: " << imagePath << std::endl; // Add this line

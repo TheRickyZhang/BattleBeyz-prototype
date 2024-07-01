@@ -13,9 +13,21 @@ include_directories(${PROJECT_SOURCE_DIR}/lib/glfw-3.4/include)
 include_directories(${PROJECT_SOURCE_DIR}/lib/glm-1.0.1)
 include_directories(${PROJECT_SOURCE_DIR}/lib/freetype-2.13.2/include)
 include_directories(${PROJECT_SOURCE_DIR}/lib/stb)
+include_directories(${PROJECT_SOURCE_DIR}/lib/imgui-1.90.8)
+include_directories(${PROJECT_SOURCE_DIR}/lib/imgui-1.90.8/backends)
+
+# Specify ImGui source files
+set(IMGUI_SOURCES
+        ${PROJECT_SOURCE_DIR}/lib/imgui-1.90.8/imgui.cpp
+        ${PROJECT_SOURCE_DIR}/lib/imgui-1.90.8/imgui_draw.cpp
+        ${PROJECT_SOURCE_DIR}/lib/imgui-1.90.8/imgui_tables.cpp
+        ${PROJECT_SOURCE_DIR}/lib/imgui-1.90.8/imgui_widgets.cpp
+        ${PROJECT_SOURCE_DIR}/lib/imgui-1.90.8/backends/imgui_impl_opengl3.cpp
+        ${PROJECT_SOURCE_DIR}/lib/imgui-1.90.8/backends/imgui_impl_glfw.cpp
+)
 
 # Add source files
-file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE SOURCES "src/*.cpp" ${IMGUI_SOURCES})
 
 # Find and include OpenGL
 find_package(OpenGL REQUIRED)
@@ -58,6 +70,8 @@ add_executable(BattleBeyz ${SOURCES}
         src/Stadium.h
         src/Texture.cpp
         src/Texture.h
+        src/Camera.cpp
+        src/Camera.h
 )
 
 # Link libraries

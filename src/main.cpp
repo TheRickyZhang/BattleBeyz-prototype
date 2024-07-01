@@ -1,8 +1,13 @@
-//#include <GL/glew.h>
-//#include <GLFW/glfw3.h>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+// Include ImGui headers
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 
 #include "ShaderProgram.h"
 #include "TextRenderer.h"
@@ -13,33 +18,34 @@
 #include <sstream>
 #include "Buffers.h"
 #include "Stadium.h"
+#include "Camera.h"
 #include <iomanip>
 #include <algorithm>
 
 // GLOBAL VARIABLES
 
 // Initial camera values
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+//glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+//glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+//glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
 // Window dimensions
 int windowWidth, windowHeight;
 int minWidth, minHeight;
 const float aspectRatio = 16.0f / 9.0f;
 
-// Last known mouse positions (initialized to center of the screen)
-double lastX = 400, lastY = 300;
-bool firstMouse = true;
+//// Last known mouse positions (initialized to center of the screen)
+//double lastX = 400, lastY = 300;
+//bool firstMouse = true;
 
-// Euler angles for rotation
-double yaw = -90.0f;  // Yaw is initialized to -90.0 degrees to look along the negative Z-axis
-double pitch = 0.0f;
-double roll = 0.0f;
+//// Euler angles for rotation
+//double yaw = -90.0f;  // Yaw is initialized to -90.0 degrees to look along the negative Z-axis
+//double pitch = 0.0f;
+//double roll = 0.0f;
 
 // Sensitivity
-const float sensitivity = 0.1f;
-float cameraSpeed = 0.05f;  // Speed of the camera movement per frame
+//const float sensitivity = 0.1f;
+//float cameraSpeed = 0.05f;  // Speed of the camera movement per frame
 
 glm::mat4 model;
 glm::mat4 view;
@@ -47,6 +53,8 @@ glm::mat4 projection;
 
 // Declare globally for callback functions to use
 ShaderProgram* objectShader;
+Camera mainCamera(glm::vec3(0.0f, 0.0f, 3.0f));
+CameraState* cameraState = new CameraState(&mainCamera, 400.0, 300.0);
 
 // Callback function to adjust the viewport when the window is resized
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -75,75 +83,54 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 
 // Change camera speed or zoom in/out
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-    // change camera speed
-    cameraSpeed += yoffset * 0.01f;
-    if (cameraSpeed < 0.01f)
-        cameraSpeed = 0.01f;
-    if (cameraSpeed > 1.0f)
-        cameraSpeed = 1.0f;
+    cameraState->camera->processMouseScroll(yoffset);
 }
+
 
 // Function to handle mouse movement
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
-    // Right mouse button = rotate camera
+    if (cameraState->firstMouse) {
+        cameraState->lastX = xpos;
+        cameraState->lastY = ypos;
+        cameraState->firstMouse = false;
+    }
+
+    double xoffset = xpos - cameraState->lastX;
+    double yoffset = cameraState->lastY - ypos; // Reversing y to align with screen coordinates
+    cameraState->lastX = xpos;
+    cameraState->lastY = ypos;
+
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
-        if (firstMouse) {
-            lastX = xpos;
-            lastY = ypos;
-            firstMouse = false;
-        }
-        double xoffset = xpos - lastX;
-        double yoffset = lastY - ypos; // Y-reversed
-        lastX = xpos;
-        lastY = ypos;
-
-        xoffset *= sensitivity;
-        yoffset *= sensitivity;
-        yaw += xoffset;
-        pitch += yoffset;
-
-        // Constrain the pitch angle to avoid flipping at the poles
-        if (pitch > 89.0f)
-            pitch = 89.0f;
-        if (pitch < -89.0f)
-            pitch = -89.0f;
-
-        // Update camera front vector based on Euler angles
-        glm::vec3 front;
-        front.x = float (cos(glm::radians(yaw)) * cos(glm::radians(pitch)));
-        front.y = float (sin(glm::radians(pitch)));
-        front.z = float (sin(glm::radians(yaw)) * cos(glm::radians(pitch)));
-        cameraFront = glm::normalize(front);
+        cameraState->camera->processMouseMovement(xoffset, yoffset);
     } else {
-        // Avoid sudden jumps when right button is pressed again
-        firstMouse = true;
+        cameraState->firstMouse = true;
     }
 }
 
 // Function to process input from the keyboard
-void processInput(GLFWwindow* window) {
-    // Calculate right vector based on current front and up vectors
-    glm::vec3 cameraRight = glm::normalize(glm::cross(cameraFront, cameraUp));
-
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-
-    // WASD for lateral, QE for vertical movement
+void processInput(GLFWwindow* window, float deltaTime) {
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraFront;
+        cameraState->camera->processKeyboard(GLFW_KEY_W, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraFront;
+        cameraState->camera->processKeyboard(GLFW_KEY_S, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraRight;
+        cameraState->camera->processKeyboard(GLFW_KEY_A, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraRight;
+        cameraState->camera->processKeyboard(GLFW_KEY_D, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraUp;
+        cameraState->camera->processKeyboard(GLFW_KEY_Q, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraUp;
+        cameraState->camera->processKeyboard(GLFW_KEY_E, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        cameraState->camera->processKeyboard(GLFW_KEY_ESCAPE, deltaTime);
 }
 
+
 int main() {
+    // "Global" variables
+    float deltaTime = 0.0f;
+    float lastFrame = 0.0f;
+
     // Initialize GLFW
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW" << std::endl;
@@ -162,6 +149,9 @@ int main() {
         glfwTerminate();
         return -1;
     }
+
+    // Initialize camera and camera state (uh oh, we're getting to double pointers now...)
+    glfwSetWindowUserPointer(window, cameraState);
 
     minWidth = 800;
     minHeight = static_cast<int>(minWidth / aspectRatio);
@@ -183,6 +173,13 @@ int main() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
+
+    // Initialize ImGui for GUI (buttons and stuff)
+    ImGui::CreateContext();
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+
+    ImGui::StyleColorsDark();
 
     // Initialize ShaderProgram for 3D objects
     objectShader = new ShaderProgram("../assets/shaders/object.vs", "../assets/shaders/object.fs");
@@ -233,14 +230,16 @@ int main() {
     GLuint stadiumVAO = 0, stadiumVBO = 0, stadiumEBO = 0;
     // Create the Stadium object
     auto stadiumPosition = glm::vec3(0.0f, 1.0f, 0.0f);
-    glm::vec3 stadiumColor = glm::vec3(1.0f, 0.0f, 0.0f);
+    glm::vec3 stadiumColor = glm::vec3(0.3f, 0.3f, 0.3f);
+    glm::vec3 ringColor = glm::vec3(1.0f, 0.0f, 0.0f);
+    glm::vec3 crossColor = glm::vec3(0.0f, 0.0f, 1.0f);
     float stadiumRadius = 4.0f;
     float stadiumCurvature = 0.02f;
     int numRings = 10;
-    int sectionsPerRing = 16;
+    int sectionsPerRing = 64;
     float stadiumTextureScale = 1.5f;
 
-    Stadium stadium(stadiumVAO, stadiumVBO, stadiumEBO, stadiumPosition, stadiumColor,
+    Stadium stadium(stadiumVAO, stadiumVBO, stadiumEBO, stadiumPosition, stadiumColor, ringColor, crossColor,
                     stadiumRadius, stadiumCurvature, numRings, sectionsPerRing, stadiumTextureScale);
 
     // Initial matrices for model, view, and projection
@@ -256,8 +255,12 @@ int main() {
 
     // Main input loop
     while (!glfwWindowShouldClose(window)) {
+        auto currentFrame = static_cast<float>(glfwGetTime());
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
         // Process input (keyboard, mouse, etc.)
-        processInput(window);
+        processInput(window, deltaTime);
 
         // Clear the color and depth buffers to prepare for a new frame
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -268,10 +271,11 @@ int main() {
         // Set light properties and view position
         objectShader->setUniformVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
         objectShader->setUniformVec3("lightPos", glm::vec3(0.0f, 1e5f, 0.0f)); // Light position very high in the y-direction
-        objectShader->setUniformVec3("viewPos", cameraPos);
+        objectShader->setUniformVec3("viewPos", cameraState->camera->Position);
+//        objectShader->setUniform1f("threshold", 1.0f);   // Sharpness of color diffusion
 
         // Update the view and projection matrices
-        view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+        view = glm::lookAt(cameraState->camera->Position, cameraState->camera->Position + cameraState->camera->Front, cameraState->camera->Up);
         objectShader->setUniformMat4("view", view);
         objectShader->setUniformMat4("projection", projection);
 
@@ -296,14 +300,14 @@ int main() {
         glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 
         // Update and render the stadium
-        stadium.render(*objectShader, cameraPos, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1e6f, 0.0f));
+        stadium.render(*objectShader, cameraState->camera->Position, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1e6f, 0.0f));
 
         // Inside the main render loop, before rendering the text. TOFIX: doesn't render negative sign correctly
         std::stringstream ss;
         ss << std::fixed << std::setprecision(2);
-        ss << "X: " << cameraPos.x << " "
-           << "Y: " << cameraPos.y << " "
-           << "Z: " << cameraPos.z;
+        ss << "X: " << cameraState->camera->Position.x << " "
+           << "Y: " << cameraState->camera->Position.y << " "
+           << "Z: " << cameraState->camera->Position.z;
         std::string cameraPosStr = ss.str();
         std::replace(cameraPosStr.begin(), cameraPosStr.end(), '-', ';');
 
