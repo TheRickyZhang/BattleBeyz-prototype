@@ -7,7 +7,7 @@
 
 class Camera {
 public:
-    Camera(const glm::vec3& position, float yaw = -90.0f, float pitch = 0.0f);
+    explicit Camera(const glm::vec3& position, float yaw = -90.0f, float pitch = 0.0f, float roll = 0.0f);
 
     // Camera Attributes
     glm::vec3 Position;
@@ -16,9 +16,10 @@ public:
     glm::vec3 Right{};
     glm::vec3 WorldUp;
 
-    // Euler Angles
+    // Euler Angles (add roll)
     float Yaw;
     float Pitch;
+    float Roll;
 
     // Camera options
     float MovementSpeed;
@@ -26,7 +27,7 @@ public:
     float Zoom;
 
     // Camera matrices
-    glm::mat4 getViewMatrix() const;
+    [[nodiscard]] glm::mat4 getViewMatrix() const;
     void processKeyboard(int direction, float deltaTime);
     void processMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
     void processMouseScroll(float yoffset);

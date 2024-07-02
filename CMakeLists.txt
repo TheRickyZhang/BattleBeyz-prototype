@@ -72,6 +72,9 @@ add_executable(BattleBeyz ${SOURCES}
         src/Texture.h
         src/Camera.cpp
         src/Camera.h
+        src/Callbacks.cpp
+        src/Callbacks.h
+        src/CallbackData.h
 )
 
 # Link libraries

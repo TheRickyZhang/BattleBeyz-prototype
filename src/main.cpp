@@ -19,115 +19,31 @@
 #include "Buffers.h"
 #include "Stadium.h"
 #include "Camera.h"
+#include "Callbacks.h"
 #include <iomanip>
 #include <algorithm>
 
 // GLOBAL VARIABLES
 
-// Initial camera values
-//glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-//glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-//glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-
-// Window dimensions
-int windowWidth, windowHeight;
-int minWidth, minHeight;
-const float aspectRatio = 16.0f / 9.0f;
-
-//// Last known mouse positions (initialized to center of the screen)
-//double lastX = 400, lastY = 300;
-//bool firstMouse = true;
-
-//// Euler angles for rotation
-//double yaw = -90.0f;  // Yaw is initialized to -90.0 degrees to look along the negative Z-axis
-//double pitch = 0.0f;
-//double roll = 0.0f;
-
-// Sensitivity
-//const float sensitivity = 0.1f;
-//float cameraSpeed = 0.05f;  // Speed of the camera movement per frame
-
-glm::mat4 model;
-glm::mat4 view;
-glm::mat4 projection;
-
-// Declare globally for callback functions to use
-ShaderProgram* objectShader;
-Camera mainCamera(glm::vec3(0.0f, 0.0f, 3.0f));
-CameraState* cameraState = new CameraState(&mainCamera, 400.0, 300.0);
-
-// Callback function to adjust the viewport when the window is resized
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    if (width == windowWidth && height == windowHeight) {
-        return;
-    }
-    windowWidth = width;
-    windowHeight = height;
-    int newWidth = width;
-    int newHeight = static_cast<int>(width / aspectRatio);
-    if (newHeight > height) {
-        newHeight = height;
-        newWidth = static_cast<int>(height * aspectRatio);
-    }
-    // Adjust window size to maintain the aspect ratio
-    if (newWidth != width || newHeight != height) {
-        glfwSetWindowSize(window, newWidth, newHeight);
-    }
-
-    glViewport(0, 0, newWidth, newHeight);
-    projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
-    objectShader->use();
-    objectShader->setUniformMat4("projection", projection);
-}
-
-
-// Change camera speed or zoom in/out
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-    cameraState->camera->processMouseScroll(yoffset);
-}
-
-
-// Function to handle mouse movement
-void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
-    if (cameraState->firstMouse) {
-        cameraState->lastX = xpos;
-        cameraState->lastY = ypos;
-        cameraState->firstMouse = false;
-    }
-
-    double xoffset = xpos - cameraState->lastX;
-    double yoffset = cameraState->lastY - ypos; // Reversing y to align with screen coordinates
-    cameraState->lastX = xpos;
-    cameraState->lastY = ypos;
-
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
-        cameraState->camera->processMouseMovement(xoffset, yoffset);
-    } else {
-        cameraState->firstMouse = true;
-    }
-}
-
-// Function to process input from the keyboard
-void processInput(GLFWwindow* window, float deltaTime) {
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        cameraState->camera->processKeyboard(GLFW_KEY_W, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        cameraState->camera->processKeyboard(GLFW_KEY_S, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        cameraState->camera->processKeyboard(GLFW_KEY_A, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        cameraState->camera->processKeyboard(GLFW_KEY_D, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-        cameraState->camera->processKeyboard(GLFW_KEY_Q, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-        cameraState->camera->processKeyboard(GLFW_KEY_E, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        cameraState->camera->processKeyboard(GLFW_KEY_ESCAPE, deltaTime);
-}
-
-
 int main() {
     // "Global" variables
+
+    // Window dimensions
+    int windowWidth = 1600, windowHeight = 900;
+    const float aspectRatio = 16.0f / 9.0f;
+    int minWidth = windowWidth / 4;
+    int minHeight = static_cast<int>(double(minWidth) / aspectRatio);
+
+    // Relevant matrices
+    auto model = glm::mat4(1.0f);
+    auto view = glm::mat4(1.0f);
+    auto projection = glm::mat4(1.0f);
+
+    // Primary camera and camera state
+    Camera mainCamera(glm::vec3(0.0f, 0.0f, 3.0f));
+    auto cameraState = new CameraState(&mainCamera, 400.0, 300.0);
+
+    // Time variables
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
 
@@ -142,25 +58,14 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    // Create a GLFW window. Note you NEED to call these functions to take in input from mouse and keyboard
-    GLFWwindow* window = glfwCreateWindow(800, 600, "BattleBeyz", nullptr, nullptr);
+    // Create a GLFW window. Note you NEED to make context current to initialize everything else
+    GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "BattleBeyz", nullptr, nullptr);
     if (!window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
     }
-
-    // Initialize camera and camera state (uh oh, we're getting to double pointers now...)
-    glfwSetWindowUserPointer(window, cameraState);
-
-    minWidth = 800;
-    minHeight = static_cast<int>(minWidth / aspectRatio);
-    glfwSetWindowSizeLimits(window, minWidth, minHeight, GLFW_DONT_CARE, GLFW_DONT_CARE);
-
     glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetScrollCallback(window, scroll_callback);
 
     // Initialize GLEW
     glewExperimental = GL_TRUE;
@@ -182,9 +87,9 @@ int main() {
     ImGui::StyleColorsDark();
 
     // Initialize ShaderProgram for 3D objects
-    objectShader = new ShaderProgram("../assets/shaders/object.vs", "../assets/shaders/object.fs");
+    auto objectShader = new ShaderProgram(OBJECT_VERTEX_SHADER_PATH, OBJECT_FRAGMENT_SHADER_PATH);
 
-// Initialize font rendering
+    // Initialize font rendering
     TextRenderer textRenderer("../assets/fonts/paladins.ttf", 800, 600);
 
     // Initialize textures. Note that texture1 is primary texture
@@ -192,6 +97,21 @@ int main() {
     Texture smallHexagonPattern("../assets/images/HexagonSmall.jpg", "texture1");
     std::cout << "Texture ID: " << hexagonPattern.ID << std::endl;
     std::cout << "Texture ID: " << smallHexagonPattern.ID << std::endl;
+
+    // Initialize camera and camera state (uh oh, we're getting to double pointers now...)
+    CallbackData callbackData(&windowWidth, &windowHeight, aspectRatio, &projection, objectShader, cameraState);
+
+    // Store the callback data in the window for easy access
+    glfwSetWindowUserPointer(window, &callbackData);
+
+    // Handle resizing the window
+    glfwSetWindowSizeLimits(window, minWidth, minHeight, GLFW_DONT_CARE, GLFW_DONT_CARE);
+
+    // Other callbacks
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
+
 
     GLuint tetrahedronVAO, tetrahedronVBO, tetrahedronEBO;
     float tetrahedronVertices[] = {
