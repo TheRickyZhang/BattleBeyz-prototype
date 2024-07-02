@@ -53,6 +53,14 @@ void Stadium::generateMeshData() {
             } else {
                 colors.emplace_back(color);
             }
+//            // Create a spiral color pattern
+//            if ((rIdx + thetaIdx * 2) % (verticesPerRing / 2) < verticesPerRing / (numRings / 2)) {
+//                colors.emplace_back(ringColor);
+//            } else if (thetaIdx % (verticesPerRing / 12) == 0) {
+//                colors.emplace_back(crossColor);
+//            } else {
+//                colors.emplace_back(color);
+//            }
         }
     }
 

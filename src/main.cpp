@@ -4,7 +4,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-// Include ImGui headers
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -22,8 +21,6 @@
 #include "Callbacks.h"
 #include <iomanip>
 #include <algorithm>
-
-// GLOBAL VARIABLES
 
 int main() {
     // "Global" variables
@@ -46,6 +43,8 @@ int main() {
     // Time variables
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
+
+    static float imguiColor[3] = {1.0f, 0.0f, 0.0f}; // Red
 
     // Initialize GLFW
     if (!glfwInit()) {
@@ -79,12 +78,18 @@ int main() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
 
-    // Initialize ImGui for GUI (buttons and stuff)
+    // Setup ImGui context
+    IMGUI_CHECKVERSION();
     ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+
+    // Setup Platform/Renderer bindings
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
-
-    ImGui::StyleColorsDark();
 
     // Initialize ShaderProgram for 3D objects
     auto objectShader = new ShaderProgram(OBJECT_VERTEX_SHADER_PATH, OBJECT_FRAGMENT_SHADER_PATH);
@@ -99,7 +104,7 @@ int main() {
     std::cout << "Texture ID: " << smallHexagonPattern.ID << std::endl;
 
     // Initialize camera and camera state (uh oh, we're getting to double pointers now...)
-    CallbackData callbackData(&windowWidth, &windowHeight, aspectRatio, &projection, objectShader, cameraState);
+    CallbackData callbackData(&windowWidth, &windowHeight, aspectRatio, &projection, objectShader, cameraState, true);
 
     // Store the callback data in the window for easy access
     glfwSetWindowUserPointer(window, &callbackData);
@@ -107,11 +112,14 @@ int main() {
     // Handle resizing the window
     glfwSetWindowSizeLimits(window, minWidth, minHeight, GLFW_DONT_CARE, GLFW_DONT_CARE);
 
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
     // Other callbacks
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
+    glfwSetKeyCallback(window, key_callback);
     glfwSetScrollCallback(window, scroll_callback);
-
 
     GLuint tetrahedronVAO, tetrahedronVBO, tetrahedronEBO;
     float tetrahedronVertices[] = {
@@ -128,7 +136,8 @@ int main() {
             0, 2, 3, // Left face
             1, 2, 3  // Bottom face
     };
-    setupBuffers(tetrahedronVAO, tetrahedronVBO, tetrahedronEBO, tetrahedronVertices, sizeof(tetrahedronVertices), tetrahedronIndices, sizeof(tetrahedronIndices));
+    setupBuffers(tetrahedronVAO, tetrahedronVBO, tetrahedronEBO, tetrahedronVertices,
+                 sizeof(tetrahedronVertices), tetrahedronIndices, sizeof(tetrahedronIndices));
 
     // Initialize VAO, VBO, and EBO for the floor
     GLuint floorVAO, floorVBO, floorEBO;
@@ -175,14 +184,49 @@ int main() {
 
     // Main input loop
     while (!glfwWindowShouldClose(window)) {
+        // Measure time
         auto currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
+        // Poll events at the start to process input before rendering
+        glfwPollEvents();
+
         // Process input (keyboard, mouse, etc.)
         processInput(window, deltaTime);
 
+        // Start the Dear ImGui frame
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        // Show ImGui demo window if imguiActive is true
+        if (callbackData.imguiActive) {
+            ImGui::SetNextWindowSize(ImVec2(400, 200));
+            // ImGui interface setup
+            ImGui::Begin("BattleBeyz");
+            // Display text
+            ImGui::Text("Your Beyz", 123.456f);
+
+            // Display more complex UI components
+            static float f = 0.0f;
+            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+            static int counter = 0;
+            if (ImGui::Button("Launch")) {
+                counter++;
+            }
+            ImGui::SameLine();
+            ImGui::Text("counter = %d", counter);
+            // Color editor
+            ImGui::ColorEdit3("background color", imguiColor);
+            // Plot histograms
+            float arr[] = {0.64f, 0.51f, 0.52f, 0.43f, 0.49f, 0.56f};
+            ImGui::PlotHistogram("Weights", arr, IM_ARRAYSIZE(arr), 0, nullptr, 0.0f, 1.0f, ImVec2(0, 80));
+            ImGui::End();
+        }
+
         // Clear the color and depth buffers to prepare for a new frame
+        glClearColor(imguiColor[0], imguiColor[1], imguiColor[2], 1.00f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Use the shader program
@@ -192,7 +236,6 @@ int main() {
         objectShader->setUniformVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
         objectShader->setUniformVec3("lightPos", glm::vec3(0.0f, 1e5f, 0.0f)); // Light position very high in the y-direction
         objectShader->setUniformVec3("viewPos", cameraState->camera->Position);
-//        objectShader->setUniform1f("threshold", 1.0f);   // Sharpness of color diffusion
 
         // Update the view and projection matrices
         view = glm::lookAt(cameraState->camera->Position, cameraState->camera->Position + cameraState->camera->Front, cameraState->camera->Up);
@@ -205,7 +248,6 @@ int main() {
         glActiveTexture(GL_TEXTURE0);
         smallHexagonPattern.use();
         objectShader->setInt("texture1", 0);
-
         glBindVertexArray(floorVAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
@@ -215,14 +257,13 @@ int main() {
         glActiveTexture(GL_TEXTURE0);
         hexagonPattern.use();
         objectShader->setInt("texture1", 0);
-
         glBindVertexArray(tetrahedronVAO);
         glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 
         // Update and render the stadium
         stadium.render(*objectShader, cameraState->camera->Position, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1e6f, 0.0f));
 
-        // Inside the main render loop, before rendering the text. TOFIX: doesn't render negative sign correctly
+        // Render text overlay
         std::stringstream ss;
         ss << std::fixed << std::setprecision(2);
         ss << "X: " << cameraState->camera->Position.x << " "
@@ -231,17 +272,20 @@ int main() {
         std::string cameraPosStr = ss.str();
         std::replace(cameraPosStr.begin(), cameraPosStr.end(), '-', ';');
 
-        // Render the camera position
+        // Render the camera position text
         glfwGetWindowSize(window, &windowWidth, &windowHeight);
         textRenderer.Resize(windowWidth, windowHeight);
         textRenderer.RenderText(cameraPosStr, 25.0f, windowHeight - 50.0f, 0.6f, glm::vec3(0.5f, 0.8f, 0.2f));
 
-        // Swap buffers and poll events
+        // Render ImGui on top of the 3D scene
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        // Swap buffers at the end
         glfwSwapBuffers(window);
-        glfwPollEvents();
     }
 
-    // Clean up resources
+    // Cleanup OpenGL objects
     glDeleteVertexArrays(1, &tetrahedronVAO);
     glDeleteBuffers(1, &tetrahedronVBO);
     glDeleteBuffers(1, &tetrahedronEBO);
@@ -249,7 +293,18 @@ int main() {
     glDeleteBuffers(1, &floorVBO);
     glDeleteBuffers(1, &floorEBO);
 
-    // Terminate GLFW to clean up allocated resources
+    // Cleanup textures
+    hexagonPattern.cleanup();
+    smallHexagonPattern.cleanup();
+
+    // Cleanup ImGui
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    // Destroy the GLFW window and terminate GLFW
+    glfwDestroyWindow(window);
     glfwTerminate();
+
     return 0;
 }

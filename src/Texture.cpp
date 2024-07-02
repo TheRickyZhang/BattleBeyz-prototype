@@ -38,3 +38,10 @@ Texture::Texture(const char* imagePath, std::string texType) : type(std::move(te
 void Texture::use() const {
     glBindTexture(GL_TEXTURE_2D, ID);
 }
+
+void Texture::cleanup() {
+    if (ID != 0) {
+        glDeleteTextures(1, &ID);
+        ID = 0;
+    }
+}

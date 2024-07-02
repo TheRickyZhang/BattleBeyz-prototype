@@ -9,7 +9,8 @@ struct CallbackData {
     glm::mat4* projection;
     ShaderProgram* shader;
     CameraState* cameraState;
+    bool imguiActive;
 
-    CallbackData(int* width, int* height, float ratio, glm::mat4* proj, ShaderProgram* sh, CameraState* camState)
-            : windowWidth(width), windowHeight(height), aspectRatio(ratio), projection(proj), shader(sh), cameraState(camState) {}
+    CallbackData(int* width, int* height, float ratio, glm::mat4* proj, ShaderProgram* sh, CameraState* camState, bool imgui)
+            : windowWidth(width), windowHeight(height), aspectRatio(ratio), projection(proj), shader(sh), cameraState(camState), imguiActive(imgui) {}
 };

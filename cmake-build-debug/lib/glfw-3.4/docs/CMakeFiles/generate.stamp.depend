@@ -1,6 +1,0 @@
-# CMake generation dependency list for this directory.
-C:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/FindDoxygen.cmake
-C:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake
-C:/Users/ricky/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.28/Modules/FindPackageMessage.cmake
-C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/docs/CMakeLists.txt
-C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/lib/glfw-3.4/docs/Doxyfile.in
