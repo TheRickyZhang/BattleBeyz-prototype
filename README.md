@@ -6,7 +6,11 @@ Any collaboration or feedback is welcome!
 
 ## Features (So far!)
 
-- Basic 3D rendering with OpenGL
+- 3D rendering with OpenGL
 - Font rendering with FreeType
 - Basic Camera control
-- Basic Lighting and shading
+- Lighting and Shading
+- Basic Textures
+- Dynamic Meshes
+- UI Elements/Navigation
+- Moving Backgrounds

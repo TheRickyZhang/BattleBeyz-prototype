@@ -175,37 +175,37 @@ void Stadium::generateMeshData() {
         tangent = glm::normalize(tangent);
     }
 
-    // Print out the vertices
-    std::cout << "Vertices: " << vertices.size() << std::endl;
-    for (const auto &vertex: vertices) {
-        std::cout << std::fixed << std::setprecision(2) << "(" << vertex.x << ", " << vertex.y << ", " << vertex.z
-                  << ") ";
-    }
-
-// Print out the normals
-    std::cout << "\nNormals: " << normals.size() << std::endl;
-    for (const auto &normal: normals) {
-        std::cout << std::fixed << std::setprecision(2) << "(" << normal.x << ", " << normal.y << ", " << normal.z
-                  << ") ";
-    }
-
-// Print out the texture coordinates
-    std::cout << "\nTexture Coordinates: " << texCoords.size() << std::endl;
-    for (const auto &texCoord: texCoords) {
-        std::cout << std::fixed << std::setprecision(2) << "(" << texCoord.x << ", " << texCoord.y << ") ";
-    }
-
-// Print out the indices
-    std::cout << "\nIndices: " << indices.size() << std::endl;
-    for (size_t i = 0; i < indices.size(); i += 3) {
-        std::cout << "Triangle: (" << indices[i] << ", " << indices[i + 1] << ", " << indices[i + 2] << ") ";
-    }
-    // Print out the tangents
-    std::cout << "\nTangents: " << tangents.size() << std::endl;
-    for (const auto &tangent: tangents) {
-        std::cout << std::fixed << std::setprecision(2) << "(" << tangent.x << ", " << tangent.y << ", " << tangent.z
-                  << ") ";
-    }
+//    // Print out the vertices
+//    std::cout << "Vertices: " << vertices.size() << std::endl;
+//    for (const auto &vertex: vertices) {
+//        std::cout << std::fixed << std::setprecision(2) << "(" << vertex.x << ", " << vertex.y << ", " << vertex.z
+//                  << ") ";
+//    }
+//
+//// Print out the normals
+//    std::cout << "\nNormals: " << normals.size() << std::endl;
+//    for (const auto &normal: normals) {
+//        std::cout << std::fixed << std::setprecision(2) << "(" << normal.x << ", " << normal.y << ", " << normal.z
+//                  << ") ";
+//    }
+//
+//// Print out the texture coordinates
+//    std::cout << "\nTexture Coordinates: " << texCoords.size() << std::endl;
+//    for (const auto &texCoord: texCoords) {
+//        std::cout << std::fixed << std::setprecision(2) << "(" << texCoord.x << ", " << texCoord.y << ") ";
+//    }
+//
+//// Print out the indices
+//    std::cout << "\nIndices: " << indices.size() << std::endl;
+//    for (size_t i = 0; i < indices.size(); i += 3) {
+//        std::cout << "Triangle: (" << indices[i] << ", " << indices[i + 1] << ", " << indices[i + 2] << ") ";
+//    }
+//    // Print out the tangents
+//    std::cout << "\nTangents: " << tangents.size() << std::endl;
+//    for (const auto &tangent: tangents) {
+//        std::cout << std::fixed << std::setprecision(2) << "(" << tangent.x << ", " << tangent.y << ", " << tangent.z
+//                  << ") ";
+//    }
 }
 
 void Stadium::initializeMesh() {

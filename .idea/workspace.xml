@@ -25,8 +25,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="14d88e8d-1ec0-46b9-9879-d2031833b74b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/unnamed (1).webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/unnamed.webp" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/QuadRenderer.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/QuadRenderer.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/UI.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/UI.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CallbackData.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/CallbackData.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Callbacks.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Callbacks.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ShaderPath.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ShaderPath.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ShaderProgram.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ShaderProgram.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ShaderProgram.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ShaderProgram.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Stadium.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stadium.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Texture.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Texture.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Texture.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Texture.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Utils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Utils.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,12 +109,12 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.BattleBeyz">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+    <configuration name="BattleBeyz" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="BattleBeyz" TARGET_NAME="BattleBeyz" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="BattleBeyz" RUN_TARGET_NAME="BattleBeyz">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BattleBeyz" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="BattleBeyz" TARGET_NAME="BattleBeyz" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="BattleBeyz" RUN_TARGET_NAME="BattleBeyz">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -159,6 +175,7 @@
       <workItem from="1718819261089" duration="27702000" />
       <workItem from="1719814179753" duration="8267000" />
       <workItem from="1719877883856" duration="20866000" />
+      <workItem from="1719969005909" duration="13401000" />
     </task>
     <servers />
   </component>

@@ -13,14 +13,29 @@
 #include "Texture.h"
 #include "ShaderPath.h"
 
-#include <iostream>
-#include <sstream>
 #include "Buffers.h"
 #include "Stadium.h"
 #include "Camera.h"
 #include "Callbacks.h"
+#include "UI.h"
+#include "QuadRenderer.h"
+
 #include <iomanip>
 #include <algorithm>
+#include <iostream>
+#include <sstream>
+
+void checkGLError(const char* stmt, const char* fname, int line) {
+    GLenum err = glGetError();
+    if (err != GL_NO_ERROR) {
+        std::cerr << "OpenGL error " << err << " at " << fname << ":" << line << " for " << stmt << std::endl;
+    }
+}
+
+#define GL_CHECK(stmt) do { \
+        stmt; \
+        checkGLError(#stmt, __FILE__, __LINE__); \
+    } while (0)
 
 int main() {
     // "Global" variables
@@ -76,7 +91,7 @@ int main() {
     // Set color blinding and depth testing
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_DEPTH_TEST);
 
     // Setup ImGui context
     IMGUI_CHECKVERSION();
@@ -91,8 +106,27 @@ int main() {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
+    QuadRenderer quadRenderer = QuadRenderer();
+
+
+    // Identity matrix, starting view, and projection matrices
+    model = glm::mat4(1.0f);
+    view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    projection = glm::perspective(glm::radians(45.0f), float(windowWidth) / float(windowHeight), 0.1f, 100.0f);
+
+    // Set orthographic projection and depth values for the background shader
+    glm::mat4 orthoProjection = glm::ortho(0.0f, float(windowWidth), 0.0f, float(windowHeight), -1.0f, 1.0f);
+    auto backgroundModel = glm::mat4(1.0f); // Identity matrix for background
+    auto backgroundView = glm::mat4(1.0f); // Identity matrix for background view
+
     // Initialize ShaderProgram for 3D objects
     auto objectShader = new ShaderProgram(OBJECT_VERTEX_SHADER_PATH, OBJECT_FRAGMENT_SHADER_PATH);
+    // Initialize default shader program with the model, view, and projection matrices. Also sets to use.
+    objectShader->setUniforms(model, view, projection);
+
+    auto backgroundShader = new ShaderProgram(BACKGROUND_VERTEX_SHADER_PATH, BACKGROUND_FRAGMENT_SHADER_PATH);
+    backgroundShader->setUniforms(backgroundModel, backgroundView, orthoProjection);
+    backgroundShader->setUniform1f("wrapFactor", 4.0f);
 
     // Initialize font rendering
     TextRenderer textRenderer("../assets/fonts/paladins.ttf", 800, 600);
@@ -100,11 +134,17 @@ int main() {
     // Initialize textures. Note that texture1 is primary texture
     Texture hexagonPattern("../assets/images/Hexagon.jpg", "texture1");
     Texture smallHexagonPattern("../assets/images/HexagonSmall.jpg", "texture1");
+
+    // Static texture object
+    Texture homeScreenTexture("../assets/images/Brickbeyz.jpg", "texture1");
+    Texture backgroundTexture("../assets/images/Brickbeyz.jpg", "texture1");
     std::cout << "Texture ID: " << hexagonPattern.ID << std::endl;
     std::cout << "Texture ID: " << smallHexagonPattern.ID << std::endl;
+    std::cout << "Texture ID: " << homeScreenTexture.ID << std::endl;
+    std::cout << "Texture ID: " << backgroundTexture.ID << std::endl;
 
     // Initialize camera and camera state (uh oh, we're getting to double pointers now...)
-    CallbackData callbackData(&windowWidth, &windowHeight, aspectRatio, &projection, objectShader, cameraState, true);
+    CallbackData callbackData(&windowWidth, &windowHeight, aspectRatio, &projection, objectShader, cameraState, true, false, false, false);
 
     // Store the callback data in the window for easy access
     glfwSetWindowUserPointer(window, &callbackData);
@@ -171,17 +211,6 @@ int main() {
     Stadium stadium(stadiumVAO, stadiumVBO, stadiumEBO, stadiumPosition, stadiumColor, ringColor, crossColor,
                     stadiumRadius, stadiumCurvature, numRings, sectionsPerRing, stadiumTextureScale);
 
-    // Initial matrices for model, view, and projection
-    // Identity matrix
-    model = glm::mat4(1.0f);
-    // Position camera at (0, 0, 3) and look at (0, 0, 0) with the up vector pointing in the positive y direction
-    view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    // Project 45 degree view with 4:3 aspect ratio
-    projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-
-    // Initialize default shader program with the model, view, and projection matrices. Also sets to use.
-    objectShader->setUniforms(model, view, projection);
-
     // Main input loop
     while (!glfwWindowShouldClose(window)) {
         // Measure time
@@ -195,87 +224,103 @@ int main() {
         // Process input (keyboard, mouse, etc.)
         processInput(window, deltaTime);
 
+        if(callbackData.showCustomizeScreen || callbackData.showAboutScreen) {
+            std::cout << "Using background shader." << std::endl;
+            glm::mat4 ortho = glm::ortho(0.0f, (float)windowWidth, 0.0f, (float)windowHeight, -1.0f, 1.0f);
+            GL_CHECK(backgroundShader->use());
+            GL_CHECK(backgroundShader->setUniform1f("time", currentFrame));
+
+
+            // Bind the background texture
+            GL_CHECK(glActiveTexture(GL_TEXTURE0));
+            glBindTexture(GL_TEXTURE_2D, backgroundTexture.ID);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            GL_CHECK(backgroundShader->setInt("backgroundTexture", 0));
+
+            // Debug output
+            std::cout << "Current Frame Time: " << currentFrame << std::endl;
+            std::cout << "Background Texture ID: " << backgroundTexture.ID << std::endl;
+            GLint activeTexture;
+            glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTexture);
+            std::cout << "Active Texture Unit: " << activeTexture - GL_TEXTURE0 << std::endl;
+
+            GL_CHECK(quadRenderer.render());
+        }
+
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        // Show ImGui demo window if imguiActive is true
-        if (callbackData.imguiActive) {
-            ImGui::SetNextWindowSize(ImVec2(400, 200));
-            // ImGui interface setup
-            ImGui::Begin("BattleBeyz");
-            // Display text
-            ImGui::Text("Your Beyz", 123.456f);
 
-            // Display more complex UI components
-            static float f = 0.0f;
-            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-            static int counter = 0;
-            if (ImGui::Button("Launch")) {
-                counter++;
+        if (callbackData.showHomeScreen) {
+            if(callbackData.showCustomizeScreen || callbackData.showAboutScreen) {
+                if(callbackData.showCustomizeScreen) {
+                    showCustomizeScreen(window, backgroundTexture);
+                } else if(callbackData.showAboutScreen) {
+                    showAboutScreen(window, backgroundTexture);
+                }
+            } else {
+                showHomeScreen(window, homeScreenTexture);
             }
-            ImGui::SameLine();
-            ImGui::Text("counter = %d", counter);
-            // Color editor
-            ImGui::ColorEdit3("background color", imguiColor);
-            // Plot histograms
-            float arr[] = {0.64f, 0.51f, 0.52f, 0.43f, 0.49f, 0.56f};
-            ImGui::PlotHistogram("Weights", arr, IM_ARRAYSIZE(arr), 0, nullptr, 0.0f, 1.0f, ImVec2(0, 80));
-            ImGui::End();
+        } else {
+            if(callbackData.showInfoScreen) {
+                showInfoScreen(window, &imguiColor);
+            }
+
+            // Clear the color and depth buffers to prepare for a new frame
+            glClearColor(imguiColor[0], imguiColor[1], imguiColor[2], 1.00f);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            // Use the shader program
+            objectShader->use();
+
+            // Set light properties and view position
+            objectShader->setUniformVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+            objectShader->setUniformVec3("lightPos", glm::vec3(0.0f, 1e5f, 0.0f)); // Light position very high in the y-direction
+            objectShader->setUniformVec3("viewPos", cameraState->camera->Position);
+
+            // Update the view and projection matrices
+            view = glm::lookAt(cameraState->camera->Position, cameraState->camera->Position + cameraState->camera->Front, cameraState->camera->Up);
+            objectShader->setUniformMat4("view", view);
+            objectShader->setUniformMat4("projection", projection);
+
+            // Render the floor
+            model = glm::mat4(1.0f);
+            objectShader->setUniformMat4("model", model);
+            glActiveTexture(GL_TEXTURE0);
+            smallHexagonPattern.use();
+            objectShader->setInt("texture1", 0);
+            glBindVertexArray(floorVAO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+            // Render the tetrahedron
+            model = glm::mat4(1.0f);
+            objectShader->setUniformMat4("model", model);
+            glActiveTexture(GL_TEXTURE0);
+            hexagonPattern.use();
+            objectShader->setInt("texture1", 0);
+            glBindVertexArray(tetrahedronVAO);
+            glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
+
+            // Update and render the stadium
+            stadium.render(*objectShader, cameraState->camera->Position, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1e6f, 0.0f));
+
+            // Render text overlay
+            std::stringstream ss;
+            ss << std::fixed << std::setprecision(2);
+            ss << "X: " << cameraState->camera->Position.x << " "
+               << "Y: " << cameraState->camera->Position.y << " "
+               << "Z: " << cameraState->camera->Position.z;
+            std::string cameraPosStr = ss.str();
+            std::replace(cameraPosStr.begin(), cameraPosStr.end(), '-', ';');
+
+            // Render the camera position text
+            glfwGetWindowSize(window, &windowWidth, &windowHeight);
+            textRenderer.Resize(windowWidth, windowHeight);
+            textRenderer.RenderText(cameraPosStr, 25.0f, windowHeight - 50.0f, 0.6f, glm::vec3(0.5f, 0.8f, 0.2f));
         }
-
-        // Clear the color and depth buffers to prepare for a new frame
-        glClearColor(imguiColor[0], imguiColor[1], imguiColor[2], 1.00f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        // Use the shader program
-        objectShader->use();
-
-        // Set light properties and view position
-        objectShader->setUniformVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-        objectShader->setUniformVec3("lightPos", glm::vec3(0.0f, 1e5f, 0.0f)); // Light position very high in the y-direction
-        objectShader->setUniformVec3("viewPos", cameraState->camera->Position);
-
-        // Update the view and projection matrices
-        view = glm::lookAt(cameraState->camera->Position, cameraState->camera->Position + cameraState->camera->Front, cameraState->camera->Up);
-        objectShader->setUniformMat4("view", view);
-        objectShader->setUniformMat4("projection", projection);
-
-        // Render the floor
-        model = glm::mat4(1.0f);
-        objectShader->setUniformMat4("model", model);
-        glActiveTexture(GL_TEXTURE0);
-        smallHexagonPattern.use();
-        objectShader->setInt("texture1", 0);
-        glBindVertexArray(floorVAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-
-        // Render the tetrahedron
-        model = glm::mat4(1.0f);
-        objectShader->setUniformMat4("model", model);
-        glActiveTexture(GL_TEXTURE0);
-        hexagonPattern.use();
-        objectShader->setInt("texture1", 0);
-        glBindVertexArray(tetrahedronVAO);
-        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
-
-        // Update and render the stadium
-        stadium.render(*objectShader, cameraState->camera->Position, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1e6f, 0.0f));
-
-        // Render text overlay
-        std::stringstream ss;
-        ss << std::fixed << std::setprecision(2);
-        ss << "X: " << cameraState->camera->Position.x << " "
-           << "Y: " << cameraState->camera->Position.y << " "
-           << "Z: " << cameraState->camera->Position.z;
-        std::string cameraPosStr = ss.str();
-        std::replace(cameraPosStr.begin(), cameraPosStr.end(), '-', ';');
-
-        // Render the camera position text
-        glfwGetWindowSize(window, &windowWidth, &windowHeight);
-        textRenderer.Resize(windowWidth, windowHeight);
-        textRenderer.RenderText(cameraPosStr, 25.0f, windowHeight - 50.0f, 0.6f, glm::vec3(0.5f, 0.8f, 0.2f));
 
         // Render ImGui on top of the 3D scene
         ImGui::Render();

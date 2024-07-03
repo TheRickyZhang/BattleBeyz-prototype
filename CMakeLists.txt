@@ -75,6 +75,10 @@ add_executable(BattleBeyz ${SOURCES}
         src/Callbacks.cpp
         src/Callbacks.h
         src/CallbackData.h
+        src/UI.cpp
+        src/UI.h
+        src/QuadRenderer.cpp
+        src/QuadRenderer.h
 )
 
 # Link libraries

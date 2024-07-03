@@ -114,11 +114,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if (!data) return;
 
     if (key == GLFW_KEY_TAB && action == GLFW_PRESS) {
-        data->imguiActive = !data->imguiActive;
-        if (data->imguiActive) {
-            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        } else {
-            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-        }
+        data->showInfoScreen = !data->showInfoScreen;
+//        if (data->showInfoScreen) {
+//            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+//        } else {
+//            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+//        }
     }
 }

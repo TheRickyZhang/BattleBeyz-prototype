@@ -80,10 +80,26 @@ void ShaderProgram::setUniformVec3(const std::string &name, const glm::vec3 &val
     glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, glm::value_ptr(value));
 }
 
+GLint ShaderProgram::getUniformLocation(const std::string &name) const {
+    GLint location = glGetUniformLocation(ID, name.c_str());
+    if (location == -1) {
+        std::cerr << "WARNING: Uniform '" << name << "' doesn't exist in shader!" << std::endl;
+    }
+    return location;
+}
+
 void ShaderProgram::setUniform1f(const std::string &name, float value) const {
-    glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
+    GLint location = getUniformLocation(name);
+    if (location != -1) {
+        glUniform1f(location, value);
+        std::cout << "Setting uniform '" << name << "' to value: " << value << " at location: " << location << std::endl;
+    }
 }
 
 void ShaderProgram::setInt(const std::string &name, int value) const {
-    glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
+    GLint location = getUniformLocation(name);
+    if (location != -1) {
+        glUniform1i(location, value);
+        std::cout << "Setting uniform '" << name << "' to value: " << value << " at location: " << location << std::endl;
+    }
 }

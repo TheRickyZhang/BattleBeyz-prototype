@@ -1,11 +1,17 @@
 #pragma once
+
 #include <string>
+#include <GL/glew.h>
+#include <iostream>
+#include <utility>
+
 
 class Texture {
 public:
     unsigned int ID{};
     std::string type;
     std::string path;
+    unsigned int width, height;
 
     // Constructor for loading and creating a texture
     Texture(const char* imagePath, std::string texType);

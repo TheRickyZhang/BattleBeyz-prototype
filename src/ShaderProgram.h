@@ -29,6 +29,8 @@ public:
 private:
     static std::string readFile(const char* filePath) ;
     GLuint compileShader(GLenum type, const char* source);
+
+    GLint getUniformLocation(const std::string &name) const;
 };
 
 #endif
