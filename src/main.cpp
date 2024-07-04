@@ -99,6 +99,12 @@ int main() {
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
+    // Initialize ImGui fonts
+    ImFont* defaultFont = io.Fonts->AddFontFromFileTTF(DEFAULT_FONT_PATH, 24.0f);
+    ImFont* titleFont = io.Fonts->AddFontFromFileTTF(TITLE_FONT_PATH, 48.0f);
+    ImFont* attackFont = io.Fonts->AddFontFromFileTTF(ATTACK_FONT_PATH, 128.0f);
+    io.Fonts->Build();
+
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
 
@@ -106,18 +112,24 @@ int main() {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
-    QuadRenderer quadRenderer = QuadRenderer();
+    auto quadRenderer = new QuadRenderer();
 
 
+    auto identity4 = glm::mat4(1.0f);
     // Identity matrix, starting view, and projection matrices
-    model = glm::mat4(1.0f);
+    model = identity4;
     view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     projection = glm::perspective(glm::radians(45.0f), float(windowWidth) / float(windowHeight), 0.1f, 100.0f);
 
     // Set orthographic projection and depth values for the background shader
-    glm::mat4 orthoProjection = glm::ortho(0.0f, float(windowWidth), 0.0f, float(windowHeight), -1.0f, 1.0f);
-    auto backgroundModel = glm::mat4(1.0f); // Identity matrix for background
-    auto backgroundView = glm::mat4(1.0f); // Identity matrix for background view
+    auto backgroundModel = identity4;
+    auto backgroundView = identity4;
+    glm::mat4 orthoProjection = glm::ortho(0.0f, float(windowWidth), 0.0f, float(windowHeight), 0.0f, 1.0f);
+
+//    // Position camera at the origin and rotate around it
+//    auto panoramaModel = identity4;
+//    glm::mat4 panoramaView = identity4;
+//    glm::mat4 panoramaProjection = glm::perspective(glm::radians(45.0f), float(windowWidth) / float(windowHeight), 0.1f, 100.0f);
 
     // Initialize ShaderProgram for 3D objects
     auto objectShader = new ShaderProgram(OBJECT_VERTEX_SHADER_PATH, OBJECT_FRAGMENT_SHADER_PATH);
@@ -127,6 +139,9 @@ int main() {
     auto backgroundShader = new ShaderProgram(BACKGROUND_VERTEX_SHADER_PATH, BACKGROUND_FRAGMENT_SHADER_PATH);
     backgroundShader->setUniforms(backgroundModel, backgroundView, orthoProjection);
     backgroundShader->setUniform1f("wrapFactor", 4.0f);
+
+//    auto panoramaShader = new ShaderProgram(PANORAMA_VERTEX_SHADER_PATH, PANORAMA_FRAGMENT_SHADER_PATH);
+//    panoramaShader->setUniforms(panoramaModel, panoramaView, panoramaProjection);
 
     // Initialize font rendering
     TextRenderer textRenderer("../assets/fonts/paladins.ttf", 800, 600);
@@ -144,7 +159,10 @@ int main() {
     std::cout << "Texture ID: " << backgroundTexture.ID << std::endl;
 
     // Initialize camera and camera state (uh oh, we're getting to double pointers now...)
-    CallbackData callbackData(&windowWidth, &windowHeight, aspectRatio, &projection, objectShader, cameraState, true, false, false, false);
+    CallbackData callbackData(&windowWidth, &windowHeight, aspectRatio, &projection,
+                              objectShader, backgroundShader,cameraState, quadRenderer,
+                              true, false, false, false, defaultFont,
+                              titleFont, attackFont);
 
     // Store the callback data in the window for easy access
     glfwSetWindowUserPointer(window, &callbackData);
@@ -224,30 +242,6 @@ int main() {
         // Process input (keyboard, mouse, etc.)
         processInput(window, deltaTime);
 
-        if(callbackData.showCustomizeScreen || callbackData.showAboutScreen) {
-            std::cout << "Using background shader." << std::endl;
-            glm::mat4 ortho = glm::ortho(0.0f, (float)windowWidth, 0.0f, (float)windowHeight, -1.0f, 1.0f);
-            GL_CHECK(backgroundShader->use());
-            GL_CHECK(backgroundShader->setUniform1f("time", currentFrame));
-
-
-            // Bind the background texture
-            GL_CHECK(glActiveTexture(GL_TEXTURE0));
-            glBindTexture(GL_TEXTURE_2D, backgroundTexture.ID);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-            GL_CHECK(backgroundShader->setInt("backgroundTexture", 0));
-
-            // Debug output
-            std::cout << "Current Frame Time: " << currentFrame << std::endl;
-            std::cout << "Background Texture ID: " << backgroundTexture.ID << std::endl;
-            GLint activeTexture;
-            glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTexture);
-            std::cout << "Active Texture Unit: " << activeTexture - GL_TEXTURE0 << std::endl;
-
-            GL_CHECK(quadRenderer.render());
-        }
-
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -255,6 +249,8 @@ int main() {
 
 
         if (callbackData.showHomeScreen) {
+            // Note: for better performance, distribute these changes to depth test when switching variables
+            glDisable(GL_DEPTH_TEST);
             if(callbackData.showCustomizeScreen || callbackData.showAboutScreen) {
                 if(callbackData.showCustomizeScreen) {
                     showCustomizeScreen(window, backgroundTexture);
@@ -262,9 +258,10 @@ int main() {
                     showAboutScreen(window, backgroundTexture);
                 }
             } else {
-                showHomeScreen(window, homeScreenTexture);
+                showHomeScreen(window, homeScreenTexture, backgroundTexture);
             }
         } else {
+            glEnable(GL_DEPTH_TEST);
             if(callbackData.showInfoScreen) {
                 showInfoScreen(window, &imguiColor);
             }

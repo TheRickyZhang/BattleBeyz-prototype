@@ -13,4 +13,6 @@ Any collaboration or feedback is welcome!
 - Basic Textures
 - Dynamic Meshes
 - UI Elements/Navigation
-- Moving Backgrounds
+- Scrolling Backgrounds
+
+## Installation

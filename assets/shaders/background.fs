@@ -9,7 +9,8 @@ uniform float time;
 void main()
 {
     vec2 uv = TexCoords;
-    uv.x += time * 0.01; // Example of moving the background
-    uv.y += time * 0.01;
-    FragColor = texture(backgroundTexture, uv) * 1.25;
+    uv.x += time * 0.03;
+    uv.y += time * 0.03;
+    // 0.5 is for faded background
+    FragColor = texture(backgroundTexture, uv) * 0.5;
 }

@@ -1,4 +1,3 @@
-#include <iostream>
 #include "QuadRenderer.h"
 
 QuadRenderer::QuadRenderer() : quadVAO(0), quadVBO(0) {
@@ -31,12 +30,9 @@ void QuadRenderer::setup() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    std::cout << "Quad setup complete with VAO: " << quadVAO << " and VBO: " << quadVBO << std::endl;
-
 }
 
 void QuadRenderer::render() const {
     glBindVertexArray(quadVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
-    std::cout << "Rendering quad with VAO: " << quadVAO << std::endl;
 }

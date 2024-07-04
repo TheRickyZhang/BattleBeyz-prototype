@@ -8,3 +8,9 @@
 #define OBJECT_FRAGMENT_SHADER_PATH "../assets/shaders/object.fs"
 #define BACKGROUND_VERTEX_SHADER_PATH "../assets/shaders/background.vs"
 #define BACKGROUND_FRAGMENT_SHADER_PATH "../assets/shaders/background.fs"
+#define PANORAMA_VERTEX_SHADER_PATH "../assets/shaders/panorama.vs"
+#define PANORAMA_FRAGMENT_SHADER_PATH "../assets/shaders/panorama.fs"
+
+#define DEFAULT_FONT_PATH "../assets/fonts/Orbitron-Regular.ttf"
+#define TITLE_FONT_PATH "../assets/fonts/Orbitron-Bold.ttf"
+#define ATTACK_FONT_PATH "../assets/fonts/paladins.ttf"

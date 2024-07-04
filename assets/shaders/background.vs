@@ -9,5 +9,6 @@ uniform float wrapFactor; // Number of repetitions
 void main()
 {
     gl_Position = vec4(aPos, 1.0);
-    TexCoords = aTexCoords * wrapFactor; // Scale texture coordinates
+    TexCoords.x = aTexCoords.x * wrapFactor;
+    TexCoords.y = (1.0 - aTexCoords.y) * wrapFactor;
 }
