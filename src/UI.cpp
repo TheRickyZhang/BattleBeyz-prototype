@@ -165,6 +165,9 @@ void showInfoScreen(GLFWwindow *window, float (*imguiColor)[3]) {
     float arr[] = {0.64f, 0.51f, 0.52f, 0.43f, 0.49f, 0.56f};
     ImGui::PlotHistogram("Weights", arr, IM_ARRAYSIZE(arr), 0, nullptr, 0.0f, 1.0f, ImVec2(0, 80));
 
+    // Checkbox to toggle showCamera
+    ImGui::Checkbox("Bound Camera", &data->boundCamera);
+
     // Add Menu button to go back to the Home Screen
     if (ImGui::Button("Menu")) {
         data->showHomeScreen = true;

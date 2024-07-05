@@ -26,15 +26,15 @@
   <component name="ChangeListManager">
     <list default="true" id="14d88e8d-1ec0-46b9-9879-d2031833b74b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/shaders/background.fs" beforeDir="false" afterPath="$PROJECT_DIR$/assets/shaders/background.fs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/shaders/background.vs" beforeDir="false" afterPath="$PROJECT_DIR$/assets/shaders/background.vs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/shaders/object.fs" beforeDir="false" afterPath="$PROJECT_DIR$/assets/shaders/object.fs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CallbackData.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/CallbackData.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/QuadRenderer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/QuadRenderer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ShaderPath.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/ShaderPath.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ShaderProgram.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/ShaderProgram.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Callbacks.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Callbacks.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Camera.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Camera.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Camera.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Camera.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Stadium.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stadium.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Stadium.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stadium.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/UI.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/UI.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -102,12 +102,12 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.BattleBeyz">
-    <configuration name="BattleBeyz" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="BattleBeyz" TARGET_NAME="BattleBeyz" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="BattleBeyz" RUN_TARGET_NAME="BattleBeyz">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+    <configuration name="BattleBeyz" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="BattleBeyz" TARGET_NAME="BattleBeyz" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="BattleBeyz" RUN_TARGET_NAME="BattleBeyz">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -169,6 +169,7 @@
       <workItem from="1719814179753" duration="8267000" />
       <workItem from="1719877883856" duration="20866000" />
       <workItem from="1719969005909" duration="26815000" />
+      <workItem from="1720156470139" duration="5841000" />
     </task>
     <servers />
   </component>

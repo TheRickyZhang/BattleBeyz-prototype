@@ -6,10 +6,10 @@
 #include <iomanip>
 
 Stadium::Stadium(unsigned int vao, unsigned int vbo, unsigned int ebo, const glm::vec3 &pos, const glm::vec3 &col,
-                 const glm::vec3 &ringColor, const glm::vec3& crossColor, float radius, float curvature, int numRings, int verticesPerRing,
-                 float textureScale)
+                 const glm::vec3 &ringColor, const glm::vec3& crossColor, float radius, float curvature, int numRings,
+                 int verticesPerRing, Texture* texture, float textureScale)
         : GameObject(vao, vbo, ebo, pos, col), ringColor(ringColor), crossColor(crossColor), radius(radius), curvature(curvature),
-          numRings(numRings), verticesPerRing(verticesPerRing), textureScale(textureScale) {
+          numRings(numRings), verticesPerRing(verticesPerRing), texture(texture), textureScale(textureScale) {
     Stadium::initializeMesh();
     std::cout << "Stadium color: (" << color.x << ", " << color.y << ", " << color.z << ")\n";
 }
@@ -242,6 +242,7 @@ void Stadium::initializeMesh() {
 void Stadium::render(ShaderProgram &shader, const glm::vec3 &viewPos, const glm::vec3 &lightColor,
                      const glm::vec3 &lightPos) {
     shader.use();
+    texture->use();
 
     // Bind appropriate uniforms (model, view, projection matrices)
     glm::mat4 model = glm::translate(glm::mat4(1.0f), position);

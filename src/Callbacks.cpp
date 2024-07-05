@@ -63,20 +63,22 @@ void processInput(GLFWwindow* window, float deltaTime) {
     if (!data || !data->cameraState) return;
     CameraState* cameraState = data->cameraState;
 
+    bool boundCamera = data->boundCamera;
+
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        cameraState->camera->processKeyboard(GLFW_KEY_W, deltaTime);
+        cameraState->camera->processKeyboard(GLFW_KEY_W, deltaTime, boundCamera);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        cameraState->camera->processKeyboard(GLFW_KEY_S, deltaTime);
+        cameraState->camera->processKeyboard(GLFW_KEY_S, deltaTime, boundCamera);
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        cameraState->camera->processKeyboard(GLFW_KEY_A, deltaTime);
+        cameraState->camera->processKeyboard(GLFW_KEY_A, deltaTime, boundCamera);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        cameraState->camera->processKeyboard(GLFW_KEY_D, deltaTime);
+        cameraState->camera->processKeyboard(GLFW_KEY_D, deltaTime, boundCamera);
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-        cameraState->camera->processKeyboard(GLFW_KEY_Q, deltaTime);
+        cameraState->camera->processKeyboard(GLFW_KEY_Q, deltaTime, boundCamera);
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-        cameraState->camera->processKeyboard(GLFW_KEY_E, deltaTime);
+        cameraState->camera->processKeyboard(GLFW_KEY_E, deltaTime, boundCamera);
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        cameraState->camera->processKeyboard(GLFW_KEY_ESCAPE, deltaTime);
+        cameraState->camera->processKeyboard(GLFW_KEY_ESCAPE, deltaTime, boundCamera);
 }
 
 // Change camera speed or zoom in/out

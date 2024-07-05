@@ -1,12 +1,13 @@
 #pragma once
 
 #include "GameObject.h"
+#include "Texture.h"
 
 class Stadium : public GameObject {
 public:
     Stadium(unsigned int vao, unsigned int vbo, unsigned int ebo, const glm::vec3& pos, const glm::vec3& col,
             const glm::vec3& ringColor, const glm::vec3& crossColor, float radius, float curvature, int numRings,
-            int verticesPerRing, float textureScale = 1.0f);
+            int verticesPerRing, Texture* texture, float textureScale = 1.0f);
 
     void update() override {}
     void initializeMesh() override;
@@ -16,6 +17,7 @@ protected:
     void generateMeshData() override;
 
 private:
+    Texture* texture;
     float radius;
     float curvature;
     int verticesPerRing;

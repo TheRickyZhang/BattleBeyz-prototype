@@ -26,14 +26,18 @@ public:
     float MouseSensitivity;
     float Zoom;
 
+    glm::vec3 minBound;
+    glm::vec3 maxBound;
+
     // Camera matrices
     [[nodiscard]] glm::mat4 getViewMatrix() const;
-    void processKeyboard(int direction, float deltaTime);
+    void processKeyboard(int direction, float deltaTime, bool boundCamera);
     void processMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
     void processMouseScroll(float yoffset);
 
 private:
     void updateCameraVectors();
+    void applyBoundaries(glm::vec3 &position) const;
 };
 
 struct CameraState {

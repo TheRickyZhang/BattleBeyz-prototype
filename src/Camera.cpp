@@ -2,7 +2,8 @@
 
 Camera::Camera(const glm::vec3& position, float yaw, float pitch, float roll) :
         Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(2.5f), MouseSensitivity(0.1f), Zoom(45.0f),
-        Position(position), WorldUp(glm::vec3(0.0f, 1.0f, 0.0f)), Yaw(yaw), Pitch(pitch), Roll(roll) {
+        Position(position), WorldUp(glm::vec3(0.0f, 1.0f, 0.0f)), Yaw(yaw), Pitch(pitch), Roll(roll),
+        minBound(glm::vec3(-30.0f, -30.0f, 0.0f)), maxBound(glm::vec3(30.0f, 30.0f, 30.0f)){
     updateCameraVectors();
 }
 
@@ -10,22 +11,39 @@ glm::mat4 Camera::getViewMatrix() const {
     return glm::lookAt(Position, Position + Front, Up);
 }
 
-void Camera::processKeyboard(int direction, float deltaTime) {
+void Camera::applyBoundaries(glm::vec3& position) const {
+    if (position.x < minBound.x) position.x = minBound.x;
+    if (position.x > maxBound.x) position.x = maxBound.x;
+    if (position.y < minBound.y) position.y = minBound.y;
+    if (position.y > maxBound.y) position.y = maxBound.y;
+    if (position.z < minBound.z) position.z = minBound.z;
+    if (position.z > maxBound.z) position.z = maxBound.z;
+}
+
+void Camera::processKeyboard(int direction, float deltaTime, bool boundCamera) {
     float velocity = MovementSpeed * deltaTime;
+    glm::vec3 newPosition = Position;
+
     if (direction == GLFW_KEY_W)
-        Position += Front * velocity;
+        newPosition += Front * velocity;
     if (direction == GLFW_KEY_S)
-        Position -= Front * velocity;
+        newPosition -= Front * velocity;
     if (direction == GLFW_KEY_A)
-        Position -= Right * velocity;
+        newPosition -= Right * velocity;
     if (direction == GLFW_KEY_D)
-        Position += Right * velocity;
+        newPosition += Right * velocity;
     if (direction == GLFW_KEY_Q)
-        Position -= Up * velocity;
+        newPosition -= Up * velocity;
     if (direction == GLFW_KEY_E)
-        Position += Up * velocity;
+        newPosition += Up * velocity;
     if (direction == GLFW_KEY_ESCAPE)
         Zoom = 1.0f;
+
+    if (boundCamera) {
+        applyBoundaries(newPosition);
+    }
+
+    Position = newPosition;
 }
 
 void Camera::processMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch) {

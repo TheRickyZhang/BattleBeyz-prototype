@@ -149,6 +149,8 @@ int main() {
     // Initialize textures. Note that texture1 is primary texture
     Texture hexagonPattern("../assets/images/Hexagon.jpg", "texture1");
     Texture smallHexagonPattern("../assets/images/HexagonSmall.jpg", "texture1");
+    auto floorTexture = new Texture("../assets/images/Wood1.jpg", "texture1");
+    auto stadiumTexture = new Texture("../assets/images/Hexagon.jpg", "texture1");
 
     // Static texture object
     Texture homeScreenTexture("../assets/images/Brickbeyz.jpg", "texture1");
@@ -158,11 +160,11 @@ int main() {
     std::cout << "Texture ID: " << homeScreenTexture.ID << std::endl;
     std::cout << "Texture ID: " << backgroundTexture.ID << std::endl;
 
-    // Initialize camera and camera state (uh oh, we're getting to double pointers now...)
+    // Initialize camera and camera state
     CallbackData callbackData(&windowWidth, &windowHeight, aspectRatio, &projection,
                               objectShader, backgroundShader,cameraState, quadRenderer,
                               true, false, false, false, defaultFont,
-                              titleFont, attackFont);
+                              titleFont, attackFont, false);
 
     // Store the callback data in the window for easy access
     glfwSetWindowUserPointer(window, &callbackData);
@@ -201,10 +203,10 @@ int main() {
     GLuint floorVAO, floorVBO, floorEBO;
     float floorVertices[] = {
             // Positions        // Normals       // TexCoords // Colors
-            -10.0f, 0.0f, -10.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.5f, 0.5f,
-            10.0f, 0.0f, -10.0f, 0.0f, 1.0f, 0.0f, 4.0f, 0.0f, 0.5f, 0.5f, 0.5f,
-            10.0f, 0.0f,  10.0f, 0.0f, 1.0f, 0.0f, 4.0f, 4.0f, 0.5f, 0.5f, 0.5f,
-            -10.0f, 0.0f,  10.0f, 0.0f, 1.0f, 0.0f, 0.0f, 4.0f, 0.5f, 0.5f, 0.5f,
+            -30.0f, 0.0f, -30.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.5f, 0.5f,
+            30.0f, 0.0f, -30.0f, 0.0f, 1.0f, 0.0f, 4.0f, 0.0f, 0.5f, 0.5f, 0.5f,
+            30.0f, 0.0f,  30.0f, 0.0f, 1.0f, 0.0f, 4.0f, 4.0f, 0.5f, 0.5f, 0.5f,
+            -30.0f, 0.0f,  30.0f, 0.0f, 1.0f, 0.0f, 0.0f, 4.0f, 0.5f, 0.5f, 0.5f,
     };
 
     unsigned int floorIndices[] = {
@@ -217,7 +219,7 @@ int main() {
     GLuint stadiumVAO = 0, stadiumVBO = 0, stadiumEBO = 0;
     // Create the Stadium object
     auto stadiumPosition = glm::vec3(0.0f, 1.0f, 0.0f);
-    glm::vec3 stadiumColor = glm::vec3(0.3f, 0.3f, 0.3f);
+    glm::vec3 stadiumColor = glm::vec3(0.2f, 0.2f, 0.2f);
     glm::vec3 ringColor = glm::vec3(1.0f, 0.0f, 0.0f);
     glm::vec3 crossColor = glm::vec3(0.0f, 0.0f, 1.0f);
     float stadiumRadius = 4.0f;
@@ -227,7 +229,7 @@ int main() {
     float stadiumTextureScale = 1.5f;
 
     Stadium stadium(stadiumVAO, stadiumVBO, stadiumEBO, stadiumPosition, stadiumColor, ringColor, crossColor,
-                    stadiumRadius, stadiumCurvature, numRings, sectionsPerRing, stadiumTextureScale);
+                    stadiumRadius, stadiumCurvature, numRings, sectionsPerRing, stadiumTexture, stadiumTextureScale);
 
     // Main input loop
     while (!glfwWindowShouldClose(window)) {
@@ -301,7 +303,7 @@ int main() {
             glBindVertexArray(tetrahedronVAO);
             glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 
-            // Update and render the stadium
+            // Update and render the stadium (Note: should pass texture explicitly to this)
             stadium.render(*objectShader, cameraState->camera->Position, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1e6f, 0.0f));
 
             // Render text overlay

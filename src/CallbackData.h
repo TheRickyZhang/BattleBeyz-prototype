@@ -24,13 +24,15 @@ struct CallbackData {
     ImFont* defaultFont;
     ImFont* titleFont;
     ImFont* attackFont;
+    bool boundCamera;
 
 
     CallbackData(int *width, int *height, float ratio, glm::mat4 *proj, ShaderProgram *sh, ShaderProgram* background,
                  CameraState *camState, QuadRenderer *quadRend, bool showHome, bool showInfo,
-                 bool showCustomize, bool showAbout, ImFont* defaultF, ImFont* titleF, ImFont* attackF)
+                 bool showCustomize, bool showAbout, ImFont* defaultF, ImFont* titleF, ImFont* attackF,
+                 bool boundCam)
             : windowWidth(width), windowHeight(height), aspectRatio(ratio), projection(proj), shader(sh),
             backgroundShader(background), cameraState(camState), quadRenderer(quadRend), showHomeScreen(showHome),
             showInfoScreen(showInfo), showCustomizeScreen(showCustomize), showAboutScreen(showAbout),
-            defaultFont(defaultF), titleFont(titleF), attackFont(attackF) {}
+            defaultFont(defaultF), titleFont(titleF), attackFont(attackF), boundCamera(false) {}
 };
