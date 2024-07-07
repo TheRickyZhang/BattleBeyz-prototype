@@ -4,6 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "BoundingBox.h"
 
 class Camera {
 public:
@@ -26,14 +27,16 @@ public:
     float MouseSensitivity;
     float Zoom;
 
-    glm::vec3 minBound;
-    glm::vec3 maxBound;
+    BoundingBox worldBoundingBox;
+    BoundingBox boundingBox;
 
     // Camera matrices
     [[nodiscard]] glm::mat4 getViewMatrix() const;
     void processKeyboard(int direction, float deltaTime, bool boundCamera);
     void processMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
     void processMouseScroll(float yoffset);
+
+    void updateBoundingBox();
 
 private:
     void updateCameraVectors();

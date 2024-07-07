@@ -3,8 +3,9 @@
 Camera::Camera(const glm::vec3& position, float yaw, float pitch, float roll) :
         Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(2.5f), MouseSensitivity(0.1f), Zoom(45.0f),
         Position(position), WorldUp(glm::vec3(0.0f, 1.0f, 0.0f)), Yaw(yaw), Pitch(pitch), Roll(roll),
-        minBound(glm::vec3(-30.0f, -30.0f, 0.0f)), maxBound(glm::vec3(30.0f, 30.0f, 30.0f)){
+        worldBoundingBox(glm::vec3(-100.0f), glm::vec3(100.0f)), boundingBox() {
     updateCameraVectors();
+    updateBoundingBox();
 }
 
 glm::mat4 Camera::getViewMatrix() const {
@@ -12,12 +13,7 @@ glm::mat4 Camera::getViewMatrix() const {
 }
 
 void Camera::applyBoundaries(glm::vec3& position) const {
-    if (position.x < minBound.x) position.x = minBound.x;
-    if (position.x > maxBound.x) position.x = maxBound.x;
-    if (position.y < minBound.y) position.y = minBound.y;
-    if (position.y > maxBound.y) position.y = maxBound.y;
-    if (position.z < minBound.z) position.z = minBound.z;
-    if (position.z > maxBound.z) position.z = maxBound.z;
+    // Add things here
 }
 
 void Camera::processKeyboard(int direction, float deltaTime, bool boundCamera) {
@@ -87,4 +83,9 @@ void Camera::updateCameraVectors() {
     glm::mat4 rot = glm::rotate(glm::mat4(1.0f), glm::radians(Roll), Front);
     Right = glm::vec3(rot * glm::vec4(Right, 0.0f));
     Up = glm::vec3(rot * glm::vec4(Up, 0.0f));
+}
+
+void Camera::updateBoundingBox() {
+    boundingBox.min = Position - glm::vec3(0.01f);
+    boundingBox.max = Position + glm::vec3(0.01f);
 }

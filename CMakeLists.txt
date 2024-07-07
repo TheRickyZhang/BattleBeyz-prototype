@@ -1,10 +1,19 @@
 cmake_minimum_required(VERSION 3.10)
 project(BattleBeyz)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+# Must set build type to debug or release for physx
+set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++ -Wno-attributes -Wno-unknown-pragmas")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+# Define _DEBUG or NDEBUG based on build type
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_definitions(-D_DEBUG)
+else()
+    add_definitions(-DNDEBUG)
+endif()
 
 # Add include directories
 include_directories(${PROJECT_SOURCE_DIR}/include)
@@ -16,6 +25,8 @@ include_directories(${PROJECT_SOURCE_DIR}/lib/stb)
 include_directories(${PROJECT_SOURCE_DIR}/lib/imgui-1.90.8)
 include_directories(${PROJECT_SOURCE_DIR}/lib/imgui-1.90.8/backends)
 include_directories(${PROJECT_SOURCE_DIR}/lib/assimp-5.2.5/include)
+include_directories(${PROJECT_SOURCE_DIR}/lib/physx-5.4.0/include)
+
 
 # Specify ImGui source files
 set(IMGUI_SOURCES
@@ -50,8 +61,16 @@ link_directories(${FREETYPE_DIR}/dll/win64)
 # Add Assimp
 set(ASSIMP_LIB ${PROJECT_SOURCE_DIR}/lib/assimp-5.2.5/lib/x64/assimp-vc143-mt.lib)
 
+# Add PhysX
+link_directories(${PROJECT_SOURCE_DIR}/lib/physx-5.4.0/lib)
+
 # Add external libraries
-set(LIBS glfw glew32s ${OPENGL_LIBRARIES} freetype glu32 opengl32 ${ASSIMP_LIB})
+set(LIBS glfw glew32s ${OPENGL_LIBRARIES} freetype glu32 opengl32 ${ASSIMP_LIB}
+        PhysX_64
+        PhysXCommon_64
+        PhysXFoundation_64
+        PhysXPvdSDK_static_64
+    )
 
 # Add assets directory to be copied to the build directory
 file(COPY ${PROJECT_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR})
@@ -85,6 +104,8 @@ add_executable(BattleBeyz ${SOURCES}
         src/QuadRenderer.h
         src/Beyblade.cpp
         src/Beyblade.h
+        src/BoundingBox.cpp
+        src/BoundingBox.h
 )
 
 # Link libraries

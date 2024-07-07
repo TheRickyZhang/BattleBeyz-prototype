@@ -7,6 +7,7 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "../lib/physx-5.4.0/include/PxPhysicsAPI.h"
 
 #include "ShaderProgram.h"
 #include "TextRenderer.h"
@@ -112,8 +113,11 @@ int main() {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
-    auto quadRenderer = new QuadRenderer();
+    // Initialize PhysX
+//    static PxDefaultAllocator allocator;
+//    static PxDefaultErrorCallback errorCallback;
 
+    auto quadRenderer = new QuadRenderer();
 
     auto identity4 = glm::mat4(1.0f);
     // Identity matrix, starting view, and projection matrices
