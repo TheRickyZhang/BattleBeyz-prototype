@@ -7,7 +7,6 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-#include "../lib/physx-5.4.0/include/PxPhysicsAPI.h"
 
 #include "ShaderProgram.h"
 #include "TextRenderer.h"
@@ -20,11 +19,18 @@
 #include "Callbacks.h"
 #include "UI.h"
 #include "QuadRenderer.h"
+#include "Physics.h"
+
+
+#include "PhysicsWorld.h"
+#include "RigidBody.h"
+#include "Beyblade.h"
 
 #include <iomanip>
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+
 
 void checkGLError(const char* stmt, const char* fname, int line) {
     GLenum err = glGetError();
@@ -38,8 +44,15 @@ void checkGLError(const char* stmt, const char* fname, int line) {
         checkGLError(#stmt, __FILE__, __LINE__); \
     } while (0)
 
+void cleanup(GLFWwindow* window) {
+    if (window) {
+        glfwDestroyWindow(window);
+        glfwTerminate();
+    }
+}
+
 int main() {
-    // "Global" variables
+    /* ----------------------GLOBAL VARIABLES-------------------------- */
 
     // Window dimensions
     int windowWidth = 1600, windowHeight = 900;
@@ -62,6 +75,11 @@ int main() {
 
     static float imguiColor[3] = {1.0f, 0.0f, 0.0f}; // Red
 
+    auto physicsWorld = new PhysicsWorld;
+
+
+    /* ----------------------INITIALIZATION-------------------------- */
+
     // Initialize GLFW
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW" << std::endl;
@@ -77,7 +95,7 @@ int main() {
     GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "BattleBeyz", nullptr, nullptr);
     if (!window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
+        cleanup(window);
         return -1;
     }
     glfwMakeContextCurrent(window);
@@ -86,6 +104,7 @@ int main() {
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK) {
         std::cerr << "Failed to initialize GLEW" << std::endl;
+        cleanup(window);
         return -1;
     }
 
@@ -113,9 +132,10 @@ int main() {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
-    // Initialize PhysX
-//    static PxDefaultAllocator allocator;
-//    static PxDefaultErrorCallback errorCallback;
+
+
+    /* ----------------------RELEVANT INSTANTIATIONS-------------------------- */
+
 
     auto quadRenderer = new QuadRenderer();
 
@@ -185,6 +205,8 @@ int main() {
     glfwSetKeyCallback(window, key_callback);
     glfwSetScrollCallback(window, scroll_callback);
 
+    /* ----------------------OBJECT SETUP-------------------------- */
+
     GLuint tetrahedronVAO, tetrahedronVBO, tetrahedronEBO;
     float tetrahedronVertices[] = {
             // Positions 0-2                // Normals 3-5                      // TexCoords  6-7          // Colors 8-10
@@ -235,7 +257,15 @@ int main() {
     Stadium stadium(stadiumVAO, stadiumVBO, stadiumEBO, stadiumPosition, stadiumColor, ringColor, crossColor,
                     stadiumRadius, stadiumCurvature, numRings, sectionsPerRing, stadiumTexture, stadiumTextureScale);
 
-    // Main input loop
+    GLuint Bey1VAO = 0, Bey1VBO = 0, Bey1EBO = 0;
+    auto rigidBey1 = new RigidBody(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), 1.0f);
+    std::string beyblade1Path = "../assets/objects/beyblade1.obj";
+    auto bey1Position = glm::vec3(0.0f, 10.0f, 0.0f);
+    auto bey1Color = glm::vec3(0.5f, 0.5f, 0.5f);
+//    Beyblade beyblade1(beyblade1Path, Bey1VAO, Bey1VBO, Bey1EBO, bey1Position, bey1Color, rigidBey1);
+
+    /* ----------------------MAIN RENDERING LOOP-------------------------- */
+
     while (!glfwWindowShouldClose(window)) {
         // Measure time
         auto currentFrame = static_cast<float>(glfwGetTime());
@@ -272,9 +302,19 @@ int main() {
                 showInfoScreen(window, &imguiColor);
             }
 
+//            scene->simulate(deltaTime);
+//            scene->fetchResults(true);
+
             // Clear the color and depth buffers to prepare for a new frame
             glClearColor(imguiColor[0], imguiColor[1], imguiColor[2], 1.00f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            // Get the actor's transform
+//            PxTransform t = dynamicActor->getGlobalPose();
+
+            // Render the actor
+            // Assuming you have a function to render a sphere at a given position
+//            renderSphere(t.p.x, t.p.y, t.p.z);
 
             // Use the shader program
             objectShader->use();
@@ -333,13 +373,18 @@ int main() {
         glfwSwapBuffers(window);
     }
 
-    // Cleanup OpenGL objects
+    /* ----------------------CLEANUP-------------------------- */
+
+    // Variables cleanup
     glDeleteVertexArrays(1, &tetrahedronVAO);
     glDeleteBuffers(1, &tetrahedronVBO);
     glDeleteBuffers(1, &tetrahedronEBO);
     glDeleteVertexArrays(1, &floorVAO);
     glDeleteBuffers(1, &floorVBO);
     glDeleteBuffers(1, &floorEBO);
+
+    // Clean up
+    cleanup(window);
 
     // Cleanup textures
     hexagonPattern.cleanup();
@@ -349,10 +394,6 @@ int main() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-
-    // Destroy the GLFW window and terminate GLFW
-    glfwDestroyWindow(window);
-    glfwTerminate();
 
     return 0;
 }

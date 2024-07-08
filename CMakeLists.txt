@@ -1,21 +1,19 @@
 cmake_minimum_required(VERSION 3.10)
 project(BattleBeyz)
 
-# Must set build type to debug or release for physx
-set(CMAKE_BUILD_TYPE Debug)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++ -Wno-attributes -Wno-unknown-pragmas")
+# Use vcpkg toolchain
+set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
+
+set(CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/vcpkg/installed/x64-windows" CACHE PATH "Path to vcpkg installed packages")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Define _DEBUG or NDEBUG based on build type
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_definitions(-D_DEBUG)
-else()
-    add_definitions(-DNDEBUG)
-endif()
+# Find packages
+find_package(OpenGL REQUIRED)
+find_package(pugixml CONFIG REQUIRED)
 
-# Add include directories
+# Include directories
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/lib/glew-2.2.0/include)
 include_directories(${PROJECT_SOURCE_DIR}/lib/glfw-3.4/include)
@@ -24,9 +22,7 @@ include_directories(${PROJECT_SOURCE_DIR}/lib/freetype-2.13.2/include)
 include_directories(${PROJECT_SOURCE_DIR}/lib/stb)
 include_directories(${PROJECT_SOURCE_DIR}/lib/imgui-1.90.8)
 include_directories(${PROJECT_SOURCE_DIR}/lib/imgui-1.90.8/backends)
-include_directories(${PROJECT_SOURCE_DIR}/lib/assimp-5.2.5/include)
-include_directories(${PROJECT_SOURCE_DIR}/lib/physx-5.4.0/include)
-
+#include_directories(${PROJECT_SOURCE_DIR}/lib/tinyobjloader-release)  # Add TinyOBJLoader include directories
 
 # Specify ImGui source files
 set(IMGUI_SOURCES
@@ -38,12 +34,13 @@ set(IMGUI_SOURCES
         ${PROJECT_SOURCE_DIR}/lib/imgui-1.90.8/backends/imgui_impl_glfw.cpp
 )
 
+## Add TinyOBJLoader source file
+#set(TINYOBJLOADER_SOURCES
+#        ${PROJECT_SOURCE_DIR}/lib/tinyobjloader-release/tiny_obj_loader.cc
+#)
+
 # Add source files
 file(GLOB_RECURSE SOURCES "src/*.cpp" ${IMGUI_SOURCES})
-
-# Find and include OpenGL
-find_package(OpenGL REQUIRED)
-include_directories(${OPENGL_INCLUDE_DIRS})
 
 # Add GLFW
 set(GLFW_DIR ${PROJECT_SOURCE_DIR}/lib/glfw-3.4)
@@ -58,19 +55,8 @@ add_definitions(-DGLEW_STATIC)
 set(FREETYPE_DIR ${PROJECT_SOURCE_DIR}/lib/freetype-2.13.2)
 link_directories(${FREETYPE_DIR}/dll/win64)
 
-# Add Assimp
-set(ASSIMP_LIB ${PROJECT_SOURCE_DIR}/lib/assimp-5.2.5/lib/x64/assimp-vc143-mt.lib)
-
-# Add PhysX
-link_directories(${PROJECT_SOURCE_DIR}/lib/physx-5.4.0/lib)
-
 # Add external libraries
-set(LIBS glfw glew32s ${OPENGL_LIBRARIES} freetype glu32 opengl32 ${ASSIMP_LIB}
-        PhysX_64
-        PhysXCommon_64
-        PhysXFoundation_64
-        PhysXPvdSDK_static_64
-    )
+set(LIBS glfw glew32s ${OPENGL_LIBRARIES} freetype glu32 opengl32 pugixml)
 
 # Add assets directory to be copied to the build directory
 file(COPY ${PROJECT_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR})
@@ -106,7 +92,16 @@ add_executable(BattleBeyz ${SOURCES}
         src/Beyblade.h
         src/BoundingBox.cpp
         src/BoundingBox.h
+        src/Physics.cpp
+        src/Physics.h
+        src/RigidBody.cpp
+        src/RigidBody.h
+        src/PhysicsWorld.cpp
+        src/PhysicsWorld.h
 )
 
 # Link libraries
-target_link_libraries(BattleBeyz ${LIBS})
+target_link_libraries(BattleBeyz PRIVATE ${LIBS})
+
+# Debug messages to verify paths
+#message(STATUS "TinyOBJLoader include directory: ${PROJECT_SOURCE_DIR}/lib/tinyobjloader-release")

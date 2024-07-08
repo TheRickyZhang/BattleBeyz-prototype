@@ -9,7 +9,7 @@ public:
             const glm::vec3& ringColor, const glm::vec3& crossColor, float radius, float curvature, int numRings,
             int verticesPerRing, Texture* texture, float textureScale = 1.0f);
 
-    void update() override {}
+    void update() {}
     void initializeMesh() override;
     void render(ShaderProgram &shader, const glm::vec3 &viewPos, const glm::vec3 &lightColor, const glm::vec3 &lightPos) override;
 
