@@ -15,7 +15,6 @@ public:
             : VAO(vao), VBO(vbo), EBO(ebo), position(pos), color(col) {}
 
     // Pure virtual functions
-//    virtual void update() = 0;
     virtual void initializeMesh() = 0;
     virtual void render(ShaderProgram &shader, const glm::vec3 &viewPos, const glm::vec3 &lightColor, const glm::vec3 &lightPos) = 0;
 protected:
@@ -33,6 +32,4 @@ protected:
     // Should migrate this position to RigidBody class
     glm::vec3 position;
     glm::vec3 color;
-
-    virtual void generateMeshData() = 0; // Pure virtual function
 };

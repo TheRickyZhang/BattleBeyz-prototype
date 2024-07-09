@@ -14,3 +14,4 @@ void showHomeScreen(GLFWwindow* window, Texture& homeScreenTexture, Texture& bac
 void showInfoScreen(GLFWwindow* window, float (*imguiColor)[3]);
 void showCustomizeScreen(GLFWwindow* window, Texture& backgroundTexture);
 void showAboutScreen(GLFWwindow* window, Texture& backgroundTexture);
+void showLoadingScreen(GLFWwindow* window, Texture& backgroundTexture, const char* message = "Loading...");

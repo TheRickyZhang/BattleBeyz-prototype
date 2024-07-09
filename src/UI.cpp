@@ -287,3 +287,24 @@ void showAboutScreen(GLFWwindow* window, Texture& backgroundTexture) {
 
     ImGui::End();
 }
+
+void showLoadingScreen(GLFWwindow* window, Texture& backgroundTexture, const char* message) {
+    auto* data = static_cast<CallbackData*>(glfwGetWindowUserPointer(window));
+    auto windowWidth = float(*data->windowWidth);
+    auto windowHeight = float(*data->windowHeight);
+
+    // Setup background
+    setupBackground(window, backgroundTexture);
+
+    // Set the size and position of the loading window
+    ImGui::SetNextWindowSize(ImVec2(windowWidth, windowHeight));
+    ImGui::SetNextWindowPos(ImVec2(0, 0));
+    ImGui::Begin("Loading Screen", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
+
+    // Center the loading message
+    ImVec2 textSize = ImGui::CalcTextSize(message);
+    ImGui::SetCursorPos(ImVec2((windowWidth - textSize.x) / 2.0f, (windowHeight - textSize.y) / 2.0f));
+    ImGui::Text(message);
+
+    ImGui::End();
+}

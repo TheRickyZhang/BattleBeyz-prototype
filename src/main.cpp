@@ -30,26 +30,8 @@
 #include <algorithm>
 #include <iostream>
 #include <sstream>
-
-
-void checkGLError(const char* stmt, const char* fname, int line) {
-    GLenum err = glGetError();
-    if (err != GL_NO_ERROR) {
-        std::cerr << "OpenGL error " << err << " at " << fname << ":" << line << " for " << stmt << std::endl;
-    }
-}
-
-#define GL_CHECK(stmt) do { \
-        stmt; \
-        checkGLError(#stmt, __FILE__, __LINE__); \
-    } while (0)
-
-void cleanup(GLFWwindow* window) {
-    if (window) {
-        glfwDestroyWindow(window);
-        glfwTerminate();
-    }
-}
+#include <thread>
+#include <atomic>
 
 int main() {
     /* ----------------------GLOBAL VARIABLES-------------------------- */
@@ -188,7 +170,7 @@ int main() {
     CallbackData callbackData(&windowWidth, &windowHeight, aspectRatio, &projection,
                               objectShader, backgroundShader,cameraState, quadRenderer,
                               true, false, false, false, defaultFont,
-                              titleFont, attackFont, false);
+                              titleFont, attackFont, false, ProgramState::ACTIVE);
 
     // Store the callback data in the window for easy access
     glfwSetWindowUserPointer(window, &callbackData);
@@ -258,11 +240,10 @@ int main() {
                     stadiumRadius, stadiumCurvature, numRings, sectionsPerRing, stadiumTexture, stadiumTextureScale);
 
     GLuint Bey1VAO = 0, Bey1VBO = 0, Bey1EBO = 0;
-    auto rigidBey1 = new RigidBody(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), 1.0f);
-    std::string beyblade1Path = "../assets/objects/beyblade1.obj";
-    auto bey1Position = glm::vec3(0.0f, 10.0f, 0.0f);
-    auto bey1Color = glm::vec3(0.5f, 0.5f, 0.5f);
-//    Beyblade beyblade1(beyblade1Path, Bey1VAO, Bey1VBO, Bey1EBO, bey1Position, bey1Color, rigidBey1);
+    auto rigidBey1 = new RigidBody(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(1.0f), 1.0f);
+    std::string beyblade1Path = "../assets/images/beyblade.obj";
+    auto bey1Position = glm::vec3(0.0f, 2.0f, 0.0f);
+    Beyblade beyblade1(beyblade1Path, Bey1VAO, Bey1VBO, Bey1EBO, bey1Position, rigidBey1);
 
     /* ----------------------MAIN RENDERING LOOP-------------------------- */
 
@@ -284,7 +265,9 @@ int main() {
         ImGui::NewFrame();
 
 
-        if (callbackData.showHomeScreen) {
+        if (callbackData.currentState == ProgramState::LOADING) {
+            showLoadingScreen(window, backgroundTexture);
+        } else if (callbackData.showHomeScreen) {
             // Note: for better performance, distribute these changes to depth test when switching variables
             glDisable(GL_DEPTH_TEST);
             if(callbackData.showCustomizeScreen || callbackData.showAboutScreen) {
@@ -302,19 +285,9 @@ int main() {
                 showInfoScreen(window, &imguiColor);
             }
 
-//            scene->simulate(deltaTime);
-//            scene->fetchResults(true);
-
             // Clear the color and depth buffers to prepare for a new frame
             glClearColor(imguiColor[0], imguiColor[1], imguiColor[2], 1.00f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            // Get the actor's transform
-//            PxTransform t = dynamicActor->getGlobalPose();
-
-            // Render the actor
-            // Assuming you have a function to render a sphere at a given position
-//            renderSphere(t.p.x, t.p.y, t.p.z);
 
             // Use the shader program
             objectShader->use();
@@ -347,8 +320,12 @@ int main() {
             glBindVertexArray(tetrahedronVAO);
             glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 
-            // Update and render the stadium (Note: should pass texture explicitly to this)
+            // Update and render the stadium (uses this texture)
             stadium.render(*objectShader, cameraState->camera->Position, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1e6f, 0.0f));
+
+            // Update and render the Beyblade
+            beyblade1.update(deltaTime);
+            beyblade1.render(*objectShader, cameraState->camera->Position, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1e6f, 0.0f));
 
             // Render text overlay
             std::stringstream ss;

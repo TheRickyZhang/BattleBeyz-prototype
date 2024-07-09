@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "Texture.h"
+#include "Utils.h"
 
 class Stadium : public GameObject {
 public:
@@ -14,7 +15,7 @@ public:
     void render(ShaderProgram &shader, const glm::vec3 &viewPos, const glm::vec3 &lightColor, const glm::vec3 &lightPos) override;
 
 protected:
-    void generateMeshData() override;
+    void generateMeshData();
 
 private:
     Texture* texture;

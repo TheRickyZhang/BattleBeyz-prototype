@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "QuadRenderer.h"
 #include "imgui.h"
+#include "Utils.h"
 
 
 // All data needed to be passed to the callback functions
@@ -25,14 +26,15 @@ struct CallbackData {
     ImFont* titleFont;
     ImFont* attackFont;
     bool boundCamera;
+    ProgramState currentState;
 
 
     CallbackData(int *width, int *height, float ratio, glm::mat4 *proj, ShaderProgram *sh, ShaderProgram* background,
                  CameraState *camState, QuadRenderer *quadRend, bool showHome, bool showInfo,
                  bool showCustomize, bool showAbout, ImFont* defaultF, ImFont* titleF, ImFont* attackF,
-                 bool boundCam)
+                 bool boundCam, ProgramState programState)
             : windowWidth(width), windowHeight(height), aspectRatio(ratio), projection(proj), shader(sh),
             backgroundShader(background), cameraState(camState), quadRenderer(quadRend), showHomeScreen(showHome),
             showInfoScreen(showInfo), showCustomizeScreen(showCustomize), showAboutScreen(showAbout),
-            defaultFont(defaultF), titleFont(titleF), attackFont(attackF), boundCamera(false) {}
+            defaultFont(defaultF), titleFont(titleF), attackFont(attackF), boundCamera(false), currentState(programState) {}
 };

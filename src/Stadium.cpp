@@ -242,7 +242,12 @@ void Stadium::initializeMesh() {
 void Stadium::render(ShaderProgram &shader, const glm::vec3 &viewPos, const glm::vec3 &lightColor,
                      const glm::vec3 &lightPos) {
     shader.use();
-    texture->use();
+
+    if (texture) {
+        glActiveTexture(GL_TEXTURE0); // Activate the texture unit first
+        texture->use(); // Bind the texture to the active texture unit
+        shader.setInt("texture1", 0); // Set the texture1 uniform to use texture unit 0
+    }
 
     // Bind appropriate uniforms (model, view, projection matrices)
     glm::mat4 model = glm::translate(glm::mat4(1.0f), position);
@@ -257,4 +262,9 @@ void Stadium::render(ShaderProgram &shader, const glm::vec3 &viewPos, const glm:
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
     glBindVertexArray(0);
+
+    GLenum err;
+    while ((err = glGetError()) != GL_NO_ERROR) {
+        std::cerr << "OpenGL error: " << err << std::endl;
+    }
 }

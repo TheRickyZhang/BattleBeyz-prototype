@@ -6,6 +6,10 @@ Texture::Texture(const char* imagePath, std::string texType) : type(std::move(te
     std::cout << "Loading texture: " << imagePath << std::endl; // Add this line
 
     glGenTextures(1, &ID);
+    if (ID == 0) {
+        std::cerr << "Failed to generate texture ID for: " << imagePath << std::endl;
+        return;
+    }
     glBindTexture(GL_TEXTURE_2D, ID);
 
     // Set texture wrapping and filtering options

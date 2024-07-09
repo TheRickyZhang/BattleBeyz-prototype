@@ -1,16 +1,5 @@
 #include "Utils.h"
 
-std::string readFile(const char* filePath) {
-    std::ifstream file(filePath, std::ios::in);
-    if (!file.is_open()) {
-        std::cerr << "Could not open file " << filePath << std::endl;
-        return "";
-    }
-    std::stringstream buffer;
-    buffer << file.rdbuf();
-    return buffer.str();
-}
-
 glm::vec3 screenToWorldCoordinates(GLFWwindow* window, double xpos, double ypos, const glm::mat4& view, const glm::mat4& projection) {
     int width, height;
     glfwGetWindowSize(window, &width, &height);
@@ -37,4 +26,18 @@ std::string checkIntersection(const glm::vec3& ray_world) {
         return "Object1";
     }
     return "None";
+}
+
+void checkGLError(const char* stmt, const char* fname, int line) {
+    GLenum err = glGetError();
+    if (err != GL_NO_ERROR) {
+        std::cerr << "OpenGL error " << err << " at " << fname << ":" << line << " for " << stmt << std::endl;
+    }
+}
+
+void cleanup(GLFWwindow* window) {
+    if (window) {
+        glfwDestroyWindow(window);
+        glfwTerminate();
+    }
 }
