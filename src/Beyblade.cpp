@@ -30,16 +30,6 @@ void Beyblade::printDebugInfo() {
         buffer << std::fixed << std::setprecision(2) << "(" << tangent.x << ", " << tangent.y << ", " << tangent.z << ") ";
     }
 
-    buffer << "\nMaterials: " << materialColors.size() << std::endl;
-    for (const auto &material : materialColors) {
-        buffer << "Material: " << material.first << std::endl;
-        buffer << "Ambient color: (" << materialAmbients[material.first].x << ", " << materialAmbients[material.first].y << ", " << materialAmbients[material.first].z << ")" << std::endl;
-        buffer << "Diffuse color: (" << materialColors[material.first].x << ", " << materialColors[material.first].y << ", " << materialColors[material.first].z << ")" << std::endl;
-        buffer << "Specular color: (" << materialSpeculars[material.first].x << ", " << materialSpeculars[material.first].y << ", " << materialSpeculars[material.first].z << ")" << std::endl;
-        buffer << "Shininess: " << materialShininess[material.first] << std::endl;
-        buffer << "Dissolve: " << materialDissolves[material.first] << std::endl;
-    }
-
     std::cout << buffer.str();
 }
 
@@ -102,12 +92,10 @@ void Beyblade::initializeMesh() {
 void Beyblade::render(ShaderProgram& shader, const glm::vec3& viewPos, const glm::vec3& lightColor, const glm::vec3& lightPos) {
     shader.use();
 
-    bool useTexture = false;
     if (texture) {
         glActiveTexture(GL_TEXTURE0);
         texture->use();
         shader.setInt("texture1", 0);
-        useTexture = true;
     }
 
     glm::mat4 model = glm::translate(glm::mat4(1.0f), rigidBody->position);
@@ -115,22 +103,14 @@ void Beyblade::render(ShaderProgram& shader, const glm::vec3& viewPos, const glm
     shader.setUniformVec3("viewPos", viewPos);
     shader.setUniformVec3("lightColor", lightColor);
     shader.setUniformVec3("lightPos", lightPos);
-
-    for (const auto& material : materialColors) {
-        shader.setMaterialUniforms(
-                materialAmbients[material.first],
-                material.second, // Correctly use the diffuse color
-                materialSpeculars[material.first],
-                materialShininess[material.first],
-                materialDissolves[material.first],
-                useTexture,
-                materialColors[material.first] // This is used as a color parameter
-        );
-
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
-        glBindVertexArray(0);
+    for(const auto& material : materialColors) {
+//        std::cout << "Setting material color: " << material.second.x << ", " << material.second.y << ", " << material.second.z << std::endl;
+        shader.setUniformVec3("VertexColor", material.second);
     }
+
+    glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
+    glBindVertexArray(0);
 
     GLenum err;
     while ((err = glGetError()) != GL_NO_ERROR) {
@@ -178,10 +158,6 @@ void Beyblade::loadModel(const std::string& path) {
     colors.clear();
     indices.clear();
     materialColors.clear();
-    materialAmbients.clear();
-    materialSpeculars.clear();
-    materialShininess.clear();
-    materialDissolves.clear();
 
     std::unordered_map<unsigned int, glm::vec3> vertexMap;
     std::unordered_map<unsigned int, glm::vec3> normalMap;
@@ -204,35 +180,14 @@ void Beyblade::loadModel(const std::string& path) {
     std::unordered_map<int, glm::vec3> materialIndexToDiffuseColor;
     for (size_t i = 0; i < materials.size(); ++i) {
         const auto& material = materials[i];
-        glm::vec3 ambientColor(material.ambient[0], material.ambient[1], material.ambient[2]);
         glm::vec3 diffuseColor(material.diffuse[0], material.diffuse[1], material.diffuse[2]);
-        glm::vec3 specularColor(material.specular[0], material.specular[1], material.specular[2]);
-        float shininess = material.shininess;
-        float dissolve = material.dissolve;
 
         // Store the material properties in the map
         materialColors[material.name] = diffuseColor;
-        materialAmbients[material.name] = ambientColor;
-        materialSpeculars[material.name] = specularColor;
-        materialShininess[material.name] = shininess;
-        materialDissolves[material.name] = dissolve;
         materialIndexToDiffuseColor[i] = diffuseColor;
 
         std::cout << "Material name: " << material.name << std::endl;
-        std::cout << "Ambient: " << ambientColor.x << ", " << ambientColor.y << ", " << ambientColor.z << std::endl;
         std::cout << "Diffuse: " << diffuseColor.x << ", " << diffuseColor.y << ", " << diffuseColor.z << std::endl;
-        std::cout << "Specular: " << specularColor.x << ", " << specularColor.y << ", " << specularColor.z << std::endl;
-        std::cout << "Shininess: " << shininess << std::endl;
-        std::cout << "Dissolve: " << dissolve << std::endl;
-
-        if (!material.diffuse_texname.empty()) {
-            std::string texturePath = baseDir + "/" + material.diffuse_texname;
-            std::cout << "Loading texture from path: " << texturePath << std::endl;
-            texture = new Texture(texturePath.c_str(), "diffuse");
-        } else {
-            std::cout << "Material has no diffuse texture." << std::endl;
-            texture = nullptr; // or set a default texture if you have one
-        }
     }
 
     // Extract indices and assemble vertex data
@@ -258,3 +213,4 @@ void Beyblade::loadModel(const std::string& path) {
 
     std::cout << "Model loaded successfully with " << vertices.size() << " vertices and " << indices.size() << " indices." << std::endl;
 }
+

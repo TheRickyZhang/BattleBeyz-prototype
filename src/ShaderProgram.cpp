@@ -32,7 +32,6 @@ ShaderProgram::ShaderProgram(const char* vertexPath, const char* fragmentPath) {
     modelLoc = glGetUniformLocation(ID, "model");
     viewLoc = glGetUniformLocation(ID, "view");
     projectionLoc = glGetUniformLocation(ID, "projection");
-    initializeUniformLocations();
 }
 
 bool ShaderProgram::isUniformAvailable(const std::string& name) const {
@@ -40,25 +39,6 @@ bool ShaderProgram::isUniformAvailable(const std::string& name) const {
     return location != -1;
 }
 
-// Initialize uniform locations
-void ShaderProgram::initializeUniformLocations() {
-    ambientLoc = glGetUniformLocation(ID, "material.ambient");
-    diffuseLoc = glGetUniformLocation(ID, "material.diffuse");
-    specularLoc = glGetUniformLocation(ID, "material.specular");
-    shininessLoc = glGetUniformLocation(ID, "material.shininess");
-    dissolveLoc = glGetUniformLocation(ID, "material.dissolve");
-    useTextureLoc = glGetUniformLocation(ID, "material.useTexture");
-    colorLoc = glGetUniformLocation(ID, "material.color");
-
-    std::cout << "Uniform locations: " << std::endl;
-    std::cout << "ambientLoc: " << ambientLoc << std::endl;
-    std::cout << "diffuseLoc: " << diffuseLoc << std::endl;
-    std::cout << "specularLoc: " << specularLoc << std::endl;
-    std::cout << "shininessLoc: " << shininessLoc << std::endl;
-    std::cout << "dissolveLoc: " << dissolveLoc << std::endl;
-    std::cout << "useTextureLoc: " << useTextureLoc << std::endl;
-    std::cout << "colorLoc: " << colorLoc << std::endl;
-}
 
 // Destructor
 ShaderProgram::~ShaderProgram() {
@@ -82,30 +62,6 @@ void ShaderProgram::setUniforms(glm::mat4 model, glm::mat4 view, glm::mat4 proje
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-}
-
-void ShaderProgram::setMaterialUniforms(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, float shininess, float dissolve, bool useTexture, const glm::vec3& color) const {
-    if (isUniformAvailable("material.ambient")) {
-        glUniform3fv(ambientLoc, 1, glm::value_ptr(ambient));
-    }
-    if (isUniformAvailable("material.diffuse")) {
-        glUniform3fv(diffuseLoc, 1, glm::value_ptr(diffuse));
-    }
-    if (isUniformAvailable("material.specular")) {
-        glUniform3fv(specularLoc, 1, glm::value_ptr(specular));
-    }
-    if (isUniformAvailable("material.shininess")) {
-        glUniform1f(shininessLoc, shininess);
-    }
-    if (isUniformAvailable("material.dissolve")) {
-        glUniform1f(dissolveLoc, dissolve);
-    }
-    if (isUniformAvailable("material.useTexture")) {
-        glUniform1i(useTextureLoc, useTexture);
-    }
-    if (isUniformAvailable("material.color")) {
-        glUniform3fv(colorLoc, 1, glm::value_ptr(color));
-    }
 }
 
 // Utility uniform functions

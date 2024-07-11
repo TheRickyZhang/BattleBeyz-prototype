@@ -148,11 +148,6 @@ int main() {
     backgroundShader->setUniforms(backgroundModel, backgroundView, orthoProjection);
     backgroundShader->setUniform1f("wrapFactor", 4.0f);
 
-    auto fancyShader = new ShaderProgram(FANCY_VERTEX_SHADER_PATH, FANCY_FRAGMENT_SHADER_PATH);
-    fancyShader->setUniforms(model, view, projection);
-    fancyShader->setUniformVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-    fancyShader->setUniformVec3("lightPos", glm::vec3(0.0f, 1e5f, 0.0f)); // Light position very high in the y-direction
-
 //    auto panoramaShader = new ShaderProgram(PANORAMA_VERTEX_SHADER_PATH, PANORAMA_FRAGMENT_SHADER_PATH);
 //    panoramaShader->setUniforms(panoramaModel, panoramaView, panoramaProjection);
 
@@ -301,22 +296,18 @@ int main() {
             glClearColor(imguiColor[0], imguiColor[1], imguiColor[2], 1.00f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            // Use the shader program
-            fancyShader->use();
-            fancyShader->updateCameraPosition(cameraPos, view);
-            fancyShader->setUniformMat4("model", identity4);
-
-            // Render the floor
-            glActiveTexture(GL_TEXTURE0);
-            smallHexagonPattern.use();
-            fancyShader->setBool("material.useTexture", true); // Assuming we are using texture for the floor
-            glBindVertexArray(floorVAO);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-
 
             // Use the shader program
             objectShader->use();
             objectShader->updateCameraPosition(cameraPos, view);
+            objectShader->setUniformMat4("model", identity4);
+
+
+            // Render the floor
+            glActiveTexture(GL_TEXTURE0);
+            smallHexagonPattern.use();
+            glBindVertexArray(floorVAO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
 
 
