@@ -10,27 +10,28 @@ class ShaderProgram {
 public:
     GLuint ID;
     GLint modelLoc, viewLoc, projectionLoc;
+    GLint ambientLoc, diffuseLoc, specularLoc, shininessLoc, dissolveLoc, useTextureLoc, colorLoc;
 
-    // Initializes a shader program from the vertex and fragment FILE paths
     ShaderProgram(const char* vertexPath, const char* fragmentPath);
     ~ShaderProgram();
 
-    // Uses the current program
     void use() const;
-
-    // Note: this is the only one that calls use(). If modifying with utility set, make sure use() was previously called
+    void updateCameraPosition(const glm::vec3& cameraPosition, const glm::mat4& viewMatrix) const;
     void setUniforms(glm::mat4 model, glm::mat4 view, glm::mat4 projection) const;
+    void setMaterialUniforms(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, float shininess, float dissolve, bool useTexture, const glm::vec3& color) const;
 
     void setUniformMat4(const std::string &name, const glm::mat4 &mat) const;
     void setUniformVec3(const std::string &name, const glm::vec3 &value) const;
     void setUniform1f(const std::string &name, float value) const;
     void setInt(const std::string &name, int value) const;
+    void setBool(const std::string &name, bool value) const;
 
 private:
-    static std::string readFile(const char* filePath) ;
+    static std::string readFile(const char* filePath);
     GLuint compileShader(GLenum type, const char* source);
-
-    GLint getUniformLocation(const std::string &name) const;
+    [[nodiscard]] GLint getUniformLocation(const std::string &name) const;
+    void initializeUniformLocations();
+    bool isUniformAvailable(const std::string& name) const;
 };
 
-#endif
+#endif // SHADER_PROGRAM_H

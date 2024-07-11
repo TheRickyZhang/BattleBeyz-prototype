@@ -29,10 +29,15 @@ public:
 protected:
 
 private:
-    std::unordered_map<std::string, glm::vec3> materialColors; // Declare the materialColors map
+    std::unordered_map<std::string, glm::vec3> materialColors;
+    std::unordered_map<std::string, glm::vec3> materialAmbients;
+    std::unordered_map<std::string, glm::vec3> materialSpeculars;
+    std::unordered_map<std::string, float> materialShininess;
+    std::unordered_map<std::string, float> materialDissolves;
     RigidBody* rigidBody;
     std::string modelPath;
     Texture* texture{};
 
     void loadModel(const std::string& path);
+    void printDebugInfo();
 };

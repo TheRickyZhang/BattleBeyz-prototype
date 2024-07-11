@@ -2,6 +2,47 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tiny_obj_loader.h"
 
+void Beyblade::printDebugInfo() {
+    std::ostringstream buffer;
+
+    buffer << "Vertices: " << vertices.size() << std::endl;
+    for (const auto &vertex : vertices) {
+        buffer << std::fixed << std::setprecision(2) << "(" << vertex.x << ", " << vertex.y << ", " << vertex.z << ") ";
+    }
+
+    buffer << "\nNormals: " << normals.size() << std::endl;
+    for (const auto &normal : normals) {
+        buffer << std::fixed << std::setprecision(2) << "(" << normal.x << ", " << normal.y << ", " << normal.z << ") ";
+    }
+
+    buffer << "\nTexture Coordinates: " << texCoords.size() << std::endl;
+    for (const auto &texCoord : texCoords) {
+        buffer << std::fixed << std::setprecision(2) << "(" << texCoord.x << ", " << texCoord.y << ") ";
+    }
+
+    buffer << "\nIndices: " << indices.size() << std::endl;
+    for (size_t i = 0; i < indices.size(); i += 3) {
+        buffer << "Triangle: (" << indices[i] << ", " << indices[i + 1] << ", " << indices[i + 2] << ") ";
+    }
+
+    buffer << "\nTangents: " << tangents.size() << std::endl;
+    for (const auto &tangent : tangents) {
+        buffer << std::fixed << std::setprecision(2) << "(" << tangent.x << ", " << tangent.y << ", " << tangent.z << ") ";
+    }
+
+    buffer << "\nMaterials: " << materialColors.size() << std::endl;
+    for (const auto &material : materialColors) {
+        buffer << "Material: " << material.first << std::endl;
+        buffer << "Ambient color: (" << materialAmbients[material.first].x << ", " << materialAmbients[material.first].y << ", " << materialAmbients[material.first].z << ")" << std::endl;
+        buffer << "Diffuse color: (" << materialColors[material.first].x << ", " << materialColors[material.first].y << ", " << materialColors[material.first].z << ")" << std::endl;
+        buffer << "Specular color: (" << materialSpeculars[material.first].x << ", " << materialSpeculars[material.first].y << ", " << materialSpeculars[material.first].z << ")" << std::endl;
+        buffer << "Shininess: " << materialShininess[material.first] << std::endl;
+        buffer << "Dissolve: " << materialDissolves[material.first] << std::endl;
+    }
+
+    std::cout << buffer.str();
+}
+
 Beyblade::Beyblade(std::string modelPath, unsigned int vao, unsigned int vbo, unsigned int ebo,
                    const glm::vec3& pos, RigidBody* rigidBody)
         : modelPath(std::move(modelPath)), GameObject(vao, vbo, ebo, pos, glm::vec3(1.0)), rigidBody(rigidBody) {
@@ -27,8 +68,6 @@ void Beyblade::initializeMesh() {
         colors.resize(vertices.size(), glm::vec3(1.0f, 1.0f, 1.0f));  // Default color to white
         std::cout << "SET TO ALL WHITE" << std::endl;
     }
-
-
 
     for (size_t i = 0; i < vertices.size(); ++i) {
         // Vertex positions
@@ -60,16 +99,15 @@ void Beyblade::initializeMesh() {
                  indices.size() * sizeof(unsigned int));
 }
 
-
 void Beyblade::render(ShaderProgram& shader, const glm::vec3& viewPos, const glm::vec3& lightColor, const glm::vec3& lightPos) {
     shader.use();
 
+    bool useTexture = false;
     if (texture) {
         glActiveTexture(GL_TEXTURE0);
         texture->use();
         shader.setInt("texture1", 0);
-    } else {
-
+        useTexture = true;
     }
 
     glm::mat4 model = glm::translate(glm::mat4(1.0f), rigidBody->position);
@@ -78,14 +116,21 @@ void Beyblade::render(ShaderProgram& shader, const glm::vec3& viewPos, const glm
     shader.setUniformVec3("lightColor", lightColor);
     shader.setUniformVec3("lightPos", lightPos);
 
-    // NOTE: should always be white as default
-    shader.setUniformVec3("objectColor", color);
+    for (const auto& material : materialColors) {
+        shader.setMaterialUniforms(
+                materialAmbients[material.first],
+                material.second, // Correctly use the diffuse color
+                materialSpeculars[material.first],
+                materialShininess[material.first],
+                materialDissolves[material.first],
+                useTexture,
+                materialColors[material.first] // This is used as a color parameter
+        );
 
-//    std::cout << "Rendering color: (" << color.x << ", " << color.y << ", " << color.z << ")\n";
-
-    glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
-    glBindVertexArray(0);
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
+        glBindVertexArray(0);
+    }
 
     GLenum err;
     while ((err = glGetError()) != GL_NO_ERROR) {
@@ -99,6 +144,7 @@ void Beyblade::update(float deltaTime) {
 }
 
 void Beyblade::loadModel(const std::string& path) {
+    // Load the OBJ file...
     tinyobj::attrib_t attrib;
     std::vector<tinyobj::shape_t> shapes;
     std::vector<tinyobj::material_t> materials;
@@ -129,109 +175,86 @@ void Beyblade::loadModel(const std::string& path) {
     vertices.clear();
     normals.clear();
     texCoords.clear();
-    tangents.clear();
     colors.clear();
     indices.clear();
+    materialColors.clear();
+    materialAmbients.clear();
+    materialSpeculars.clear();
+    materialShininess.clear();
+    materialDissolves.clear();
 
     std::unordered_map<unsigned int, glm::vec3> vertexMap;
     std::unordered_map<unsigned int, glm::vec3> normalMap;
     std::unordered_map<unsigned int, glm::vec2> texCoordMap;
-    std::unordered_map<std::string, std::unique_ptr<Texture>> textureMap;
 
-    // Extract vertices
+    // Extract vertices, normals, and texture coordinates...
     for (size_t v = 0; v < attrib.vertices.size() / 3; ++v) {
         vertexMap[v] = glm::vec3(attrib.vertices[3 * v + 0], attrib.vertices[3 * v + 1], attrib.vertices[3 * v + 2]);
     }
 
-    // Extract normals
     for (size_t n = 0; n < attrib.normals.size() / 3; ++n) {
         normalMap[n] = glm::vec3(attrib.normals[3 * n + 0], attrib.normals[3 * n + 1], attrib.normals[3 * n + 2]);
     }
 
-    // Extract texture coordinates
     for (size_t t = 0; t < attrib.texcoords.size() / 2; ++t) {
         texCoordMap[t] = glm::vec2(attrib.texcoords[2 * t + 0], attrib.texcoords[2 * t + 1]);
     }
 
-    // Extract indices and assemble vertex data
-    for (const auto& shape : shapes) {
-        for (const auto& index : shape.mesh.indices) {
-            glm::vec3 vertex = vertexMap[index.vertex_index];
-            glm::vec3 normal = normalMap.count(index.normal_index) ? normalMap[index.normal_index] : glm::vec3(0.0f, 0.0f, 0.0f);
-            glm::vec2 texCoord = texCoordMap.count(index.texcoord_index) ? texCoordMap[index.texcoord_index] : glm::vec2(0.0f, 0.0f);
-
-            vertices.push_back(vertex);
-            normals.push_back(normal);
-            texCoords.push_back(texCoord);
-            indices.push_back(indices.size());
-        }
-    }
-
     // Handle materials
-    for (auto & material : materials) {
-        std::cout << "Material name: " << material.name << ", Diffuse texture: " << material.diffuse_texname << std::endl;
+    std::unordered_map<int, glm::vec3> materialIndexToDiffuseColor;
+    for (size_t i = 0; i < materials.size(); ++i) {
+        const auto& material = materials[i];
+        glm::vec3 ambientColor(material.ambient[0], material.ambient[1], material.ambient[2]);
+        glm::vec3 diffuseColor(material.diffuse[0], material.diffuse[1], material.diffuse[2]);
+        glm::vec3 specularColor(material.specular[0], material.specular[1], material.specular[2]);
+        float shininess = material.shininess;
+        float dissolve = material.dissolve;
+
+        // Store the material properties in the map
+        materialColors[material.name] = diffuseColor;
+        materialAmbients[material.name] = ambientColor;
+        materialSpeculars[material.name] = specularColor;
+        materialShininess[material.name] = shininess;
+        materialDissolves[material.name] = dissolve;
+        materialIndexToDiffuseColor[i] = diffuseColor;
+
+        std::cout << "Material name: " << material.name << std::endl;
+        std::cout << "Ambient: " << ambientColor.x << ", " << ambientColor.y << ", " << ambientColor.z << std::endl;
+        std::cout << "Diffuse: " << diffuseColor.x << ", " << diffuseColor.y << ", " << diffuseColor.z << std::endl;
+        std::cout << "Specular: " << specularColor.x << ", " << specularColor.y << ", " << specularColor.z << std::endl;
+        std::cout << "Shininess: " << shininess << std::endl;
+        std::cout << "Dissolve: " << dissolve << std::endl;
+
         if (!material.diffuse_texname.empty()) {
             std::string texturePath = baseDir + "/" + material.diffuse_texname;
             std::cout << "Loading texture from path: " << texturePath << std::endl;
-            textureMap[material.name] = std::make_unique<Texture>(texturePath.c_str(), "diffuse");
+            texture = new Texture(texturePath.c_str(), "diffuse");
         } else {
             std::cout << "Material has no diffuse texture." << std::endl;
+            texture = nullptr; // or set a default texture if you have one
         }
-
-        // Set colors to the diffuse color of the material
-        glm::vec3 diffuseColor(material.diffuse[0], material.diffuse[1], material.diffuse[2]);
-        materialColors[material.name] = diffuseColor;
     }
 
-    // Assign materials to vertices
+    // Extract indices and assemble vertex data
     for (const auto& shape : shapes) {
-        for (size_t i = 0; i < shape.mesh.indices.size(); ++i) {
-            int materialID = shape.mesh.material_ids[i / 3];
-            auto& material = materials[materialID];
+        for (size_t faceIndex = 0; faceIndex < shape.mesh.indices.size() / 3; ++faceIndex) {
+            int materialIndex = shape.mesh.material_ids[faceIndex];
+            glm::vec3 color = materialIndexToDiffuseColor.count(materialIndex) ? materialIndexToDiffuseColor[materialIndex] : glm::vec3(1.0f, 1.0f, 1.0f);
 
-            glm::vec3 diffuseColor = materialColors[material.name];
-            colors.push_back(diffuseColor);
+            for (size_t vertexIndex = 0; vertexIndex < 3; ++vertexIndex) {
+                auto index = shape.mesh.indices[3 * faceIndex + vertexIndex];
+                glm::vec3 vertex = vertexMap[index.vertex_index];
+                glm::vec3 normal = normalMap.count(index.normal_index) ? normalMap[index.normal_index] : glm::vec3(0.0f, 0.0f, 0.0f);
+                glm::vec2 texCoord = texCoordMap.count(index.texcoord_index) ? texCoordMap[index.texcoord_index] : glm::vec2(0.0f, 0.0f);
 
-            if (!material.diffuse_texname.empty() && textureMap.count(material.name)) {
-                texture = textureMap[material.name].get();
-            } else {
-                texture = nullptr;
+                vertices.push_back(vertex);
+                normals.push_back(normal);
+                texCoords.push_back(texCoord);
+                indices.push_back(indices.size());
+                colors.push_back(color);
             }
         }
     }
 
-//        // Print out the vertices
-//    std::cout << "Vertices: " << vertices.size() << std::endl;
-//    for (const auto &vertex: vertices) {
-//        std::cout << std::fixed << std::setprecision(2) << "(" << vertex.x << ", " << vertex.y << ", " << vertex.z
-//                  << ") ";
-//    }
-//
-//// Print out the normals
-//    std::cout << "\nNormals: " << normals.size() << std::endl;
-//    for (const auto &normal: normals) {
-//        std::cout << std::fixed << std::setprecision(2) << "(" << normal.x << ", " << normal.y << ", " << normal.z
-//                  << ") ";
-//    }
-//
-//// Print out the texture coordinates
-//    std::cout << "\nTexture Coordinates: " << texCoords.size() << std::endl;
-//    for (const auto &texCoord: texCoords) {
-//        std::cout << std::fixed << std::setprecision(2) << "(" << texCoord.x << ", " << texCoord.y << ") ";
-//    }
-//
-//// Print out the indices
-//    std::cout << "\nIndices: " << indices.size() << std::endl;
-//    for (size_t i = 0; i < indices.size(); i += 3) {
-//        std::cout << "Triangle: (" << indices[i] << ", " << indices[i + 1] << ", " << indices[i + 2] << ") ";
-//    }
-//    // Print out the tangents
-//    std::cout << "\nTangents: " << tangents.size() << std::endl;
-//    for (const auto &tangent: tangents) {
-//        std::cout << std::fixed << std::setprecision(2) << "(" << tangent.x << ", " << tangent.y << ", " << tangent.z
-//                  << ") ";
-//    }
-
     std::cout << "Model loaded successfully with " << vertices.size() << " vertices and " << indices.size() << " indices." << std::endl;
 }
-

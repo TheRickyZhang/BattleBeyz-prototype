@@ -141,10 +141,17 @@ int main() {
     auto objectShader = new ShaderProgram(OBJECT_VERTEX_SHADER_PATH, OBJECT_FRAGMENT_SHADER_PATH);
     // Initialize default shader program with the model, view, and projection matrices. Also sets to use.
     objectShader->setUniforms(model, view, projection);
+    objectShader->setUniformVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+    objectShader->setUniformVec3("lightPos", glm::vec3(0.0f, 1e5f, 0.0f)); // Light position very high in the y-direction
 
     auto backgroundShader = new ShaderProgram(BACKGROUND_VERTEX_SHADER_PATH, BACKGROUND_FRAGMENT_SHADER_PATH);
     backgroundShader->setUniforms(backgroundModel, backgroundView, orthoProjection);
     backgroundShader->setUniform1f("wrapFactor", 4.0f);
+
+    auto fancyShader = new ShaderProgram(FANCY_VERTEX_SHADER_PATH, FANCY_FRAGMENT_SHADER_PATH);
+    fancyShader->setUniforms(model, view, projection);
+    fancyShader->setUniformVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+    fancyShader->setUniformVec3("lightPos", glm::vec3(0.0f, 1e5f, 0.0f)); // Light position very high in the y-direction
 
 //    auto panoramaShader = new ShaderProgram(PANORAMA_VERTEX_SHADER_PATH, PANORAMA_FRAGMENT_SHADER_PATH);
 //    panoramaShader->setUniforms(panoramaModel, panoramaView, panoramaProjection);
@@ -259,6 +266,11 @@ int main() {
         // Process input (keyboard, mouse, etc.)
         processInput(window, deltaTime);
 
+        // Update changing camera variables
+
+        glm::vec3 cameraPos = cameraState->camera->Position;
+        view = glm::lookAt(cameraState->camera->Position, cameraState->camera->Position + cameraState->camera->Front, cameraState->camera->Up);
+
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -290,30 +302,26 @@ int main() {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             // Use the shader program
-            objectShader->use();
-
-            // Set light properties and view position
-            objectShader->setUniformVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-            objectShader->setUniformVec3("lightPos", glm::vec3(0.0f, 1e5f, 0.0f)); // Light position very high in the y-direction
-            objectShader->setUniformVec3("viewPos", cameraState->camera->Position);
-
-            // Update the view and projection matrices
-            view = glm::lookAt(cameraState->camera->Position, cameraState->camera->Position + cameraState->camera->Front, cameraState->camera->Up);
-            objectShader->setUniformMat4("view", view);
-            objectShader->setUniformMat4("projection", projection);
+            fancyShader->use();
+            fancyShader->updateCameraPosition(cameraPos, view);
+            fancyShader->setUniformMat4("model", identity4);
 
             // Render the floor
-            model = glm::mat4(1.0f);
-            objectShader->setUniformMat4("model", model);
             glActiveTexture(GL_TEXTURE0);
             smallHexagonPattern.use();
-            objectShader->setInt("texture1", 0);
+            fancyShader->setBool("material.useTexture", true); // Assuming we are using texture for the floor
             glBindVertexArray(floorVAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
+
+            // Use the shader program
+            objectShader->use();
+            objectShader->updateCameraPosition(cameraPos, view);
+
+
+
             // Render the tetrahedron
-            model = glm::mat4(1.0f);
-            objectShader->setUniformMat4("model", model);
+            objectShader->setUniformMat4("model", identity4);
             glActiveTexture(GL_TEXTURE0);
             hexagonPattern.use();
             objectShader->setInt("texture1", 0);
