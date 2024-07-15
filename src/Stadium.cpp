@@ -1,15 +1,12 @@
 #include "Stadium.h"
-#include "Buffers.h"
-#include <cmath>
-#include <algorithm>
-#include <iostream>
-#include <iomanip>
 
 Stadium::Stadium(unsigned int vao, unsigned int vbo, unsigned int ebo, const glm::vec3 &pos, const glm::vec3 &col,
                  const glm::vec3 &ringColor, const glm::vec3& crossColor, float radius, float curvature, int numRings,
-                 int verticesPerRing, Texture* texture, float textureScale)
+                 int verticesPerRing, Texture* texture, float textureScale, PhysicsWorld* physicsWorld)
         : GameObject(vao, vbo, ebo, pos, col), ringColor(ringColor), crossColor(crossColor), radius(radius), curvature(curvature),
-          numRings(numRings), verticesPerRing(verticesPerRing), texture(texture), textureScale(textureScale) {
+          numRings(numRings), verticesPerRing(verticesPerRing), texture(texture), textureScale(textureScale), physicsWorld(physicsWorld) {
+    body = new ImmovableRigidBody(pos, glm::vec3(radius * 2.0f, curvature * radius * radius, radius * 2.0f));
+    physicsWorld->addBody(body);
     Stadium::initializeMesh();
     std::cout << "Stadium color: (" << color.x << ", " << color.y << ", " << color.z << ")\n";
 }
@@ -175,6 +172,19 @@ void Stadium::generateMeshData() {
         tangent = glm::normalize(tangent);
     }
 
+    // Calculate bounding boxes for each triangle
+    for (size_t i = 0; i < indices.size(); i += 3) {
+        glm::vec3 v1 = vertices[indices[i]];
+        glm::vec3 v2 = vertices[indices[i + 1]];
+        glm::vec3 v3 = vertices[indices[i + 2]];
+
+        std::unique_ptr<BoundingBox> bbox = std::make_unique<BoundingBox>();
+        bbox->update(v1, v2, v3);
+
+        // Add the bounding box to the immovable rigid body
+        body->boundingBoxes.push_back(std::move(bbox));
+    }
+
 //    // Print out the vertices
 //    std::cout << "Vertices: " << vertices.size() << std::endl;
 //    for (const auto &vertex: vertices) {
@@ -239,6 +249,7 @@ void Stadium::initializeMesh() {
                    indices.size() * sizeof(unsigned int));
 }
 
+// Does not need to take in lightColor and lightPos, as these should be same for all objects
 void Stadium::render(ShaderProgram &shader, const glm::vec3 &viewPos, const glm::vec3 &lightColor,
                      const glm::vec3 &lightPos) {
     shader.use();

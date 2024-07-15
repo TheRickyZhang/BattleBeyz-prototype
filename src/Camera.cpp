@@ -1,19 +1,47 @@
 #include "Camera.h"
 
-Camera::Camera(const glm::vec3& position, float yaw, float pitch, float roll) :
+Camera::Camera(const glm::vec3& position, float yaw, float pitch, float roll, PhysicsWorld* world) :
         Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(2.5f), MouseSensitivity(0.1f), Zoom(45.0f),
         Position(position), WorldUp(glm::vec3(0.0f, 1.0f, 0.0f)), Yaw(yaw), Pitch(pitch), Roll(roll),
-        worldBoundingBox(glm::vec3(-100.0f), glm::vec3(100.0f)), boundingBox() {
+        physicsWorld(world) {
     updateCameraVectors();
-    updateBoundingBox();
+
+    // Initialize the camera's rigid body
+    std::vector<std::unique_ptr<BoundingBox>> bboxes;
+    bboxes.push_back(std::make_unique<BoundingBox>(glm::vec3(position - glm::vec3(0.01f)), glm::vec3(position + glm::vec3(0.01f))));
+    body = new RigidBody(position, glm::vec3(0.02f), FLT_MAX, std::move(bboxes));
+
+    if (physicsWorld) {
+        physicsWorld->addBody(body);
+    }
 }
+
 
 glm::mat4 Camera::getViewMatrix() const {
     return glm::lookAt(Position, Position + Front, Up);
 }
 
 void Camera::applyBoundaries(glm::vec3& position) const {
-    // Add things here
+    if (!physicsWorld) return;
+
+    // Temporarily move the body's position to check for collisions
+    glm::vec3 originalPosition = body->position;
+    body->position = position;
+
+    for (const auto& otherBody : physicsWorld->bodies) {
+        if (otherBody != body) {
+            for (const auto& boxA : body->boundingBoxes) {
+                for (const auto& boxB : otherBody->boundingBoxes) {
+                    if (boxA->checkCollision(*boxB)) {
+                        position = originalPosition; // Revert position if collision detected
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    body->position = originalPosition; // Restore original position
 }
 
 void Camera::processKeyboard(int direction, float deltaTime, bool boundCamera) {
@@ -40,7 +68,11 @@ void Camera::processKeyboard(int direction, float deltaTime, bool boundCamera) {
     }
 
     Position = newPosition;
+    // Update the body's position to match the camera
+    body->position = Position;
+    body->updateBoundingBoxes();
 }
+
 
 void Camera::processMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch) {
     xoffset *= MouseSensitivity;
@@ -85,7 +117,3 @@ void Camera::updateCameraVectors() {
     Up = glm::vec3(rot * glm::vec4(Up, 0.0f));
 }
 
-void Camera::updateBoundingBox() {
-    boundingBox.min = Position - glm::vec3(0.01f);
-    boundingBox.max = Position + glm::vec3(0.01f);
-}

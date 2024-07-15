@@ -1,3 +1,4 @@
+#include <iostream>
 #include "PhysicsWorld.h"
 
 void PhysicsWorld::addBody(RigidBody* body) {
@@ -6,7 +7,7 @@ void PhysicsWorld::addBody(RigidBody* body) {
 
 void PhysicsWorld::update(float deltaTime) {
     // Update all bodies
-    for (auto body : bodies) {
+    for (RigidBody* body : bodies) {
         body->update(deltaTime);
     }
 
@@ -20,18 +21,44 @@ void PhysicsWorld::detectCollisions() {
             RigidBody* bodyA = bodies[i];
             RigidBody* bodyB = bodies[j];
 
-            // Simple AABB collision detection
-            if (glm::abs(bodyA->position.x - bodyB->position.x) < (bodyA->size.x + bodyB->size.x) &&
-                glm::abs(bodyA->position.y - bodyB->position.y) < (bodyA->size.y + bodyB->size.y) &&
-                glm::abs(bodyA->position.z - bodyB->position.z) < (bodyA->size.z + bodyB->size.z)) {
-                resolveCollision(bodyA, bodyB);
+            for (const auto& boxA : bodyA->boundingBoxes) {
+                for (const auto& boxB : bodyB->boundingBoxes) {
+                    if (boxA->checkCollision(*boxB)) {
+                        resolveCollision(bodyA, bodyB);
+                    }
+                }
             }
         }
     }
 }
 
 void PhysicsWorld::resolveCollision(RigidBody* bodyA, RigidBody* bodyB) {
-    // Simple collision resolution by reversing velocity (for demonstration purposes)
-    bodyA->velocity = -bodyA->velocity;
-    bodyB->velocity = -bodyB->velocity;
+    // Simple collision resolution logic
+    glm::vec3 relativeVelocity = bodyB->velocity - bodyA->velocity;
+    glm::vec3 collisionNormal = glm::normalize(bodyB->position - bodyA->position);
+    float velocityAlongNormal = glm::dot(relativeVelocity, collisionNormal);
+
+    if (velocityAlongNormal > 0) {
+        return;
+    }
+
+    float restitution = 0.5f; // Coefficient of restitution
+    float j = -(1 + restitution) * velocityAlongNormal;
+    j /= 1 / bodyA->mass + 1 / bodyB->mass;
+
+    glm::vec3 impulse = j * collisionNormal;
+    bodyA->velocity -= impulse / bodyA->mass;
+    bodyB->velocity += impulse / bodyB->mass;
+}
+
+void PhysicsWorld::renderDebug(ShaderProgram &shader, const glm::vec3 &viewPos) const {
+    // Render all bounding boxes
+    for (RigidBody* body : bodies) {
+        if(body->boundingBoxes.size() < 100) {
+            for (const auto& box : body->boundingBoxes) {
+                box->renderDebug(shader, viewPos);
+                std::cout << "Rendering bounding box" << std::endl;
+            }
+        }
+    }
 }

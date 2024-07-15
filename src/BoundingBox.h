@@ -1,14 +1,29 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp> // For glm::rotate
+#include "ShaderProgram.h"
+#include "Buffers.h"
 
 class BoundingBox {
 public:
     glm::vec3 min;
     glm::vec3 max;
 
-    BoundingBox() : min(glm::vec3(0.0f)), max(glm::vec3(0.0f)) {}
-    BoundingBox(const glm::vec3& min, const glm::vec3& max) : min(min), max(max) {}
+    GLuint VAO{}, VBO{}, EBO{};
 
-    bool checkCollision(const BoundingBox& other) const;
+    BoundingBox();
+    BoundingBox(const glm::vec3& min, const glm::vec3& max);
+    ~BoundingBox();
+
+    [[nodiscard]] bool checkCollision(const BoundingBox& other) const;
+    [[nodiscard]] bool intersectsSphere(const glm::vec3& center, float radius) const;
+    void update(const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& v3);
+    void update(const glm::vec3& position, const glm::quat& orientation);
+    void expandToInclude(const BoundingBox& other);
+    void expandToInclude(const glm::vec3& point);
+    void renderDebug(ShaderProgram &shader, const glm::vec3 &viewPos);
+private:
+    void setupBuffers();
+
 };

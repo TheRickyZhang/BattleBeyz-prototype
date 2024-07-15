@@ -34,31 +34,11 @@
 #include <atomic>
 
 int main() {
-    /* ----------------------GLOBAL VARIABLES-------------------------- */
-
     // Window dimensions
     int windowWidth = 1600, windowHeight = 900;
     const float aspectRatio = 16.0f / 9.0f;
     int minWidth = windowWidth / 4;
     int minHeight = static_cast<int>(double(minWidth) / aspectRatio);
-
-    // Relevant matrices
-    auto model = glm::mat4(1.0f);
-    auto view = glm::mat4(1.0f);
-    auto projection = glm::mat4(1.0f);
-
-    // Primary camera and camera state
-    Camera mainCamera(glm::vec3(0.0f, 0.0f, 3.0f));
-    auto cameraState = new CameraState(&mainCamera, 400.0, 300.0);
-
-    // Time variables
-    float deltaTime = 0.0f;
-    float lastFrame = 0.0f;
-
-    static float imguiColor[3] = {1.0f, 0.0f, 0.0f}; // Red
-
-    auto physicsWorld = new PhysicsWorld;
-
 
     /* ----------------------INITIALIZATION-------------------------- */
 
@@ -114,6 +94,25 @@ int main() {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
+
+    /* ----------------------GLOBAL VARIABLES-------------------------- */
+
+    // Relevant matrices
+    auto model = glm::mat4(1.0f);
+    auto view = glm::mat4(1.0f);
+    auto projection = glm::mat4(1.0f);
+
+    auto physicsWorld = new PhysicsWorld;
+
+    // Primary camera and camera state
+    Camera mainCamera(glm::vec3(0.0f, 0.0f, 3.0f), -90.0f, 0.0f, 0.0f, physicsWorld);
+    auto cameraState = new CameraState(&mainCamera, 400.0, 300.0);
+
+    // Time variables
+    float deltaTime = 0.0f;
+    float lastFrame = 0.0f;
+
+    static float imguiColor[3] = {1.0f, 0.0f, 0.0f}; // Red
 
 
     /* ----------------------RELEVANT INSTANTIATIONS-------------------------- */
@@ -239,7 +238,7 @@ int main() {
     float stadiumTextureScale = 1.5f;
 
     Stadium stadium(stadiumVAO, stadiumVBO, stadiumEBO, stadiumPosition, stadiumColor, ringColor, crossColor,
-                    stadiumRadius, stadiumCurvature, numRings, sectionsPerRing, stadiumTexture, stadiumTextureScale);
+                    stadiumRadius, stadiumCurvature, numRings, sectionsPerRing, stadiumTexture, stadiumTextureScale, physicsWorld);
 
     GLuint Bey1VAO = 0, Bey1VBO = 0, Bey1EBO = 0;
     auto rigidBey1 = new RigidBody(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(1.0f), 1.0f);
@@ -257,6 +256,8 @@ int main() {
 
         // Poll events at the start to process input before rendering
         glfwPollEvents();
+
+        physicsWorld->update(deltaTime);
 
         // Process input (keyboard, mouse, etc.)
         processInput(window, deltaTime);
@@ -309,8 +310,6 @@ int main() {
             glBindVertexArray(floorVAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
-
-
             // Render the tetrahedron
             objectShader->setUniformMat4("model", identity4);
             glActiveTexture(GL_TEXTURE0);
@@ -319,12 +318,20 @@ int main() {
             glBindVertexArray(tetrahedronVAO);
             glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 
+            // Does not need to take in lightColor and lightPos, as these should be same for all objects
+
             // Update and render the stadium (uses this texture)
             stadium.render(*objectShader, cameraState->camera->Position, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1e6f, 0.0f));
 
             // Update and render the Beyblade
             beyblade1.update(deltaTime);
             beyblade1.render(*objectShader, cameraState->camera->Position, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1e6f, 0.0f));
+
+            // Render bounding boxes for debugging
+            physicsWorld->renderDebug(*objectShader, cameraState->camera->Position);
+//            mainCamera.body->renderDebug(*objectShader, cameraState->camera->Position);
+//            stadium.body->renderDebug(*objectShader, cameraState->camera->Position);
+
 
             // Render text overlay
             std::stringstream ss;

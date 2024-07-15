@@ -1,7 +1,9 @@
 #pragma once
 
 #include <vector>
+#include <glm/glm.hpp>
 #include "RigidBody.h"
+#include "ShaderProgram.h"
 
 class PhysicsWorld {
 public:
@@ -9,6 +11,8 @@ public:
 
     void addBody(RigidBody* body);
     void update(float deltaTime);
+    void renderDebug(ShaderProgram &shader, const glm::vec3 &viewPos) const;
+
 private:
     void detectCollisions();
     static void resolveCollision(RigidBody* bodyA, RigidBody* bodyB);
