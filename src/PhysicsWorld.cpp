@@ -51,13 +51,16 @@ void PhysicsWorld::resolveCollision(RigidBody* bodyA, RigidBody* bodyB) {
     bodyB->velocity += impulse / bodyB->mass;
 }
 
-void PhysicsWorld::renderDebug(ShaderProgram &shader, const glm::vec3 &viewPos) const {
+void PhysicsWorld::renderDebug(ShaderProgram &shader) const {
     // Render all bounding boxes
     for (RigidBody* body : bodies) {
         if(body->boundingBoxes.size() < 100) {
-            for (const auto& box : body->boundingBoxes) {
-                box->renderDebug(shader, viewPos);
-                std::cout << "Rendering bounding box" << std::endl;
+            for (const auto box : body->boundingBoxes) {
+                box->renderDebug(shader);
+            }
+        } else {
+            for(int i = 0; i < 100; ++i) {
+                body->boundingBoxes[i]->renderDebug(shader);
             }
         }
     }

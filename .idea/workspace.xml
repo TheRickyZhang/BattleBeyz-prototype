@@ -26,11 +26,12 @@
   <component name="ChangeListManager">
     <list default="true" id="14d88e8d-1ec0-46b9-9879-d2031833b74b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Beyblade.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Beyblade.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Beyblade.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Beyblade.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BoundingBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/BoundingBox.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BoundingBox.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/BoundingBox.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Buffers.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Buffers.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Camera.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Camera.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Camera.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Camera.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GameObject.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameObject.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PhysicsWorld.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/PhysicsWorld.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PhysicsWorld.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/PhysicsWorld.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/RigidBody.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/RigidBody.cpp" afterDir="false" />
@@ -104,11 +105,6 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.BattleBeyz">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="BattleBeyz" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="BattleBeyz" TARGET_NAME="BattleBeyz" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="BattleBeyz" RUN_TARGET_NAME="BattleBeyz">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -194,6 +190,7 @@
       <workItem from="1721023114236" duration="30000" />
       <workItem from="1721023150302" duration="4455000" />
       <workItem from="1721027669013" duration="2921000" />
+      <workItem from="1721418457156" duration="7864000" />
     </task>
     <servers />
   </component>
@@ -210,25 +207,45 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/main.cpp</url>
-          <line>249</line>
+          <line>248</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/main.cpp</url>
-          <line>208</line>
-          <option name="timeStamp" value="5" />
+          <url>file://$PROJECT_DIR$/src/BoundingBox.cpp</url>
+          <line>105</line>
+          <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/main.cpp</url>
-          <line>108</line>
-          <option name="timeStamp" value="6" />
+          <line>329</line>
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/main.cpp</url>
-          <line>107</line>
-          <option name="timeStamp" value="7" />
+          <url>file://$PROJECT_DIR$/src/Camera.cpp</url>
+          <line>14</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/PhysicsWorld.cpp</url>
+          <line>8</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/BoundingBox.cpp</url>
+          <line>43</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/BoundingBox.cpp</url>
+          <line>67</line>
+          <option name="timeStamp" value="32" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="CMakeRunConfiguration">
+        <watch expression="physicsWorld-&gt;bodies[0]-&gt;boundingBoxes[0].get()-&gt;min" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

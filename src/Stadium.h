@@ -24,7 +24,7 @@ public:
 
     void update() {}
     void initializeMesh() override;
-    void render(ShaderProgram &shader, const glm::vec3 &viewPos, const glm::vec3 &lightColor, const glm::vec3 &lightPos) override;
+    void render(ShaderProgram &shader, const glm::vec3 &lightColor, const glm::vec3 &lightPos) override;
 
     ImmovableRigidBody* body;
 protected:

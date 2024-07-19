@@ -7,9 +7,9 @@ Camera::Camera(const glm::vec3& position, float yaw, float pitch, float roll, Ph
     updateCameraVectors();
 
     // Initialize the camera's rigid body
-    std::vector<std::unique_ptr<BoundingBox>> bboxes;
-    bboxes.push_back(std::make_unique<BoundingBox>(glm::vec3(position - glm::vec3(0.01f)), glm::vec3(position + glm::vec3(0.01f))));
-    body = new RigidBody(position, glm::vec3(0.02f), FLT_MAX, std::move(bboxes));
+    std::vector<BoundingBox*> bboxes;
+    bboxes.push_back(new BoundingBox(glm::vec3(position - glm::vec3(1.0f)), glm::vec3(position + glm::vec3(1.0f))));
+    body = new RigidBody(position, glm::vec3(0.02f), 0.79f, std::move(bboxes));
 
     if (physicsWorld) {
         physicsWorld->addBody(body);
@@ -28,12 +28,17 @@ void Camera::applyBoundaries(glm::vec3& position) const {
     glm::vec3 originalPosition = body->position;
     body->position = position;
 
+    std::cout << "Applying boundaries. New position: "
+              << position.x << ", " << position.y << ", " << position.z << "\n";
+
     for (const auto& otherBody : physicsWorld->bodies) {
         if (otherBody != body) {
             for (const auto& boxA : body->boundingBoxes) {
                 for (const auto& boxB : otherBody->boundingBoxes) {
                     if (boxA->checkCollision(*boxB)) {
                         position = originalPosition; // Revert position if collision detected
+                        std::cout << "Collision detected. Reverting position to: "
+                                  << position.x << ", " << position.y << ", " << position.z << "\n";
                         break;
                     }
                 }
@@ -48,44 +53,65 @@ void Camera::processKeyboard(int direction, float deltaTime, bool boundCamera) {
     float velocity = MovementSpeed * deltaTime;
     glm::vec3 newPosition = Position;
 
-    if (direction == GLFW_KEY_W)
+    bool isMoving = false;
+    if (direction == GLFW_KEY_W) {
         newPosition += Front * velocity;
-    if (direction == GLFW_KEY_S)
+        isMoving = true;
+    }
+    if (direction == GLFW_KEY_S) {
         newPosition -= Front * velocity;
-    if (direction == GLFW_KEY_A)
+        isMoving = true;
+    }
+    if (direction == GLFW_KEY_A) {
         newPosition -= Right * velocity;
-    if (direction == GLFW_KEY_D)
+        isMoving = true;
+    }
+    if (direction == GLFW_KEY_D) {
         newPosition += Right * velocity;
-    if (direction == GLFW_KEY_Q)
+        isMoving = true;
+    }
+    if (direction == GLFW_KEY_Q) {
         newPosition -= Up * velocity;
-    if (direction == GLFW_KEY_E)
+        isMoving = true;
+    }
+    if (direction == GLFW_KEY_E) {
         newPosition += Up * velocity;
-    if (direction == GLFW_KEY_ESCAPE)
+        isMoving = true;
+    }
+    if (direction == GLFW_KEY_ESCAPE) {
         Zoom = 1.0f;
+    }
+
+    if (!isMoving) {
+        body->velocity = glm::vec3(0.0f);
+    }
 
     if (boundCamera) {
         applyBoundaries(newPosition);
     }
 
     Position = newPosition;
+    std::cout << "Camera position: " << Position.x << ", " << Position.y << ", " << Position.z << std::endl;
     // Update the body's position to match the camera
     body->position = Position;
     body->updateBoundingBoxes();
+    std::cout << "Body position: " << body->position.x << ", " << body->position.y << ", " << body->position.z << std::endl;
 }
-
 
 void Camera::processMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch) {
     xoffset *= MouseSensitivity;
     yoffset *= MouseSensitivity;
 
-    Yaw   += xoffset;
+    Yaw += xoffset;
     Pitch += yoffset;
 
     if (constrainPitch) {
-        if (Pitch > 89.0f)
+        if (Pitch > 89.0f) {
             Pitch = 89.0f;
-        if (Pitch < -89.0f)
+        }
+        if (Pitch < -89.0f) {
             Pitch = -89.0f;
+        }
     }
 
     updateCameraVectors();
@@ -93,10 +119,12 @@ void Camera::processMouseMovement(float xoffset, float yoffset, GLboolean constr
 
 void Camera::processMouseScroll(float yoffset) {
     MovementSpeed += yoffset * 0.5f;
-    if (MovementSpeed < 0.1f)
+    if (MovementSpeed < 0.1f) {
         MovementSpeed = 0.1f;
-    if (MovementSpeed > 10.0f)
+    }
+    if (MovementSpeed > 10.0f) {
         MovementSpeed = 10.0f;
+    }
 }
 
 void Camera::updateCameraVectors() {
@@ -116,4 +144,3 @@ void Camera::updateCameraVectors() {
     Right = glm::vec3(rot * glm::vec4(Right, 0.0f));
     Up = glm::vec3(rot * glm::vec4(Up, 0.0f));
 }
-

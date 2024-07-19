@@ -11,7 +11,7 @@ public:
 
     void addBody(RigidBody* body);
     void update(float deltaTime);
-    void renderDebug(ShaderProgram &shader, const glm::vec3 &viewPos) const;
+    void renderDebug(ShaderProgram &shader) const;
 
 private:
     void detectCollisions();

@@ -178,11 +178,11 @@ void Stadium::generateMeshData() {
         glm::vec3 v2 = vertices[indices[i + 1]];
         glm::vec3 v3 = vertices[indices[i + 2]];
 
-        std::unique_ptr<BoundingBox> bbox = std::make_unique<BoundingBox>();
+        auto bbox = new BoundingBox();
         bbox->update(v1, v2, v3);
 
         // Add the bounding box to the immovable rigid body
-        body->boundingBoxes.push_back(std::move(bbox));
+        body->boundingBoxes.push_back(bbox);
     }
 
 //    // Print out the vertices
@@ -250,7 +250,7 @@ void Stadium::initializeMesh() {
 }
 
 // Does not need to take in lightColor and lightPos, as these should be same for all objects
-void Stadium::render(ShaderProgram &shader, const glm::vec3 &viewPos, const glm::vec3 &lightColor,
+void Stadium::render(ShaderProgram &shader, const glm::vec3 &lightColor,
                      const glm::vec3 &lightPos) {
     shader.use();
 
@@ -263,7 +263,7 @@ void Stadium::render(ShaderProgram &shader, const glm::vec3 &viewPos, const glm:
     // Bind appropriate uniforms (model, view, projection matrices)
     glm::mat4 model = glm::translate(glm::mat4(1.0f), position);
     shader.setUniformMat4("model", model);
-    shader.setUniformVec3("viewPos", viewPos);
+//    shader.setUniformVec3("viewPos", viewPos);
     shader.setUniformVec3("lightColor", lightColor);
     shader.setUniformVec3("lightPos", lightPos);
     shader.setUniformVec3("objectColor", color);

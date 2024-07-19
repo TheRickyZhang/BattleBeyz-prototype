@@ -89,7 +89,7 @@ void Beyblade::initializeMesh() {
                  indices.size() * sizeof(unsigned int));
 }
 
-void Beyblade::render(ShaderProgram& shader, const glm::vec3& viewPos, const glm::vec3& lightColor, const glm::vec3& lightPos) {
+void Beyblade::render(ShaderProgram& shader, const glm::vec3& lightColor, const glm::vec3& lightPos) {
     shader.use();
 
     if (texture) {
@@ -100,7 +100,7 @@ void Beyblade::render(ShaderProgram& shader, const glm::vec3& viewPos, const glm
 
     glm::mat4 model = glm::translate(glm::mat4(1.0f), rigidBody->position);
     shader.setUniformMat4("model", model);
-    shader.setUniformVec3("viewPos", viewPos);
+//    shader.setUniformVec3("viewPos", viewPos);
     shader.setUniformVec3("lightColor", lightColor);
     shader.setUniformVec3("lightPos", lightPos);
     for(const auto& material : materialColors) {

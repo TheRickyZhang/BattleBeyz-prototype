@@ -30,7 +30,6 @@
 #include <algorithm>
 #include <iostream>
 #include <sstream>
-#include <thread>
 #include <atomic>
 
 int main() {
@@ -257,8 +256,6 @@ int main() {
         // Poll events at the start to process input before rendering
         glfwPollEvents();
 
-        physicsWorld->update(deltaTime);
-
         // Process input (keyboard, mouse, etc.)
         processInput(window, deltaTime);
 
@@ -289,6 +286,9 @@ int main() {
             }
         } else {
             glEnable(GL_DEPTH_TEST);
+
+            physicsWorld->update(deltaTime);
+
             if(callbackData.showInfoScreen) {
                 showInfoScreen(window, &imguiColor);
             }
@@ -298,7 +298,7 @@ int main() {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-            // Use the shader program
+            // Use the shader program (objectShader) for rendering 3D objects, sets viewPos and view
             objectShader->use();
             objectShader->updateCameraPosition(cameraPos, view);
             objectShader->setUniformMat4("model", identity4);
@@ -321,24 +321,30 @@ int main() {
             // Does not need to take in lightColor and lightPos, as these should be same for all objects
 
             // Update and render the stadium (uses this texture)
-            stadium.render(*objectShader, cameraState->camera->Position, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1e6f, 0.0f));
+            stadium.render(*objectShader, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1e6f, 0.0f));
 
             // Update and render the Beyblade
             beyblade1.update(deltaTime);
-            beyblade1.render(*objectShader, cameraState->camera->Position, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1e6f, 0.0f));
+            beyblade1.render(*objectShader, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1e6f, 0.0f));
 
             // Render bounding boxes for debugging
-            physicsWorld->renderDebug(*objectShader, cameraState->camera->Position);
+            physicsWorld->renderDebug(*objectShader);
 //            mainCamera.body->renderDebug(*objectShader, cameraState->camera->Position);
 //            stadium.body->renderDebug(*objectShader, cameraState->camera->Position);
 
 
             // Render text overlay
             std::stringstream ss;
-            ss << std::fixed << std::setprecision(2);
+            ss << std::fixed << std::setprecision(1);
             ss << "X: " << cameraState->camera->Position.x << " "
                << "Y: " << cameraState->camera->Position.y << " "
-               << "Z: " << cameraState->camera->Position.z;
+               << "Z: " << cameraState->camera->Position.z << "   |   "
+               << "Min" << cameraState->camera->body->boundingBoxes[0]->min.x << " " <<
+                cameraState->camera->body->boundingBoxes[0]->min.y << " " <<
+                cameraState->camera->body->boundingBoxes[0]->min.z << "\n"
+                << "Max" << cameraState->camera->body->boundingBoxes[0]->max.x << " " <<
+                cameraState->camera->body->boundingBoxes[0]->max.y << " " <<
+                cameraState->camera->body->boundingBoxes[0]->max.z << "\n";
             std::string cameraPosStr = ss.str();
             std::replace(cameraPosStr.begin(), cameraPosStr.end(), '-', ';');
 

@@ -1,10 +1,10 @@
 #include <iostream>
 #include "RigidBody.h"
 
-RigidBody::RigidBody(const glm::vec3& pos, const glm::vec3& sz, float m, std::vector<std::unique_ptr<BoundingBox>> bboxes)
-        : position(pos), mass(m), velocity(0.0f), acceleration(0.0f), force(0.0f),
+RigidBody::RigidBody(const glm::vec3& pos, const glm::vec3& sz, float mass, std::vector<BoundingBox*> bboxes)
+        : position(pos), mass(mass), velocity(0.0f), acceleration(0.0f), force(0.0f),
           angularVelocity(0.0f), torque(0.0f), orientation(glm::quat(1.0f, 0.0f, 0.0f, 0.0f)),
-          boundingBoxes(std::move(bboxes)), VAO(0), VBO(0), EBO(0) {
+          boundingBoxes(bboxes), VAO(0), VBO(0), EBO(0) {
     float x2 = sz.x * sz.x;
     float y2 = sz.y * sz.y;
     float z2 = sz.z * sz.z;
@@ -15,6 +15,7 @@ RigidBody::RigidBody(const glm::vec3& pos, const glm::vec3& sz, float m, std::ve
             0.0f, 0.0f, factor * (x2 + y2)
     );
     inverseInertiaTensor = glm::inverse(inertiaTensor);
+    aggregateBoundingBox = BoundingBox(glm::vec3(-0.1), glm::vec3(0.1));
 
     setupBuffers();
 
@@ -39,16 +40,13 @@ void RigidBody::updateInertiaTensor() {
 }
 
 void RigidBody::updateBoundingBoxes() {
-    aggregateBoundingBox = BoundingBox(glm::vec3(FLT_MAX), glm::vec3(-FLT_MAX)); // Reset aggregate bounding box
-
     // Update each bounding box based on the new position and orientation
-    for (const auto& box : boundingBoxes) {
+    for (auto box : boundingBoxes) {
         box->update(position, orientation);
-
-        // Expand the aggregate bounding box to include this box
-        aggregateBoundingBox.expandToInclude(*box);
+//        aggregateBoundingBox.expandToInclude(*box);
     }
 }
+
 
 void RigidBody::update(float deltaTime) {
     // Linear dynamics
@@ -58,14 +56,12 @@ void RigidBody::update(float deltaTime) {
     force = glm::vec3(0.0f);  // Reset force
 
     // Angular dynamics
-    glm::vec3 angularAcceleration = inverseInertiaTensor * torque;
-    angularVelocity += angularAcceleration * deltaTime;
-    orientation += glm::quat(0.0f, angularVelocity * deltaTime) * orientation * 0.5f;
-    orientation = glm::normalize(orientation);
-    torque = glm::vec3(0.0f);  // Reset torque
-
-    // Update inertia tensor in world frame
-    updateInertiaTensor();
+//    glm::vec3 angularAcceleration = inverseInertiaTensor * torque;
+//    angularVelocity += angularAcceleration * deltaTime;
+//    orientation += glm::quat(0.0f, angularVelocity * deltaTime) * orientation * 0.5f;
+//    orientation = glm::normalize(orientation);
+//    torque = glm::vec3(0.0f);  // Reset torque
+//    updateInertiaTensor();
 
     // Update bounding boxes
     updateBoundingBoxes();

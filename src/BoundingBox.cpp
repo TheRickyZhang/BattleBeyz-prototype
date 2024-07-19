@@ -44,17 +44,27 @@ void BoundingBox::update(const glm::vec3& v1, const glm::vec3& v2, const glm::ve
 }
 
 void BoundingBox::update(const glm::vec3& position, const glm::quat& orientation) {
+
     glm::vec3 halfSize = (max - min) * 0.5f;
     glm::vec3 center = min + halfSize;
 
-    // Rotate the center and halfSize using the quaternion
-    glm::vec3 rotatedCenter = glm::rotate(orientation, center);
-    glm::vec3 rotatedHalfSize = glm::abs(glm::rotate(orientation, halfSize));
+    glm::vec3 newCenter = position;
 
-    glm::vec3 newCenter = position + rotatedCenter;
+    min = newCenter - halfSize;
+    max = newCenter + halfSize;
 
-    min = newCenter - rotatedHalfSize;
-    max = newCenter + rotatedHalfSize;
+    // No angular for now
+//    glm::vec3 halfSize = (max - min) * 0.5f;
+//    glm::vec3 localCenter = min + halfSize;
+//
+//    // Transform local center to new center position
+//    glm::vec3 newCenter = position + glm::rotate(orientation, localCenter - position);
+//
+//    // Rotate the half-size vector to account for the bounding box orientation
+//    glm::vec3 rotatedHalfSize = glm::abs(glm::rotate(orientation, halfSize));
+//
+//    min = newCenter - rotatedHalfSize;
+//    max = newCenter + rotatedHalfSize;
 }
 
 void BoundingBox::expandToInclude(const BoundingBox& other) {
@@ -83,21 +93,20 @@ void BoundingBox::setupBuffers() {
     unsigned int indices[] = {
             0, 1, 2, 2, 3, 0, // Bottom face
             4, 5, 6, 6, 7, 4, // Top face
-            0, 1, 5, 5, 4, 0, // Front face
-            1, 2, 6, 6, 5, 1, // Right face
-            2, 3, 7, 7, 6, 2, // Back face
-            3, 0, 4, 4, 7, 3  // Left face
+//            0, 1, 5, 5, 4, 0, // Front face
+//            1, 2, 6, 6, 5, 1, // Right face
+//            2, 3, 7, 7, 6, 2, // Back face
+//            3, 0, 4, 4, 7, 3  // Left face
     };
 
     ::setupBuffers(VAO, VBO, EBO, vertices, sizeof(vertices), indices, sizeof(indices));
 }
 
-void BoundingBox::renderDebug(ShaderProgram &shader, const glm::vec3 &viewPos) {
-    setupBuffers();
-    std::cout << "Rendering bounding box" << min.x << " " << min.y << " " << min.z << "\n" << max.x << " " << max.y << " " << max.z << "\n" << std::endl;
+void BoundingBox::renderDebug(ShaderProgram &shader) {
     shader.use();
+    setupBuffers();
+    std::cout << "Rendering bounding box\n" << min.x << " " << min.y << " " << min.z << "\n" << max.x << " " << max.y << " " << max.z << "\n" << std::endl;
 
-    shader.setUniformVec3("viewPos", viewPos); // Example view position
     shader.setUniformVec3("objectColor", glm::vec3(1.0f, 1.0f, 1.0f));
 
     glBindVertexArray(VAO);

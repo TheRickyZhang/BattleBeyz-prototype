@@ -14,7 +14,7 @@ public:
     glm::vec3 position;
     glm::vec3 velocity;
     glm::vec3 acceleration;
-    std::vector<std::unique_ptr<BoundingBox>> boundingBoxes;
+    std::vector<BoundingBox*> boundingBoxes;
     float mass;
     glm::vec3 force;
     glm::vec3 angularVelocity;  // Angular velocity vector
@@ -24,7 +24,7 @@ public:
     glm::mat3 inverseInertiaTensor; // Inverse inertia tensor in the world frame
     BoundingBox aggregateBoundingBox; // Aggregate bounding box
 
-    RigidBody(const glm::vec3& pos, const glm::vec3& sz, float m, std::vector<std::unique_ptr<BoundingBox>> bboxes = {});
+    RigidBody(const glm::vec3& pos, const glm::vec3& sz, float mass, std::vector<BoundingBox*> bboxes = {});
     virtual ~RigidBody(); // Destructor to manage memory
 
     void applyForce(const glm::vec3& f);
@@ -45,7 +45,7 @@ private:
 
 class ImmovableRigidBody : public RigidBody {
 public:
-    ImmovableRigidBody(const glm::vec3& pos, const glm::vec3& sz, std::vector<std::unique_ptr<BoundingBox>> bboxes = {})
+    ImmovableRigidBody(const glm::vec3& pos, const glm::vec3& sz, std::vector<BoundingBox*> bboxes = {})
             : RigidBody(pos, sz, FLT_MAX, std::move(bboxes)) {} // Infinite mass for immovable body
 
     void update(float deltaTime) override {

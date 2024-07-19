@@ -16,7 +16,7 @@ public:
 
     // Pure virtual functions
     virtual void initializeMesh() = 0;
-    virtual void render(ShaderProgram &shader, const glm::vec3 &viewPos, const glm::vec3 &lightColor, const glm::vec3 &lightPos) = 0;
+    virtual void render(ShaderProgram &shader, const glm::vec3 &lightColor, const glm::vec3 &lightPos) = 0;
 protected:
     // Mesh data
     std::vector<glm::vec3> vertices;

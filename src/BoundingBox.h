@@ -22,7 +22,7 @@ public:
     void update(const glm::vec3& position, const glm::quat& orientation);
     void expandToInclude(const BoundingBox& other);
     void expandToInclude(const glm::vec3& point);
-    void renderDebug(ShaderProgram &shader, const glm::vec3 &viewPos);
+    void renderDebug(ShaderProgram &shader);
 private:
     void setupBuffers();
 
