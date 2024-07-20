@@ -39,25 +39,3 @@ unzip v1.90.8.zip
 curl -LO https://github.com/nothings/stb/archive/refs/tags/v0.8.zip
 unzip v0.8.zip
 ```
-
-#### PhysX
-This library is too large to upload with git, so you will need to generate it yourself.
-First, download the PhysX SDK from the NVIDIA website.
-```sh
-curl -LO https://github.com/NVIDIA/PhysX/archive/refs/tags/5.4.0.zip
-unzip 5.4.0.zip
-```
-
-Then, you will need to build the library. You can follow the instructions provided, or you can use the following commands. 
-```sh
-cd PhysX-5.4.0/physx
-generate_projects.bat
-```
-Open PhysX.sln in compiler/vc16win64 (or compiler/vc17win64) with Visual Studio and build in either Debug or Release mode.
-    Then, move the PhysX SDK files to the `lib` folder under /physx-5.4.0 - ensure you have at least the `include` and `lib` (bin) folders.
-```
-cp -r path/to/physx/include/* path/to/BattleBeyz/lib/physx-5.4.0/include
-cp -r path/to/physx/lib/* path/to/BattleBeyz/lib/physx-5.4.0/lib
-```
-
-If you are compiling on x86, you might also face an issue with unrecognized types. You'll need to resolve this by adjusting the logic to use the correct types.
