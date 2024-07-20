@@ -1,5 +1,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <cmath>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -104,8 +105,18 @@ int main() {
     auto physicsWorld = new PhysicsWorld;
 
     // Primary camera and camera state
-    Camera mainCamera(glm::vec3(0.0f, 0.0f, 3.0f), -90.0f, 0.0f, 0.0f, physicsWorld);
+    glm::vec3 initialCameraPos(5.0f, 5.0f, 0.0f);
+    glm::vec3 lookAtPoint(0.0f, 0.0f, 0.0f);
+    glm::vec3 frontVector = glm::normalize(lookAtPoint - initialCameraPos);
+
+// Calculate initial yaw and pitch
+    float initialYaw = glm::degrees(std::atan2(frontVector.z, frontVector.x)); // Yaw based on X and Z
+    float initialPitch = glm::degrees(std::atan2(frontVector.y, glm::length(glm::vec2(frontVector.x, frontVector.z))));
+
+    Camera mainCamera(initialCameraPos, initialYaw, initialPitch, 0.0f, physicsWorld);
+    mainCamera.Front = frontVector;  // Set the front vector to look at the desired point
     auto cameraState = new CameraState(&mainCamera, 400.0, 300.0);
+
 
     // Time variables
     float deltaTime = 0.0f;
@@ -122,7 +133,7 @@ int main() {
     auto identity4 = glm::mat4(1.0f);
     // Identity matrix, starting view, and projection matrices
     model = identity4;
-    view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    view = glm::lookAt(initialCameraPos, lookAtPoint, glm::vec3(0.0f, 1.0f, 0.0f));
     projection = glm::perspective(glm::radians(45.0f), float(windowWidth) / float(windowHeight), 0.1f, 100.0f);
 
     // Set orthographic projection and depth values for the background shader

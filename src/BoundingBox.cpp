@@ -78,25 +78,48 @@ void BoundingBox::expandToInclude(const glm::vec3& point) {
 }
 
 void BoundingBox::setupBuffers() {
+    float offset = 0.0;
+
+//    float vertices[] = {
+//            // Positions         // Normals         // Texture Coords  // Colors (RGB)
+//            -1.0f, -1.0f, -1.0f,  0.0f, 0.0f, -1.0f,  0.0f, 0.0f,      1.0f, 0.0f, 0.0f, // Red
+//            1.0f, -1.0f, -1.0f,  1.0f, 0.0f, 0.0f,  1.0f, 0.0f,      0.0f, 1.0f, 0.0f, // Green
+//            1.0f,  1.0f, -1.0f,  0.0f, 1.0f, 0.0f,  1.0f, 1.0f,      0.0f, 0.0f, 1.0f, // Blue
+//            -1.0f,  1.0f, -1.0f, -1.0f, 0.0f, 0.0f,  0.0f, 1.0f,      1.0f, 1.0f, 0.0f, // Yellow
+//            -1.0f, -1.0f,  1.0f,  0.0f, -1.0f, 0.0f,  0.0f, 0.0f,      1.0f, 0.0f, 1.0f, // Magenta
+//            1.0f, -1.0f,  1.0f,  1.0f, 0.0f, 0.0f,  1.0f, 0.0f,      0.0f, 1.0f, 1.0f, // Cyan
+//            1.0f,  1.0f,  1.0f,  0.0f, 1.0f, 0.0f,  1.0f, 1.0f,      1.0f, 0.5f, 0.0f, // Orange
+//            -1.0f,  1.0f,  1.0f, -1.0f, 0.0f, 0.0f,  0.0f, 1.0f,      0.5f, 0.5f, 0.5f  // Grey
+//    };
+//
+//    unsigned int indices[] = {
+//            0, 1, 2, 2, 3, 0, // Bottom face
+//            4, 5, 6, 6, 7, 4, // Top face
+//            0, 1, 5, 5, 4, 0, // Front face
+//            1, 2, 6, 6, 5, 1, // Right face
+//            2, 3, 7, 7, 6, 2, // Back face
+//            3, 0, 4, 4, 7, 3  // Left face
+//    };
+
     float vertices[] = {
             // Positions         // Normals         // Texture Coords  // Colors (RGB)
-            min.x, min.y, min.z,  0.0f, 0.0f, -1.0f,  0.0f, 0.0f,      1.0f, 0.0f, 0.0f, // Red
-            max.x, min.y, min.z,   1.0f, 0.0f, 0.0f,   1.0f, 0.0f,      0.0f, 1.0f, 0.0f, // Green
-            max.x, max.y, min.z,   0.0f, 1.0f, 0.0f,   1.0f, 1.0f,      0.0f, 0.0f, 1.0f, // Blue
-            min.x, max.y, min.z, -1.0f, 0.0f, 0.0f,   0.0f, 1.0f,      1.0f, 1.0f, 0.0f, // Yellow
-            min.x, min.y, max.z,  0.0f, -1.0f, 0.0f,  0.0f, 0.0f,      1.0f, 0.0f, 1.0f, // Magenta
-            max.x, min.y, max.z,   1.0f, 0.0f, 0.0f,   1.0f, 0.0f,      0.0f, 1.0f, 1.0f, // Cyan
-            max.x, max.y, max.z,   0.0f, 1.0f, 0.0f,   1.0f, 1.0f,      1.0f, 0.5f, 0.0f, // Orange
-            min.x, max.y, max.z, -1.0f, 0.0f, 0.0f,   0.0f, 1.0f,      0.5f, 0.5f, 0.5f  // Grey
+            min.x, min.y-offset, min.z,  0.0f, 0.0f, -1.0f,  0.0f, 0.0f,      1.0f, 0.0f, 0.0f, // Red
+            max.x, min.y-offset, min.z,   1.0f, 0.0f, 0.0f,   1.0f, 0.0f,      0.0f, 1.0f, 0.0f, // Green
+            max.x, max.y-offset, min.z,   0.0f, 1.0f, 0.0f,   1.0f, 1.0f,      0.0f, 0.0f, 1.0f, // Blue
+            min.x, max.y-offset, min.z, -1.0f, 0.0f, 0.0f,   0.0f, 1.0f,      1.0f, 1.0f, 0.0f, // Yellow
+            min.x, min.y-offset, max.z,  0.0f, -1.0f, 0.0f,  0.0f, 0.0f,      1.0f, 0.0f, 1.0f, // Magenta
+            max.x, min.y-offset, max.z,   1.0f, 0.0f, 0.0f,   1.0f, 0.0f,      0.0f, 1.0f, 1.0f, // Cyan
+            max.x, max.y-offset, max.z,   0.0f, 1.0f, 0.0f,   1.0f, 1.0f,      1.0f, 0.5f, 0.0f, // Orange
+            min.x, max.y-offset, max.z, -1.0f, 0.0f, 0.0f,   0.0f, 1.0f,      0.5f, 0.5f, 0.5f  // Grey
     };
 
     unsigned int indices[] = {
             0, 1, 2, 2, 3, 0, // Bottom face
             4, 5, 6, 6, 7, 4, // Top face
-//            0, 1, 5, 5, 4, 0, // Front face
-//            1, 2, 6, 6, 5, 1, // Right face
-//            2, 3, 7, 7, 6, 2, // Back face
-//            3, 0, 4, 4, 7, 3  // Left face
+            0, 1, 5, 5, 4, 0, // Front face
+            1, 2, 6, 6, 5, 1, // Right face
+            2, 3, 7, 7, 6, 2, // Back face
+            3, 0, 4, 4, 7, 3  // Left face
     };
 
     ::setupBuffers(VAO, VBO, EBO, vertices, sizeof(vertices), indices, sizeof(indices));
@@ -105,8 +128,8 @@ void BoundingBox::setupBuffers() {
 void BoundingBox::renderDebug(ShaderProgram &shader) {
     shader.use();
     setupBuffers();
-    std::cout << "Rendering bounding box\n" << min.x << " " << min.y << " " << min.z << "\n" << max.x << " " << max.y << " " << max.z << "\n" << std::endl;
 
+    // Set uniform for object color
     shader.setUniformVec3("objectColor", glm::vec3(1.0f, 1.0f, 1.0f));
 
     glBindVertexArray(VAO);
