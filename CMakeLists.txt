@@ -11,7 +11,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Find packages
 find_package(OpenGL REQUIRED)
-find_package(pugixml CONFIG REQUIRED)
 
 # Include directories
 include_directories(${PROJECT_SOURCE_DIR}/include)
@@ -22,7 +21,6 @@ include_directories(${PROJECT_SOURCE_DIR}/lib/freetype-2.13.2/include)
 include_directories(${PROJECT_SOURCE_DIR}/lib/stb)
 include_directories(${PROJECT_SOURCE_DIR}/lib/imgui-1.90.8)
 include_directories(${PROJECT_SOURCE_DIR}/lib/imgui-1.90.8/backends)
-#include_directories(${PROJECT_SOURCE_DIR}/lib/tinyobjloader-release)  # Add TinyOBJLoader include directories
 
 # Specify ImGui source files
 set(IMGUI_SOURCES
@@ -33,11 +31,6 @@ set(IMGUI_SOURCES
         ${PROJECT_SOURCE_DIR}/lib/imgui-1.90.8/backends/imgui_impl_opengl3.cpp
         ${PROJECT_SOURCE_DIR}/lib/imgui-1.90.8/backends/imgui_impl_glfw.cpp
 )
-
-## Add TinyOBJLoader source file
-#set(TINYOBJLOADER_SOURCES
-#        ${PROJECT_SOURCE_DIR}/lib/tinyobjloader-release/tiny_obj_loader.cc
-#)
 
 # Add source files
 file(GLOB_RECURSE SOURCES "src/*.cpp" ${IMGUI_SOURCES})
@@ -56,7 +49,7 @@ set(FREETYPE_DIR ${PROJECT_SOURCE_DIR}/lib/freetype-2.13.2)
 link_directories(${FREETYPE_DIR}/dll/win64)
 
 # Add external libraries
-set(LIBS glfw glew32s ${OPENGL_LIBRARIES} freetype glu32 opengl32 pugixml)
+set(LIBS glfw glew32s ${OPENGL_LIBRARIES} freetype glu32 opengl32)
 
 # Add assets directory to be copied to the build directory
 file(COPY ${PROJECT_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR})
@@ -102,6 +95,3 @@ add_executable(BattleBeyz ${SOURCES}
 
 # Link libraries
 target_link_libraries(BattleBeyz PRIVATE ${LIBS})
-
-# Debug messages to verify paths
-#message(STATUS "TinyOBJLoader include directory: ${PROJECT_SOURCE_DIR}/lib/tinyobjloader-release")

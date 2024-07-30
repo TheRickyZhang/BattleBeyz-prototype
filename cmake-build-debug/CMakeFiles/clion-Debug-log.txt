@@ -1,0 +1,6 @@
+C:\Users\ricky\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=C:/Users/ricky/AppData/Local/Programs/CLion/bin/ninja/win/x64/ninja.exe -G Ninja -S "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz" -B "C:\Users\ricky\OneDrive - University of Florida\Documents\BattleBeyz\cmake-build-debug"
+-- Including Win32 support
+-- Documentation generation requires Doxygen 1.9.8 or later
+-- Configuring done (0.7s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/Users/ricky/OneDrive - University of Florida/Documents/BattleBeyz/cmake-build-debug
