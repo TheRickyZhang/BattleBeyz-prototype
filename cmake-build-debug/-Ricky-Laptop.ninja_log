@@ -1,0 +1,26 @@
+# ninja log v5
+22	897	7394060623382645	CMakeFiles/BattleBeyz.dir/src/main.cpp.obj	2e625e6729b7ce0a
+37	973	7391840580291463	lib/glfw-3.4/src/CMakeFiles/glfw.dir/vulkan.c.obj	af290aa699037259
+109	1105	7391840581631464	lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_joystick.c.obj	ae4f30ab3e1209d0
+88	1053	7391840581121476	lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_time.c.obj	ae4026e140a8d637
+52	974	7391840580291463	lib/glfw-3.4/src/CMakeFiles/glfw.dir/osmesa_context.c.obj	b32b960cddaf2df4
+2	387	7394139934442173	build.ninja	682b190941b10c4f
+17	976	7391840580301482	lib/glfw-3.4/src/CMakeFiles/glfw.dir/init.c.obj	a04334ded37c5599
+11	1006	7391840580621473	lib/glfw-3.4/src/CMakeFiles/glfw.dir/context.c.obj	451fd79b83f398a5
+27	972	7391840580241480	lib/glfw-3.4/src/CMakeFiles/glfw.dir/monitor.c.obj	9a81628cb25356b6
+898	1827	7394060632701807	BattleBeyz.exe	5ecd928a39ff65a8
+32	980	7391840580371483	lib/glfw-3.4/src/CMakeFiles/glfw.dir/platform.c.obj	5f58be915edfb44e
+58	1043	7391840581011458	lib/glfw-3.4/src/CMakeFiles/glfw.dir/null_init.c.obj	c21d051aec928fb8
+81	1060	7391840581191466	lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_module.c.obj	cbd2c89e03e2d8c2
+74	1032	7391840580891470	lib/glfw-3.4/src/CMakeFiles/glfw.dir/null_joystick.c.obj	9c2141948ad0de42
+22	1031	7391840580871461	lib/glfw-3.4/src/CMakeFiles/glfw.dir/input.c.obj	907c9579ed8dec68
+64	1032	7391840580891470	lib/glfw-3.4/src/CMakeFiles/glfw.dir/null_monitor.c.obj	af9c25e1177509b3
+69	1052	7391840581111462	lib/glfw-3.4/src/CMakeFiles/glfw.dir/null_window.c.obj	f83bf9172f04ecd0
+47	1011	7391840580691454	lib/glfw-3.4/src/CMakeFiles/glfw.dir/egl_context.c.obj	b92086c62c5e0be2
+95	1040	7391840580981470	lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_thread.c.obj	15243fb0af16d294
+43	1046	7391840581041462	lib/glfw-3.4/src/CMakeFiles/glfw.dir/window.c.obj	94b8ca924b4cce96
+130	1118	7391840581711473	lib/glfw-3.4/src/CMakeFiles/glfw.dir/wgl_context.c.obj	963df4d3872dff9a
+102	1075	7391840581331469	lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_init.c.obj	7be44599d3375698
+115	1102	7391840581611474	lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_monitor.c.obj	1b492b1ff3d46531
+122	1177	7391840582351442	lib/glfw-3.4/src/CMakeFiles/glfw.dir/win32_window.c.obj	ba8de4bf97eb90e4
+1177	1281	7391840583361459	lib/glfw-3.4/src/libglfw3.a	9f82120a5f1b113f
