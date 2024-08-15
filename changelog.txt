@@ -1,0 +1,49 @@
+2024-08-08 wmm On first build and then attempting to run, you will get a "freetype.dll not found".
+               A quick fix is to copy the dll lib\freetype-2.13.2\dll\win64\freetype.dll
+               to build\Debug.  Eventually we will need a proper installer.
+               
+
+               Started adding comments compatible with Doxygen.  I first learned this using Java, so
+               I tend to use JavaDoc-compatible comments.  There's a nice summary of the commands
+               in the JavaDoc wikipedia article
+
+               Renamed CallbackData to GameControl.
+
+               Added debugMode to GameControl.
+
+               Restructured keyboard handling so it is all now handled in the keyboard event handler.
+               This eliminates the need processInput().  Also, CTRL-D toggles debug mode, which currently
+               means show the bounding boxes as wireframes.
+
+               Only call some of the renderDebug routines when debugMode is enabled.
+
+               Modified the bounding box render to show wireframes instead of solids.
+
+               Added a bodyPosition argument to BoundingBox::renderDebug.  This is required
+               to properly translate the bounding boxes to the actual position of the owning
+               body.  CAN BE APPLIED TO OTHER CASES.
+
+               Refactored Callback.cpp (alphabetized functions).
+
+               Added a required parameter "name" to the RigidBody constructure.  This is helpful
+               for debugging.
+
+               Changed some types from unsigned int to the more explicity uint32_t.
+
+               Added casts here and there, or changed loop variables to match size_t or to
+               downcast a size_t to uint32_t.
+
+               In Beyblade.cpp, made the map keys type uint32_t because size_t is overkill and wasteful.
+
+               Clean up Camera::processKeyboard.
+
+               Move #include "UI.h" to the top of main.cpp, and removed other redundant includes.
+               This eleminates the "APIENTRY redefined" warning.
+
+               Added #define _USE_MATH_DEFINES and #include <cmath> in Stadium.h so M_PI will be defined.
+
+               <cmath> and <math.h> are a bit weird -- to get a definition of M_PI I put a preprocessor
+               define of _USE_MATH_DEFINES in the project for each build variation.
+
+               Some code being included fails unless you deine GLM_ENABLE_EXPERIMENTAL.  I also defined
+               this in the project for each build variation.
