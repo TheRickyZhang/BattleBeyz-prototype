@@ -9,4 +9,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <GL/glu.h>
-#include <iostream>
+
+namespace Physics {
+    constexpr double GRAVITY = 9.81;
+}

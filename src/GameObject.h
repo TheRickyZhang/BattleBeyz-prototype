@@ -15,10 +15,13 @@
 #include "ShaderProgram.h"
 #include "Buffers.h"
 
+/**
+* Changes 8/16: Removed position and color. Class now only contains rendering information - perhaps this should be renamed to MeshObject.
+*/
 class GameObject {
 public:
-    GameObject(unsigned int vao, unsigned int vbo, unsigned int ebo, const glm::vec3& pos, const glm::vec3& col)
-            : VAO(vao), VBO(vbo), EBO(ebo), position(pos), color(col) {}
+    GameObject(unsigned int vao, unsigned int vbo, unsigned int ebo, const glm::vec3& col)
+            : VAO(vao), VBO(vbo), EBO(ebo), color(col) {}
 
     // Pure virtual functions
     virtual void initializeMesh() = 0;
@@ -28,14 +31,12 @@ protected:
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec3> normals;
     std::vector<glm::vec2> texCoords;
-    std::vector<unsigned int> indices;  // For defining triangles
-    std::vector<glm::vec3> tangents;    // For advanced shading
+    std::vector<unsigned int> indices;
+    std::vector<glm::vec3> tangents;
+    
     std::vector<glm::vec3> colors;
-
     std::vector<float> vertexData;
 
     unsigned int VAO, VBO, EBO;
-    // Should migrate this position to RigidBody class
-    glm::vec3 position;
     glm::vec3 color;
 };

@@ -96,6 +96,18 @@ bool ShaderProgram::isUniformAvailable(const std::string& name) const
 }
 
 /**
+* Load a shader program from a file.
+*/
+
+std::string ShaderProgram::readFile(const char* filePath)
+{
+    std::ifstream file(filePath);
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    return buffer.str();
+}
+
+/**
 * Set a boolean uniform.
 */
 
@@ -173,10 +185,30 @@ void ShaderProgram::setUniforms(glm::mat4 model, glm::mat4 view, glm::mat4 proje
 }
 
 /**
+* Set object color.
+* 
+* This sets the useObjectColor flag and objectColor vectors in the shader program object.vs.
+* This will override the colors defined in the vertex data.
+* 
+* IMPORTANT:  Turns this off when you are finished using it!
+* 
+* @param color                          [in] Pointer to color.  If null, the objectColor
+*                                       handing is disabled.
+*/
+
+void ShaderProgram::setObjectColor(const glm::vec3* color) const
+{
+    setBool("useObjectColor", color == nullptr ? false : true);
+    if (color != nullptr) {
+        setUniformVec3("objectColor", *color);
+    }
+}
+
+/**
 * Update camera position and view matrix.
 */
 
-void ShaderProgram::updateCameraPosition(const glm::vec3& cameraPosition, const glm::mat4& viewMatrix) const 
+void ShaderProgram::updateCameraPosition(const glm::vec3& cameraPosition, const glm::mat4& viewMatrix) const
 {
     setUniformVec3("viewPos", cameraPosition);
     setUniformMat4("view", viewMatrix);
@@ -189,16 +221,4 @@ void ShaderProgram::updateCameraPosition(const glm::vec3& cameraPosition, const 
 void ShaderProgram::use() const
 {
     glUseProgram(ID);
-}
-
-/**
-* Load a shader program from a file.
-*/
-
-std::string ShaderProgram::readFile(const char* filePath)
-{
-    std::ifstream file(filePath);
-    std::stringstream buffer;
-    buffer << file.rdbuf();
-    return buffer.str();
 }

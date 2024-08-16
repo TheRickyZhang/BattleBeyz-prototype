@@ -9,13 +9,21 @@
 * Constructor.
 */
 
-Stadium::Stadium(unsigned int vao, unsigned int vbo, unsigned int ebo, const glm::vec3 &pos, const glm::vec3 &col,
-                 const glm::vec3 &ringColor, const glm::vec3& crossColor, float radius, float curvature, int numRings,
-                 int verticesPerRing, Texture* texture, float textureScale, PhysicsWorld* physicsWorld)
-        : GameObject(vao, vbo, ebo, pos, col), ringColor(ringColor), crossColor(crossColor), radius(radius), curvature(curvature),
-          numRings(numRings), verticesPerRing(verticesPerRing), texture(texture), textureScale(textureScale), physicsWorld(physicsWorld) {
-    body = new ImmovableRigidBody("stadium", pos, glm::vec3(radius * 2.0f, curvature * radius * radius, radius * 2.0f));
-    physicsWorld->addBody(body);
+Stadium::Stadium(unsigned int vao, unsigned int vbo, unsigned int ebo, const glm::vec3& pos, const glm::vec3& col,
+    const glm::vec3& ringColor, const glm::vec3& crossColor, float radius, float curvature, float coefficientOfFriction, int numRings,
+    int verticesPerRing, Texture* texture, float textureScale, PhysicsWorld* physicsWorld)
+    : GameObject(vao, vbo, ebo, col),
+    ringColor(ringColor),
+    crossColor(crossColor),
+    radius(radius), curvature(curvature),
+    numRings(numRings),
+    verticesPerRing(verticesPerRing),
+    texture(texture),
+    textureScale(textureScale),
+    physicsWorld(physicsWorld)
+{
+    rigidBody = new StadiumBody(pos, radius, curvature, coefficientOfFriction);
+    // physicsWorld->addBody(body);
     Stadium::initializeMesh();
     std::cout << "Stadium color: (" << color.x << ", " << color.y << ", " << color.z << ")\n";
 }
@@ -38,7 +46,7 @@ void Stadium::generateMeshData() {
     texCoords.emplace_back(0.5, 0.5);
     colors.emplace_back(crossColor);
 
-    if(verticesPerRing % 4 != 0) {
+    if (verticesPerRing % 4 != 0) {
         std::cerr << "Vertices per ring must be a multiple of 4" << std::endl;
         return;
     }
@@ -54,23 +62,25 @@ void Stadium::generateMeshData() {
 
             vertices.emplace_back(x, y, z);
             texCoords.emplace_back(textureScale * (r / radius * std::cos(theta)) + 0.5f,
-                                   textureScale * (r / radius * std::sin(theta)) + 0.5f);
+                textureScale * (r / radius * std::sin(theta)) + 0.5f);
             // Set ring color for middle and end
-            if(rIdx == numRings / 4 || rIdx == numRings - 1) {
+            if (rIdx == numRings / 4 || rIdx == numRings - 1) {
                 colors.emplace_back(ringColor);
-            } else if(thetaIdx == 0 || thetaIdx == verticesPerRing / 4 || thetaIdx == verticesPerRing / 2 || thetaIdx == 3 * verticesPerRing / 4) {
+            }
+            else if (thetaIdx == 0 || thetaIdx == verticesPerRing / 4 || thetaIdx == verticesPerRing / 2 || thetaIdx == 3 * verticesPerRing / 4) {
                 colors.emplace_back(crossColor);
-            } else {
+            }
+            else {
                 colors.emplace_back(color);
             }
-//            // Create a spiral color pattern
-//            if ((rIdx + thetaIdx * 2) % (verticesPerRing / 2) < verticesPerRing / (numRings / 2)) {
-//                colors.emplace_back(ringColor);
-//            } else if (thetaIdx % (verticesPerRing / 12) == 0) {
-//                colors.emplace_back(crossColor);
-//            } else {
-//                colors.emplace_back(color);
-//            }
+            //            // Create a spiral color pattern
+            //            if ((rIdx + thetaIdx * 2) % (verticesPerRing / 2) < verticesPerRing / (numRings / 2)) {
+            //                colors.emplace_back(ringColor);
+            //            } else if (thetaIdx % (verticesPerRing / 12) == 0) {
+            //                colors.emplace_back(crossColor);
+            //            } else {
+            //                colors.emplace_back(color);
+            //            }
         }
     }
 
@@ -178,10 +188,10 @@ void Stadium::generateMeshData() {
         }
     }
 
-    for (auto &normal: normals) {
+    for (auto& normal : normals) {
         normal = glm::normalize(normal);
     }
-    for (auto &tangent: tangents) {
+    for (auto& tangent : tangents) {
         tangent = glm::normalize(tangent);
     }
 
@@ -195,40 +205,40 @@ void Stadium::generateMeshData() {
         bbox->update(v1, v2, v3);
 
         // Add the bounding box to the immovable rigid body
-        body->boundingBoxes.push_back(bbox);
+        rigidBody->boundingBoxes.push_back(bbox);
     }
 
-//    // Print out the vertices
-//    std::cout << "Vertices: " << vertices.size() << std::endl;
-//    for (const auto &vertex: vertices) {
-//        std::cout << std::fixed << std::setprecision(2) << "(" << vertex.x << ", " << vertex.y << ", " << vertex.z
-//                  << ") ";
-//    }
-//
-//// Print out the normals
-//    std::cout << "\nNormals: " << normals.size() << std::endl;
-//    for (const auto &normal: normals) {
-//        std::cout << std::fixed << std::setprecision(2) << "(" << normal.x << ", " << normal.y << ", " << normal.z
-//                  << ") ";
-//    }
-//
-//// Print out the texture coordinates
-//    std::cout << "\nTexture Coordinates: " << texCoords.size() << std::endl;
-//    for (const auto &texCoord: texCoords) {
-//        std::cout << std::fixed << std::setprecision(2) << "(" << texCoord.x << ", " << texCoord.y << ") ";
-//    }
-//
-//// Print out the indices
-//    std::cout << "\nIndices: " << indices.size() << std::endl;
-//    for (size_t i = 0; i < indices.size(); i += 3) {
-//        std::cout << "Triangle: (" << indices[i] << ", " << indices[i + 1] << ", " << indices[i + 2] << ") ";
-//    }
-//    // Print out the tangents
-//    std::cout << "\nTangents: " << tangents.size() << std::endl;
-//    for (const auto &tangent: tangents) {
-//        std::cout << std::fixed << std::setprecision(2) << "(" << tangent.x << ", " << tangent.y << ", " << tangent.z
-//                  << ") ";
-//    }
+    //    // Print out the vertices
+    //    std::cout << "Vertices: " << vertices.size() << std::endl;
+    //    for (const auto &vertex: vertices) {
+    //        std::cout << std::fixed << std::setprecision(2) << "(" << vertex.x << ", " << vertex.y << ", " << vertex.z
+    //                  << ") ";
+    //    }
+    //
+    //// Print out the normals
+    //    std::cout << "\nNormals: " << normals.size() << std::endl;
+    //    for (const auto &normal: normals) {
+    //        std::cout << std::fixed << std::setprecision(2) << "(" << normal.x << ", " << normal.y << ", " << normal.z
+    //                  << ") ";
+    //    }
+    //
+    //// Print out the texture coordinates
+    //    std::cout << "\nTexture Coordinates: " << texCoords.size() << std::endl;
+    //    for (const auto &texCoord: texCoords) {
+    //        std::cout << std::fixed << std::setprecision(2) << "(" << texCoord.x << ", " << texCoord.y << ") ";
+    //    }
+    //
+    //// Print out the indices
+    //    std::cout << "\nIndices: " << indices.size() << std::endl;
+    //    for (size_t i = 0; i < indices.size(); i += 3) {
+    //        std::cout << "Triangle: (" << indices[i] << ", " << indices[i + 1] << ", " << indices[i + 2] << ") ";
+    //    }
+    //    // Print out the tangents
+    //    std::cout << "\nTangents: " << tangents.size() << std::endl;
+    //    for (const auto &tangent: tangents) {
+    //        std::cout << std::fixed << std::setprecision(2) << "(" << tangent.x << ", " << tangent.y << ", " << tangent.z
+    //                  << ") ";
+    //    }
 }
 
 /**
@@ -240,7 +250,7 @@ void Stadium::initializeMesh() {
     if (vertices.size() != normals.size() || vertices.size() != texCoords.size()) {
         std::cerr << "Mesh data is inconsistent" << std::endl;
         std::cout << "Vertices: " << vertices.size() << ", Normals: " << normals.size() << ", TexCoords: "
-                  << texCoords.size() << std::endl;
+            << texCoords.size() << std::endl;
         return;
     }
     for (size_t i = 0; i < vertices.size(); ++i) {
@@ -263,16 +273,16 @@ void Stadium::initializeMesh() {
         vertexData.push_back(colors[i].z);
     }
     ::setupBuffers(VAO, VBO, EBO, vertexData.data(), vertexData.size() * sizeof(float), indices.data(),
-                   indices.size() * sizeof(unsigned int));
+        indices.size() * sizeof(unsigned int));
 }
 
 /**
 * Stadium renderer
-* 
+*
 * Does not need to take in lightColor and lightPos, as these should be same for all objects.
 */
 
-void Stadium::render(ShaderProgram &shader, const glm::vec3 &lightColor, const glm::vec3 &lightPos) {
+void Stadium::render(ShaderProgram& shader, const glm::vec3& lightColor, const glm::vec3& lightPos) {
     shader.use();
 
     if (texture) {
@@ -282,18 +292,21 @@ void Stadium::render(ShaderProgram &shader, const glm::vec3 &lightColor, const g
     }
 
     // Bind appropriate uniforms (model, view, projection matrices)
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), position);
+    glm::mat4 model = glm::translate(glm::mat4(1.0f), rigidBody->getCenter());
     shader.setUniformMat4("model", model);
-//    shader.setUniformVec3("viewPos", viewPos);
+    //    shader.setUniformVec3("viewPos", viewPos);
     shader.setUniformVec3("lightColor", lightColor);
     shader.setUniformVec3("lightPos", lightPos);
-    shader.setUniformVec3("objectColor", color);
 
-//    std::cout << "Rendering color: (" << color.x << ", " << color.y << ", " << color.z << ")\n";
+    //    std::cout << "Rendering color: (" << color.x << ", " << color.y << ", " << color.z << ")\n";
+
+    //shader.setObjectColor(&this->color);
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, nullptr);
     glBindVertexArray(0);
+
+    //shader.setObjectColor(nullptr);  // Turn this feature off now.
 
     GLenum err;
     while ((err = glGetError()) != GL_NO_ERROR) {

@@ -30,6 +30,9 @@
 #include "PhysicsWorld.h"
 #include "RigidBody.h"
 #include "Beyblade.h"
+#include "RigidBodies/BeybladeParts.h"
+#include "RigidBodies/BeybladeBody.h"
+#include "RigidBodies/StadiumBody.h"
 
 #include <iomanip>
 #include <algorithm>
@@ -168,12 +171,12 @@ int main() {
     auto backgroundView = identity4;
     glm::mat4 orthoProjection = glm::ortho(0.0f, float(windowWidth), 0.0f, float(windowHeight), 0.0f, 1.0f);
 
-//    // Position camera at the origin and rotate around it
-//    auto panoramaModel = identity4;
-//    glm::mat4 panoramaView = identity4;
-//    glm::mat4 panoramaProjection = glm::perspective(glm::radians(45.0f), float(windowWidth) / float(windowHeight), 0.1f, 100.0f);
+    //    // Position camera at the origin and rotate around it
+    //    auto panoramaModel = identity4;
+    //    glm::mat4 panoramaView = identity4;
+    //    glm::mat4 panoramaProjection = glm::perspective(glm::radians(45.0f), float(windowWidth) / float(windowHeight), 0.1f, 100.0f);
 
-    // Initialize ShaderProgram for 3D objects
+        // Initialize ShaderProgram for 3D objects
     auto objectShader = new ShaderProgram(OBJECT_VERTEX_SHADER_PATH, OBJECT_FRAGMENT_SHADER_PATH);
     // Initialize default shader program with the model, view, and projection matrices. Also sets to use.
     objectShader->setUniforms(model, view, projection);
@@ -184,10 +187,10 @@ int main() {
     backgroundShader->setUniforms(backgroundModel, backgroundView, orthoProjection);
     backgroundShader->setUniform1f("wrapFactor", 4.0f);
 
-//    auto panoramaShader = new ShaderProgram(PANORAMA_VERTEX_SHADER_PATH, PANORAMA_FRAGMENT_SHADER_PATH);
-//    panoramaShader->setUniforms(panoramaModel, panoramaView, panoramaProjection);
+    //    auto panoramaShader = new ShaderProgram(PANORAMA_VERTEX_SHADER_PATH, PANORAMA_FRAGMENT_SHADER_PATH);
+    //    panoramaShader->setUniforms(panoramaModel, panoramaView, panoramaProjection);
 
-    // Initialize font rendering
+        // Initialize font rendering
     TextRenderer textRenderer("../assets/fonts/paladins.ttf", 800, 600);
 
     // Initialize textures. Note that texture1 is primary texture
@@ -206,10 +209,10 @@ int main() {
 
     // Initialize camera and camera state
     GameControl gameControl(&windowWidth, &windowHeight, aspectRatio, &projection,
-                              objectShader, backgroundShader, cameraState, quadRenderer,
-                              true, false, false, false, defaultFont,
-                              titleFont, attackFont, false, ProgramState::ACTIVE,
-                              false /* debug mode*/);
+        objectShader, backgroundShader, cameraState, quadRenderer,
+        true, false, false, false, defaultFont,
+        titleFont, attackFont, false, ProgramState::ACTIVE,
+        false /* debug mode*/);
 
     // Store the callback data in the window for easy access
     glfwSetWindowUserPointer(window, &gameControl);
@@ -230,11 +233,11 @@ int main() {
 
     GLuint tetrahedronVAO, tetrahedronVBO, tetrahedronEBO;
     float tetrahedronVertices[] = {
-            // Positions 0-2                // Normals 3-5                      // TexCoords  6-7          // Colors 8-10
-            0.0f,  1.0f,  0.0f,  0.0f,  0.5773f,  0.0f,  0.5f, 1.0f,  1.0f, 0.0f, 0.0f, // Top vertex (Red)
-            0.0f,  0.0f, -1.0f,  0.0f,  0.5773f, -0.8165f, 0.5f, 0.0f,  0.0f, 1.0f, 0.0f, // Front vertex (Green)
-            -1.0f,  0.0f,  1.0f, -0.8165f,  0.5773f,  0.0f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f, // Left vertex (Blue)
-            1.0f,  0.0f,  1.0f,  0.8165f,  0.5773f,  0.0f,  1.0f, 0.0f,  1.0f, 1.0f, 0.0f  // Right vertex (Yellow)
+        // Positions 0-2                // Normals 3-5                      // TexCoords  6-7          // Colors 8-10
+        0.0f,  1.0f,  0.0f,  0.0f,  0.5773f,  0.0f,  0.5f, 1.0f,  1.0f, 0.0f, 0.0f, // Top vertex (Red)
+        0.0f,  0.0f, -1.0f,  0.0f,  0.5773f, -0.8165f, 0.5f, 0.0f,  0.0f, 1.0f, 0.0f, // Front vertex (Green)
+        -1.0f,  0.0f,  1.0f, -0.8165f,  0.5773f,  0.0f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f, // Left vertex (Blue)
+        1.0f,  0.0f,  1.0f,  0.8165f,  0.5773f,  0.0f,  1.0f, 0.0f,  1.0f, 1.0f, 0.0f  // Right vertex (Yellow)
     };
 
     unsigned int tetrahedronIndices[] = {
@@ -244,23 +247,23 @@ int main() {
             1, 2, 3  // Bottom face
     };
     setupBuffers(tetrahedronVAO, tetrahedronVBO, tetrahedronEBO, tetrahedronVertices,
-                 sizeof(tetrahedronVertices), tetrahedronIndices, sizeof(tetrahedronIndices));
+        sizeof(tetrahedronVertices), tetrahedronIndices, sizeof(tetrahedronIndices));
 
     // Initialize VAO, VBO, and EBO for the floor
     GLuint floorVAO, floorVBO, floorEBO;
     float floorVertices[] = {
-            // Positions        // Normals       // TexCoords // Colors
-            -30.0f, 0.0f, -30.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.5f, 0.5f,
-            30.0f, 0.0f, -30.0f, 0.0f, 1.0f, 0.0f, 4.0f, 0.0f, 0.5f, 0.5f, 0.5f,
-            30.0f, 0.0f,  30.0f, 0.0f, 1.0f, 0.0f, 4.0f, 4.0f, 0.5f, 0.5f, 0.5f,
-            -30.0f, 0.0f,  30.0f, 0.0f, 1.0f, 0.0f, 0.0f, 4.0f, 0.5f, 0.5f, 0.5f,
+        // Positions        // Normals       // TexCoords // Colors
+        -30.0f, 0.0f, -30.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.5f, 0.5f,
+        30.0f, 0.0f, -30.0f, 0.0f, 1.0f, 0.0f, 4.0f, 0.0f, 0.5f, 0.5f, 0.5f,
+        30.0f, 0.0f,  30.0f, 0.0f, 1.0f, 0.0f, 4.0f, 4.0f, 0.5f, 0.5f, 0.5f,
+        -30.0f, 0.0f,  30.0f, 0.0f, 1.0f, 0.0f, 0.0f, 4.0f, 0.5f, 0.5f, 0.5f,
     };
 
     unsigned int floorIndices[] = {
             0, 1, 2,
             2, 3, 0
     };
-    setupBuffers(floorVAO, floorVBO, floorEBO, floorVertices, sizeof(floorVertices), floorIndices, sizeof(floorIndices)); 
+    setupBuffers(floorVAO, floorVBO, floorEBO, floorVertices, sizeof(floorVertices), floorIndices, sizeof(floorIndices));
 
     // Initialize VAO, VBO, and EBO for the floor
     GLuint stadiumVAO = 0, stadiumVBO = 0, stadiumEBO = 0;
@@ -268,23 +271,31 @@ int main() {
     // Create the Stadium object
 
     auto stadiumPosition = glm::vec3(0.0f, 1.0f, 0.0f);
-    glm::vec3 stadiumColor = glm::vec3(0.2f, 0.2f, 0.2f);
-    glm::vec3 ringColor = glm::vec3(1.0f, 0.0f, 0.0f);
+    //glm::vec3 stadiumColor = glm::vec3(0.2f, 0.2f, 0.2f);
+    glm::vec3 stadiumColor = glm::vec3(0.5f, 0.5f, 0.5f);
+    glm::vec3 ringColor = glm::vec3(1.0f, 1.0f, 0.0f);
     glm::vec3 crossColor = glm::vec3(0.0f, 0.0f, 1.0f);
     float stadiumRadius = 4.0f;
     float stadiumCurvature = 0.02f;
+    float stadiumCoefficientOfFriction = 0.2f;
     int numRings = 10;
     int sectionsPerRing = 64;
     float stadiumTextureScale = 1.5f;
 
     Stadium stadium(stadiumVAO, stadiumVBO, stadiumEBO, stadiumPosition, stadiumColor, ringColor, crossColor,
-                    stadiumRadius, stadiumCurvature, numRings, sectionsPerRing, stadiumTexture, stadiumTextureScale, physicsWorld);
+        stadiumRadius, stadiumCurvature, stadiumCoefficientOfFriction, numRings, sectionsPerRing, stadiumTexture,
+        stadiumTextureScale, physicsWorld);
 
     GLuint Bey1VAO = 0, Bey1VBO = 0, Bey1EBO = 0;
-    auto rigidBey1 = new RigidBody("beyblade1", glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(1.0f), 1.0f);
+
+    // Use default constructors for now
+    Layer layer1;
+    Disc disc1;
+    Driver driver1;
+    auto rigidBey1 = new BeybladeBody(layer1, disc1, driver1);
     std::string beyblade1Path = "../assets/images/beyblade.obj";
     auto bey1Position = glm::vec3(0.0f, 2.0f, 0.0f);
-    Beyblade beyblade1(beyblade1Path, Bey1VAO, Bey1VBO, Bey1EBO, bey1Position, rigidBey1);
+    Beyblade beyblade1(beyblade1Path, Bey1VAO, Bey1VBO, Bey1EBO, rigidBey1);
     //TODO Don't you want this? physicsWorld->addBody(rigidBey1);
 
     /* ----------------------MAIN RENDERING LOOP-------------------------- */
@@ -317,26 +328,28 @@ int main() {
 
         if (gameControl.currentState == ProgramState::LOADING) {
             showLoadingScreen(window, backgroundTexture);
-        } else if (gameControl.showHomeScreen) {
+        }
+        else if (gameControl.showHomeScreen) {
             // Note: for better performance, distribute these changes to depth test when switching variables
             glDisable(GL_DEPTH_TEST);
-            if(gameControl.showCustomizeScreen || gameControl.showAboutScreen) {
+            if (gameControl.showCustomizeScreen || gameControl.showAboutScreen) {
                 if (gameControl.showCustomizeScreen) {
                     showCustomizeScreen(window, backgroundTexture);
                 }
-                else if(gameControl.showAboutScreen) {
+                else if (gameControl.showAboutScreen) {
                     showAboutScreen(window, backgroundTexture);
                 }
             }
             else {
                 showHomeScreen(window, homeScreenTexture, backgroundTexture);
             }
-        } else {
+        }
+        else {
             glEnable(GL_DEPTH_TEST);
 
             physicsWorld->update(gameControl.deltaTime);
 
-            if(gameControl.showInfoScreen) {
+            if (gameControl.showInfoScreen) {
                 showInfoScreen(window, &imguiColor);
             }
 
@@ -390,9 +403,9 @@ int main() {
             std::stringstream ss;
             ss << std::fixed << std::setprecision(1);
             ss << "X: " << cameraState->camera->Position.x << " "
-               << "Y: " << cameraState->camera->Position.y << " "
-               << "Z: " << cameraState->camera->Position.z << "   |   "
-               << "Min" << cameraState->camera->body->boundingBoxes[0]->min.x << " " <<
+                << "Y: " << cameraState->camera->Position.y << " "
+                << "Z: " << cameraState->camera->Position.z << "   |   "
+                << "Min" << cameraState->camera->body->boundingBoxes[0]->min.x << " " <<
                 cameraState->camera->body->boundingBoxes[0]->min.y << " " <<
                 cameraState->camera->body->boundingBoxes[0]->min.z << "\n"
                 << "Max" << cameraState->camera->body->boundingBoxes[0]->max.x << " " <<

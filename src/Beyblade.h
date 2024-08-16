@@ -10,6 +10,7 @@
 #include "Texture.h"
 #include "GameObject.h"
 #include "RigidBody.h"
+#include "RigidBodies/BeybladeBody.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
@@ -23,8 +24,8 @@
 
 class Beyblade : public GameObject {
 public:
-    Beyblade(std::string  modelPath, uint32_t vao, uint32_t vbo, uint32_t ebo,
-             const glm::vec3& col, RigidBody* rigidBody);
+    Beyblade(std::string modelPath, uint32_t vao, uint32_t vbo, uint32_t ebo,
+             BeybladeBody* rigidBody);
     ~Beyblade();
 
     void update(float deltaTime);
@@ -35,7 +36,7 @@ protected:
 
 private:
     std::unordered_map<std::string, glm::vec3> materialColors;
-    RigidBody* rigidBody;
+    BeybladeBody* rigidBody;
     std::string modelPath;
     Texture* texture{};
 

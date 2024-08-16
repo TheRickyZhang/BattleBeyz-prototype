@@ -12,8 +12,8 @@
 */
 
 Beyblade::Beyblade(std::string modelPath, uint32_t vao, uint32_t vbo, uint32_t ebo,
-                   const glm::vec3& pos, RigidBody* rigidBody)
-        : modelPath(std::move(modelPath)), GameObject(vao, vbo, ebo, pos, glm::vec3(1.0)), rigidBody(rigidBody) {
+                   BeybladeBody* rigidBody)
+        : modelPath(std::move(modelPath)), GameObject(vao, vbo, ebo, glm::vec3(1.0)), rigidBody(rigidBody) {
     Beyblade::initializeMesh();
 }
 
@@ -231,7 +231,7 @@ void Beyblade::render(ShaderProgram& shader, const glm::vec3& lightColor, const 
         shader.setInt("texture1", 0);
     }
 
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), rigidBody->position);
+    glm::mat4 model = glm::translate(glm::mat4(1.0f), rigidBody->getCenter());
     shader.setUniformMat4("model", model);
 //    shader.setUniformVec3("viewPos", viewPos);
     shader.setUniformVec3("lightColor", lightColor);
@@ -259,8 +259,8 @@ void Beyblade::render(ShaderProgram& shader, const glm::vec3& lightColor, const 
 * Update the physics.
 */
 
-void Beyblade::update(float deltaTime) {
-    // Update physics
-    rigidBody->update(deltaTime);
-}
+//void Beyblade::update(float deltaTime) {
+//    // Update physics
+//    rigidBody->update(deltaTime);
+//}
 

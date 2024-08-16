@@ -61,14 +61,18 @@ void RigidBody::update(float deltaTime) {
     force = glm::vec3(0.0f);  // Reset force
 
     // Angular dynamics
-//    glm::vec3 angularAcceleration = inverseInertiaTensor * torque;
-//    angularVelocity += angularAcceleration * deltaTime;
-//    orientation += glm::quat(0.0f, angularVelocity * deltaTime) * orientation * 0.5f;
-//    orientation = glm::normalize(orientation);
-//    torque = glm::vec3(0.0f);  // Reset torque
-//    updateInertiaTensor();
+
+#if 0
+    glm::vec3 angularAcceleration = inverseInertiaTensor * torque;
+    angularVelocity += angularAcceleration * deltaTime;
+    orientation += glm::quat(0.0f, angularVelocity * deltaTime) * orientation * 0.5f;
+    orientation = glm::normalize(orientation);
+    torque = glm::vec3(0.0f);  // Reset torque
+    updateInertiaTensor();
+#endif
 
     // Update bounding boxes
+
     updateBoundingBoxes();
 }
 
@@ -109,8 +113,7 @@ void RigidBody::renderDebug(ShaderProgram &shader, const glm::vec3 &viewPos) {
     // Set shader uniforms
     shader.setUniformMat4("model", glm::mat4(1.0f));
     shader.setUniformVec3("view", viewPos);
-    shader.setUniformVec3("objectColor", glm::vec3(1.0f, 1.0f, 1.0f));
-
+    
     // Check if VAO is valid
     std::cout << "VAO: " << VAO << std::endl;
 
@@ -120,7 +123,12 @@ void RigidBody::renderDebug(ShaderProgram &shader, const glm::vec3 &viewPos) {
         std::cerr << "OpenGL error before glBindVertexArray: " << error << std::endl;
     }
 
+    glm::vec3 color(1.0f, 1.0f, 1.0f);
+    shader.setObjectColor(&color);
+
     GL_CHECK(glBindVertexArray(VAO));
     GL_CHECK(glDrawElements(GL_LINES, 24, GL_UNSIGNED_INT, nullptr)); // 24 is the number of indices for 12 lines
     GL_CHECK(glBindVertexArray(0));
+
+    shader.setObjectColor(nullptr);
 }

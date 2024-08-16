@@ -20,18 +20,19 @@
 #include "Buffers.h"
 #include "BoundingBox.h"
 #include "PhysicsWorld.h"
+#include "RigidBodies/StadiumBody.h"
 
 class Stadium : public GameObject {
 public:
     Stadium(unsigned int vao, unsigned int vbo, unsigned int ebo, const glm::vec3& pos, const glm::vec3& col,
-            const glm::vec3& ringColor, const glm::vec3& crossColor, float radius, float curvature, int numRings,
-            int verticesPerRing, Texture* texture, float textureScale, PhysicsWorld* physicsWorld);
+        const glm::vec3& ringColor, const glm::vec3& crossColor, float radius, float curvature, float coefficientOfFriction, int numRings,
+        int verticesPerRing, Texture* texture, float textureScale, PhysicsWorld* physicsWorld);
 
     void update() {}
     void initializeMesh() override;
     void render(ShaderProgram &shader, const glm::vec3 &lightColor, const glm::vec3 &lightPos) override;
 
-    ImmovableRigidBody* body;
+    StadiumBody* rigidBody;
 protected:
     void generateMeshData();
 
