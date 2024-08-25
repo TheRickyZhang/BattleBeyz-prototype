@@ -26,19 +26,10 @@ public:
     }
 
     /**
-    * Samples the distribution and scales it by the speed the beys collide into each other.
-    * @param angularSpeed: the absolute difference in angular velocity between the two beys
-    * Typically 25 to 1000 rad/s (4 - 150 rev/s)
-    * Angular factor increases from 0 to 500 and gently decreases from 500 to 1000, modeling empirical data (AKA I just made it up)
-    *
-    * @param collisionSpeed: the absolute difference in linear velocity between the two beys
-    * Typically 0 to 0.5 m/s. Directly scales the distribution
-    *
-    * @return the nonegative scaled random number
+    * Samples the distribution. Only provides the "randomness" of the impact: actual recoil will depend on many other factors
     */
-    double sample(double angularSpeed, double collisionSpeed) {
-        double scalingFactor = (std::log(angularSpeed + 1) - (angularSpeed / 501)) * collisionSpeed;
-        return std::min(scalingFactor, 4.0) * std::sqrt(collisionSpeed) * distribution(rng);
+    double sample() {
+        return distribution(rng);
     }
 
 private:

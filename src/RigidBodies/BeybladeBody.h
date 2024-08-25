@@ -10,39 +10,63 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/glm.hpp>
+#include <optional>
+#include "../Utils.h"
 
 /**
  * BeybladeBody. Contains all of the physical properties of a beyblade.
  * 
- * Can be initialized with default values or with Layer, Disc, and Driver objects.
- * Ordinary value ranges (SI Units):
- * - layer radius: 0.02 to 0.03
- * - layer height: 0.008 to 0.012
- * - driver radius: 0.0005 to 0.0025
- * - driver height: 0.01 to 0.02
- * - mass: 0.03 to 0.1
- * - moment of inertia: 8*10^-6 to 2*10^-5
- * 
- * Remember: clockwise = negative y, counterclockwise = positive y for angular velocity
+ * Can be initialized with default values or with Layer, Disc, and Driver objects.	See typical SI values in units.txt
  */
 class BeybladeBody {
 public:
-	BeybladeBody::BeybladeBody(Layer layer, Disc disc, Driver driver) :
-		layerRadius(layer.radius), layerHeight(layer.height), discRadius(disc.radius), discHeight(disc.height),
-		driverRadius(driver.radius), driverHeight(driver.height), recoilDistribution(layer.recoilDistribution),
-		coefficientOfRestitution(0.8), coefficientOfFriction(0.2),
-		dragCoefficient(0.7 * layer.dragCoefficient + 0.2 * disc.dragCoefficient + 0.1 * driver.dragCoefficient),
-		mass(layer.mass + disc.mass + driver.mass), velocity(glm::vec3(0.0)), acceleration(glm::vec3(0.0)),
-		momentOfInertia(layer.momentOfInertia + disc.momentOfInertia + driver.momentOfInertia) {}
+	BeybladeBody::BeybladeBody(Layer layer, Disc disc, Driver driver);
+	BeybladeBody::BeybladeBody();
 
+	// Simple getters
 	glm::vec3 BeybladeBody::getCenter() const { return baseCenter; }
+	glm::vec3 BeybladeBody::getVelocity() const { return velocity; }
+	glm::vec3 BeybladeBody::getAngularVelocity() const { return angularVelocity; }
+	double BeybladeBody::getLayerHeight() const { return layerHeight; }
+	double BeybladeBody::getMass() const { return mass; }
+	double BeybladeBody::getDriverCOF() const { return coefficientOfFriction; }
+	double BeybladeBody::getLayerCOR() const { return coefficientOfRestitution; }
+	double BeybladeBody::getLayerRadius() const { return layerRadius; }
+
+	// Specialized getters
+	double BeybladeBody::getAngularVelocityMagnitude() const { return glm::length(angularVelocity); }
+	bool isSpinningClockwise() const { return angularVelocity.y < 0; }
+	glm::vec3 BeybladeBody::getNormal() const;
+	glm::vec3 BeybladeBody::getBottomPosition() const;
+
+	// Setters
+	void BeybladeBody::setInitialLaunch(glm::vec3 initialCenter, glm::vec3 initialVelocity, glm::vec3 initialAngularVelocity);
+
+	// Adjustors
+	void BeybladeBody::addCenterY(double addY) { baseCenter.y += static_cast<float>(addY); }
+	void BeybladeBody::addCenterXZ(double addX, double addZ) { baseCenter.x += static_cast<float>(addX); baseCenter.z += static_cast<float>(addZ); }
+
+	// Used in collision calculations
+	double sampleRecoil();
+	static std::optional<double> distanceOverlap(BeybladeBody* a, BeybladeBody* b);
+
+	// Accumulators
+	void accumulateVelocity(glm::vec3 addedVelocity);
+	void accumulateAngularVelocity(glm::vec3 addedAngularVelocity);
+	void accumulateAccelaration(glm::vec3 addedAccelaration);
+	void accumulateAngularAccelaration(glm::vec3 addedAngularAccelaration);
+
+	void accumulateImpulseMagnitude(double magnitude);
+	void accumulateAngularImpulseMagnitude(double magnitude);
+
+	// Updators: these are the ones that significantly change the values of the body!
+	void applyAccumulatedChanges(double deltaTime);
+	void update(double deltaTime);
+
 	std::vector<BoundingBox*> boundingBoxes{};
 private:
 	// Global Position
 	glm::vec3 baseCenter{};
-
-	// TODO: Determine whether this is necessary given angularVelocity already encodes direction
-	// glm::vec3 axisOfRotation{ 0.0, 1.0, 0.0 };
 
 	// Measurements
 	double layerRadius;
@@ -67,4 +91,12 @@ private:
 	double momentOfInertia;
 	glm::vec3 angularVelocity{ 0.0, 1.0, 0.0 };
 	glm::vec3 angularAcceleration{};
+
+	// Accumulated delta velocity to be applied at cycle end (for instantaneous collisions, does not depend on deltaTime)
+	glm::vec3 accumulatedVelocity {};
+	glm::vec3 accumulatedAngularVelocity {};
+
+	// Accumulated delta accelaration to be applied at cycle end (for forces like friction and inclined plane that do depend on time)
+	glm::vec3 accumulatedAccelaration {};
+	glm::vec3 accumulatedAngularAccelaration{};
 };

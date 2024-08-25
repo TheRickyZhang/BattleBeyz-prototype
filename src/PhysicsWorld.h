@@ -3,24 +3,38 @@
 // Copyright (c) 2024 Ricky Zhang
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "Physics.h"
-
 #pragma once
+
+#include "Physics.h"
+#include "RigidBodies/StadiumBody.h"
+#include "RigidBodies/BeybladeBody.h"
 
 #include <vector>
 #include <glm/glm.hpp>
+#include <unordered_map>
+#include "Utils.h"
 #include "RigidBody.h"
 #include "ShaderProgram.h"
+#include "Physics.h"
 
 class PhysicsWorld {
 public:
-    std::vector<RigidBody*> bodies;
+    PhysicsWorld(double fluidDragValue = 0.8, double spinThreshold = 30) : fluidDrag(fluidDragValue), SPIN_THRESHOLD(spinThreshold) {}
 
-    void addBody(RigidBody* body);
+    void addBeybladeBody(BeybladeBody* body);
+    void addStadiumBody(StadiumBody* body);
+    void removeBeybladeBody(BeybladeBody* body);
+    void removeStadiumBody(StadiumBody* body);
+
     void update(float deltaTime);
     void renderDebug(ShaderProgram &shader) const;
+    std::vector<BeybladeBody*> getBeybladeBodies() const { return beybladeBodies; }
+    std::vector<StadiumBody*> getStadiumBodies() const { return stadiumBodies; }
 
 private:
-    void detectCollisions();
-    static void resolveCollision(RigidBody* bodyA, RigidBody* bodyB);
+    double fluidDrag;
+    std::vector<BeybladeBody*> beybladeBodies;
+    std::vector<StadiumBody*> stadiumBodies;
+    const double SPIN_THRESHOLD = 30;
+    //static void resolveCollision(RigidBody* bodyA, RigidBody* bodyB);
 };

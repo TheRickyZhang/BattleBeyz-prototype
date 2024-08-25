@@ -28,6 +28,24 @@ glm::vec3 screenToWorldCoordinates(GLFWwindow* window, double xpos, double ypos,
     return ray_wor;
 }
 
+
+/**
+* Convert a double to a glm::vec3 for vector or matrix operations
+*/
+glm::vec3 dv3(double d) {
+    return glm::vec3(float(d));
+}
+
+/**
+* Convert a magnitude to a glm::vec3 for vector operations
+*/
+glm::vec3 getVecFromMagnitude(double magnitude, glm::vec3 vector3)
+{
+    glm::vec3 direction = glm::normalize(vector3);
+    return direction * dv3(magnitude);
+}
+
+
 /**
 * Perform intersection test with objects in your scene and return the object name.
 * 

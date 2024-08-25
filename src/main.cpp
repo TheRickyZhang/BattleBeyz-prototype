@@ -132,10 +132,12 @@ int main() {
     auto view = glm::mat4(1.0f);
     auto projection = glm::mat4(1.0f);
 
-    auto physicsWorld = new PhysicsWorld;
+    // Declare physics world with default parameters
+    auto physicsWorld = new PhysicsWorld();
 
     // Primary camera and camera state
-    glm::vec3 initialCameraPos(5.0f, 5.0f, 0.0f);
+    //glm::vec3 initialCameraPos(5.0f, 10.0f, 10.0f);
+glm::vec3 initialCameraPos(5.0f, 10.0f, 15.0f);
     glm::vec3 lookAtPoint(0.0f, 0.0f, 0.0f);
     glm::vec3 frontVector = glm::normalize(lookAtPoint - initialCameraPos);
 
@@ -157,7 +159,6 @@ int main() {
 
     /* ----------------------RELEVANT INSTANTIATIONS-------------------------- */
 
-
     auto quadRenderer = new QuadRenderer();
 
     auto identity4 = glm::mat4(1.0f);
@@ -171,12 +172,9 @@ int main() {
     auto backgroundView = identity4;
     glm::mat4 orthoProjection = glm::ortho(0.0f, float(windowWidth), 0.0f, float(windowHeight), 0.0f, 1.0f);
 
-    //    // Position camera at the origin and rotate around it
-    //    auto panoramaModel = identity4;
-    //    glm::mat4 panoramaView = identity4;
-    //    glm::mat4 panoramaProjection = glm::perspective(glm::radians(45.0f), float(windowWidth) / float(windowHeight), 0.1f, 100.0f);
+    // Not urgent - position camera at the origin and rotate around it (Would like a background similar to minecraft's homescreen, but from the center of a stadium)
 
-        // Initialize ShaderProgram for 3D objects
+    // Initialize ShaderProgram for 3D objects
     auto objectShader = new ShaderProgram(OBJECT_VERTEX_SHADER_PATH, OBJECT_FRAGMENT_SHADER_PATH);
     // Initialize default shader program with the model, view, and projection matrices. Also sets to use.
     objectShader->setUniforms(model, view, projection);
@@ -191,7 +189,8 @@ int main() {
     //    panoramaShader->setUniforms(panoramaModel, panoramaView, panoramaProjection);
 
         // Initialize font rendering
-    TextRenderer textRenderer("../assets/fonts/paladins.ttf", 800, 600);
+    //TextRenderer textRenderer("../assets/fonts/paladins.ttf", 800, 600);
+    TextRenderer textRenderer("../assets/fonts/OpenSans-Regular.ttf", 800, 600);
 
     // Initialize textures. Note that texture1 is primary texture
     Texture hexagonPattern("../assets/images/Hexagon.jpg", "texture1");
@@ -271,12 +270,11 @@ int main() {
     // Create the Stadium object
 
     auto stadiumPosition = glm::vec3(0.0f, 1.0f, 0.0f);
-    //glm::vec3 stadiumColor = glm::vec3(0.2f, 0.2f, 0.2f);
     glm::vec3 stadiumColor = glm::vec3(0.5f, 0.5f, 0.5f);
     glm::vec3 ringColor = glm::vec3(1.0f, 1.0f, 0.0f);
     glm::vec3 crossColor = glm::vec3(0.0f, 0.0f, 1.0f);
-    float stadiumRadius = 4.0f;
-    float stadiumCurvature = 0.02f;
+    float stadiumRadius = 15.0f;
+    float stadiumCurvature = 0.01f;
     float stadiumCoefficientOfFriction = 0.2f;
     int numRings = 10;
     int sectionsPerRing = 64;
@@ -294,9 +292,26 @@ int main() {
     Driver driver1;
     auto rigidBey1 = new BeybladeBody(layer1, disc1, driver1);
     std::string beyblade1Path = "../assets/images/beyblade.obj";
-    auto bey1Position = glm::vec3(0.0f, 2.0f, 0.0f);
+    auto bey1Position = glm::vec3(0.0f, 12.0f, 0.0f);
     Beyblade beyblade1(beyblade1Path, Bey1VAO, Bey1VBO, Bey1EBO, rigidBey1);
-    //TODO Don't you want this? physicsWorld->addBody(rigidBey1);
+
+    //TODO Add beys
+    physicsWorld->addBeybladeBody(beyblade1.getRigidBody());
+    physicsWorld->addStadiumBody(stadium.getRigidBody());
+    
+    // Initial launch for beyblade1
+#if 0
+    glm::vec3 initialPosition = glm::vec3(1.0f, 3.0f, 1.0f);
+    glm::vec3 initialVelocity = glm::vec3(0.2f, 0.0f, 0.0f);
+    glm::vec3 initialAngularVelocity = glm::vec3(0.0f, -400.0f, 0.0f);
+#else
+glm::vec3 initialPosition = glm::vec3(0.0f, 9.0f, 0.0f);
+glm::vec3 initialVelocity = glm::vec3(0.01f, 0.0f, 0.0f);
+glm::vec3 initialAngularVelocity = glm::vec3(0.0f, -400.0f, 0.0f);
+#endif
+
+    // TODO: When I do this the bey doesn't render
+beyblade1.getRigidBody()->setInitialLaunch(initialPosition, initialVelocity, initialAngularVelocity);
 
     /* ----------------------MAIN RENDERING LOOP-------------------------- */
 
@@ -387,7 +402,6 @@ int main() {
             stadium.render(*objectShader, glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1e6f, 0.0f)); // render(shader, light color=white, light position)
 
             // Update and render the Beyblade
-            beyblade1.update(gameControl.deltaTime);
             beyblade1.render(*objectShader, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1e6f, 0.0f));
 
             // Render bounding boxes for debugging
@@ -407,10 +421,10 @@ int main() {
                 << "Z: " << cameraState->camera->Position.z << "   |   "
                 << "Min" << cameraState->camera->body->boundingBoxes[0]->min.x << " " <<
                 cameraState->camera->body->boundingBoxes[0]->min.y << " " <<
-                cameraState->camera->body->boundingBoxes[0]->min.z << "\n"
+                cameraState->camera->body->boundingBoxes[0]->min.z << " "
                 << "Max" << cameraState->camera->body->boundingBoxes[0]->max.x << " " <<
                 cameraState->camera->body->boundingBoxes[0]->max.y << " " <<
-                cameraState->camera->body->boundingBoxes[0]->max.z << "\n";
+                cameraState->camera->body->boundingBoxes[0]->max.z;
             std::string cameraPosStr = ss.str();
             std::replace(cameraPosStr.begin(), cameraPosStr.end(), '-', ';');
 

@@ -95,7 +95,7 @@ add_executable(BattleBeyz ${SOURCES}
         src/RigidBody.h
         src/PhysicsWorld.cpp
         src/PhysicsWorld.h
-)
+ "src/RigidBodies/BeybladeParts.h" "src/RigidBodies/RandomDistribution.h" "src/RigidBodies/StadiumBody.h" "src/RigidBodies/BeybladeBody.cpp")
 
 # Link libraries
 target_link_libraries(BattleBeyz PRIVATE ${LIBS})

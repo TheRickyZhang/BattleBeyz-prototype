@@ -159,7 +159,7 @@ void Beyblade::loadModel(const std::string& path) {
             glm::vec3 color = materialIndexToDiffuseColor.count(materialIndex) ? materialIndexToDiffuseColor[materialIndex] : glm::vec3(1.0f, 1.0f, 1.0f);
 
             for (size_t vertexIndex = 0; vertexIndex < 3; ++vertexIndex) {
-                auto index = shape.mesh.indices[3 * faceIndex + vertexIndex];
+                auto& index = shape.mesh.indices[3 * faceIndex + vertexIndex];
                 glm::vec3 vertex = vertexMap[index.vertex_index];
                 glm::vec3 normal = normalMap.count(index.normal_index) ? normalMap[index.normal_index] : glm::vec3(0.0f, 0.0f, 0.0f);
                 glm::vec2 texCoord = texCoordMap.count(index.texcoord_index) ? texCoordMap[index.texcoord_index] : glm::vec2(0.0f, 0.0f);
@@ -254,13 +254,3 @@ void Beyblade::render(ShaderProgram& shader, const glm::vec3& lightColor, const 
         std::cerr << "OpenGL error: " << err << std::endl;
     }
 }
-
-/**
-* Update the physics.
-*/
-
-//void Beyblade::update(float deltaTime) {
-//    // Update physics
-//    rigidBody->update(deltaTime);
-//}
-

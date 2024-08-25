@@ -31,14 +31,14 @@ public:
     void update() {}
     void initializeMesh() override;
     void render(ShaderProgram &shader, const glm::vec3 &lightColor, const glm::vec3 &lightPos) override;
-
-    StadiumBody* rigidBody;
+    StadiumBody* getRigidBody() { return rigidBody; }
 protected:
     void generateMeshData();
 
 private:
     Texture* texture;
     PhysicsWorld* physicsWorld;
+    StadiumBody* rigidBody;
     float radius;
     float curvature;
     int verticesPerRing;

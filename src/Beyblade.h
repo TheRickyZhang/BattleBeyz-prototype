@@ -28,10 +28,9 @@ public:
              BeybladeBody* rigidBody);
     ~Beyblade();
 
-    void update(float deltaTime);
     void initializeMesh() override;
     void render(ShaderProgram& shader, const glm::vec3& lightColor, const glm::vec3& lightPos) override;
-
+    BeybladeBody* getRigidBody() { return rigidBody; }
 protected:
 
 private:

@@ -19,10 +19,6 @@ Camera::Camera(const glm::vec3& position, float yaw, float pitch, float roll, Ph
     std::vector<BoundingBox*> bboxes;
     bboxes.push_back(new BoundingBox(glm::vec3(position - glm::vec3(1.0f)), glm::vec3(position + glm::vec3(1.0f))));
     body = new RigidBody("camera", position, glm::vec3(0.02f), 0.79f, std::move(bboxes));
-
-    if (physicsWorld) {
-        physicsWorld->addBody(body);
-    }
 }
 
 /**
@@ -36,35 +32,25 @@ glm::mat4 Camera::getViewMatrix() const {
 }
 
 /**
-* Apply boundaries so we can <TODO>
+* TODO: Apply boundaries for "restricted" camera mode, where the camera cannot leave a certain area
 */
 
 void Camera::applyBoundaries(glm::vec3& position) const {
     if (!physicsWorld) return;
+    //// Temporarily move the body's position to check for collisions
+    //glm::vec3 originalPosition = body->position;
+    //body->position = position;
 
-    // Temporarily move the body's position to check for collisions
-    glm::vec3 originalPosition = body->position;
-    body->position = position;
+    //std::cout << "Applying boundaries. New position: "
+    //    << position.x << ", " << position.y << ", " << position.z << "\n";
 
-    std::cout << "Applying boundaries. New position: "
-        << position.x << ", " << position.y << ", " << position.z << "\n";
+    //for (const auto beybladeBody : physicsWorld->getBeybladeBodies()) {
+    //    for (const auto box : beybladeBody->boundingBoxes) {
 
-    for (const auto& otherBody : physicsWorld->bodies) {
-        if (otherBody != body) {
-            for (const auto& boxA : body->boundingBoxes) {
-                for (const auto& boxB : otherBody->boundingBoxes) {
-                    if (boxA->checkCollision(*boxB)) {
-                        position = originalPosition; // Revert position if collision detected
-                        std::cout << "Collision detected. Reverting position to: "
-                            << position.x << ", " << position.y << ", " << position.z << "\n";
-                        break;
-                    }
-                }
-            }
-        }
-    }
+    //    }
+    //}
 
-    body->position = originalPosition; // Restore original position
+    //body->position = originalPosition; // Restore original position
 }
 
 /**
@@ -124,11 +110,11 @@ void Camera::processKeyboard(int direction, float deltaTime, bool boundCamera) {
     }
 
     Position = newPosition;
-    std::cout << "Camera position: " << Position.x << ", " << Position.y << ", " << Position.z << std::endl;
+    //std::cout << "Camera position: " << Position.x << ", " << Position.y << ", " << Position.z << std::endl;
     // Update the body's position to match the camera
     body->position = Position;
     body->updateBoundingBoxes();
-    std::cout << "Body position: " << body->position.x << ", " << body->position.y << ", " << body->position.z << std::endl;
+    //std::cout << "Body position: " << body->position.x << ", " << body->position.y << ", " << body->position.z << std::endl;
 }
 
 /**
@@ -180,10 +166,10 @@ void Camera::processMouseScroll(float yoffset) {
 
 void Camera::updateCameraVectors() {
     // Calculate the new Front vector
-    glm::vec3 front;
-    front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-    front.y = sin(glm::radians(Pitch));
-    front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
+    float x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
+    float y = sin(glm::radians(Pitch));
+    float z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
+    glm::vec3 front = glm::vec3(x, y, z);
     Front = glm::normalize(front);
 
     // Also re-calculate the Right and Up vector

@@ -6,7 +6,6 @@
 #pragma once
 
 #include "BeybladeParts.h"
-#include "../Physics.h"
 #include "../BoundingBox.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/glm.hpp>
@@ -35,10 +34,9 @@ public:
 	const double getY(double x, double z) const;
 	const glm::vec3 getNormal(double x, double z) const;
 
-	const glm::vec3 getFrictionForce(double x, double z, double mass, glm::vec3 angularVelocity, double driverCOF,
-		double driverRadius) const;
-
 	glm::vec3 getCenter() const { return center; }
+	double getCOF() const { return coefficientOfFriction; }
+
 	std::vector<BoundingBox*> boundingBoxes{};
 
 private:

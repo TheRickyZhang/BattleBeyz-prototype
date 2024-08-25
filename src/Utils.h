@@ -22,6 +22,8 @@
 
 
 glm::vec3 screenToWorldCoordinates(GLFWwindow* window, double xpos, double ypos, const glm::mat4& view, const glm::mat4& projection);
+glm::vec3 dv3(double d);
+glm::vec3 getVecFromMagnitude(double magnitude, glm::vec3 vector3);
 std::string checkIntersection(const glm::vec3& ray_world);
 void checkGLError(const char* stmt, const char* fname, int line);
 void cleanup(GLFWwindow* window);
@@ -32,3 +34,18 @@ enum ProgramState {
     ACTIVE
 };
 
+/**
+* Clear way to manage angular and linear changes in accelaration calculated in PhysicsWorld.update()
+* 
+* Note: inherent accelaration of beyblade should be taken into account into future (suppose we have power-up that accelarates (?))
+* BUT it should always be 0 in most cases because instantaneous accelarations are all calculated and applied each deltaTime.
+*/
+struct CollisionAccelerations {
+    glm::vec3 angularAcceleration = glm::vec3(0.0f);
+    glm::vec3 linearAcceleration = glm::vec3(0.0f);
+
+    void add(const std::pair<glm::vec3, glm::vec3>& increment) {
+        angularAcceleration += increment.first;
+        linearAcceleration += increment.second;
+    }
+};
