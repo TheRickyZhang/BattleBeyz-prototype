@@ -11,21 +11,17 @@
 
 Stadium::Stadium(unsigned int vao, unsigned int vbo, unsigned int ebo, const glm::vec3& pos, const glm::vec3& col,
     const glm::vec3& ringColor, const glm::vec3& crossColor, float radius, float curvature, float coefficientOfFriction, int numRings,
-    int verticesPerRing, Texture* texture, float textureScale, PhysicsWorld* physicsWorld)
+    int verticesPerRing, Texture* texture, float textureScale)
     : GameObject(vao, vbo, ebo, col),
     ringColor(ringColor),
     crossColor(crossColor),
-    radius(radius), curvature(curvature),
     numRings(numRings),
     verticesPerRing(verticesPerRing),
     texture(texture),
-    textureScale(textureScale),
-    physicsWorld(physicsWorld)
+    textureScale(textureScale)
 {
     rigidBody = new StadiumBody(pos, radius, curvature, coefficientOfFriction);
-    // physicsWorld->addBody(body);
     Stadium::initializeMesh();
-    std::cout << "Stadium color: (" << color.x << ", " << color.y << ", " << color.z << ")\n";
 }
 
 /**
@@ -50,6 +46,7 @@ void Stadium::generateMeshData() {
         std::cerr << "Vertices per ring must be a multiple of 4" << std::endl;
         return;
     }
+    double radius = rigidBody->getRadius();
 
     // Generate vertices
     for (int rIdx = 1; rIdx <= numRings; ++rIdx) {
@@ -57,12 +54,13 @@ void Stadium::generateMeshData() {
         for (int thetaIdx = 0; thetaIdx < verticesPerRing; ++thetaIdx) {
             float theta = (float)(2.0f * M_PI * static_cast<float>(thetaIdx) / static_cast<float>(verticesPerRing));
             float x = r * std::cos(theta);
-            float z = r * std::sin(theta); // Change y to z
-            float y = std::pow(r, 2.0f) * curvature; // Use r for y calculation
+            float z = r * std::sin(theta);
+            float y = rigidBody->getYLocal(r);
 
             vertices.emplace_back(x, y, z);
             texCoords.emplace_back(textureScale * (r / radius * std::cos(theta)) + 0.5f,
                 textureScale * (r / radius * std::sin(theta)) + 0.5f);
+
             // Set ring color for middle and end
             if (rIdx == numRings / 4 || rIdx == numRings - 1) {
                 colors.emplace_back(ringColor);
@@ -244,7 +242,6 @@ void Stadium::generateMeshData() {
 /**
 * Intrenal routine to initialize mesh.
 */
-
 void Stadium::initializeMesh() {
     generateMeshData();
     if (vertices.size() != normals.size() || vertices.size() != texCoords.size()) {
@@ -258,6 +255,7 @@ void Stadium::initializeMesh() {
         vertexData.push_back(vertices[i].x);
         vertexData.push_back(vertices[i].y);
         vertexData.push_back(vertices[i].z);
+
         // Normal data
         vertexData.push_back(normals[i].x);
         vertexData.push_back(normals[i].y);

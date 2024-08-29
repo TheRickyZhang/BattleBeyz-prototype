@@ -23,11 +23,12 @@ namespace Physics {
 
     // How much aerial drag there is
     const double FLUID_DRAG = 0.08;
-    void accumulateAirResistance(BeybladeBody* beyblade, double fluidDrag = FLUID_DRAG);
+    void accumulateAirResistance(BeybladeBody* beyblade, double airDensity = FLUID_DRAG);
 
     void accumulateFriction(BeybladeBody* beyblade, StadiumBody* stadium);
     void accumulateSlope(BeybladeBody* beyblade, StadiumBody* stadium);
     void accumulateImpact(BeybladeBody* beyblade1, BeybladeBody* beyblade2, double contactDistance);
+    void preventStadiumClipping(BeybladeBody* beybladeBody, double deltaTime, StadiumBody* stadiumBody);
 }
 
 

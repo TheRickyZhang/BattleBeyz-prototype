@@ -80,3 +80,7 @@ void cleanup(GLFWwindow* window) {
         glfwTerminate();
     }
 }
+
+void printVec3(const std::string& label, const glm::vec3& v) {
+    std::cout << label << ": " << v.x << ", " << v.y << ", " << v.z << std::endl;
+}

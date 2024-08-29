@@ -27,6 +27,7 @@ glm::vec3 getVecFromMagnitude(double magnitude, glm::vec3 vector3);
 std::string checkIntersection(const glm::vec3& ray_world);
 void checkGLError(const char* stmt, const char* fname, int line);
 void cleanup(GLFWwindow* window);
+void printVec3(const std::string& label, const glm::vec3& v);
 
 enum ProgramState {
     LOADING,
@@ -35,10 +36,10 @@ enum ProgramState {
 };
 
 /**
-* Clear way to manage angular and linear changes in accelaration calculated in PhysicsWorld.update()
+* Clear way to manage angular and linear changes in Acceleration calculated in PhysicsWorld.update()
 * 
-* Note: inherent accelaration of beyblade should be taken into account into future (suppose we have power-up that accelarates (?))
-* BUT it should always be 0 in most cases because instantaneous accelarations are all calculated and applied each deltaTime.
+* Note: inherent Acceleration of beyblade should be taken into account into future (suppose we have power-up that accelarates (?))
+* BUT it should always be 0 in most cases because instantaneous Accelerations are all calculated and applied each deltaTime.
 */
 struct CollisionAccelerations {
     glm::vec3 angularAcceleration = glm::vec3(0.0f);

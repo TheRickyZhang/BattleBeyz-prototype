@@ -137,8 +137,8 @@ int main() {
 
     // Primary camera and camera state
     //glm::vec3 initialCameraPos(5.0f, 10.0f, 10.0f);
-glm::vec3 initialCameraPos(5.0f, 10.0f, 15.0f);
-    glm::vec3 lookAtPoint(0.0f, 0.0f, 0.0f);
+glm::vec3 initialCameraPos(5.0f, 2.4f, 0.0f);
+    glm::vec3 lookAtPoint(0.0f, 1.0f, 0.0f);
     glm::vec3 frontVector = glm::normalize(lookAtPoint - initialCameraPos);
 
     // Calculate initial yaw and pitch
@@ -159,6 +159,7 @@ glm::vec3 initialCameraPos(5.0f, 10.0f, 15.0f);
 
     /* ----------------------RELEVANT INSTANTIATIONS-------------------------- */
 
+
     auto quadRenderer = new QuadRenderer();
 
     auto identity4 = glm::mat4(1.0f);
@@ -174,7 +175,7 @@ glm::vec3 initialCameraPos(5.0f, 10.0f, 15.0f);
 
     // Not urgent - position camera at the origin and rotate around it (Would like a background similar to minecraft's homescreen, but from the center of a stadium)
 
-    // Initialize ShaderProgram for 3D objects
+        // Initialize ShaderProgram for 3D objects
     auto objectShader = new ShaderProgram(OBJECT_VERTEX_SHADER_PATH, OBJECT_FRAGMENT_SHADER_PATH);
     // Initialize default shader program with the model, view, and projection matrices. Also sets to use.
     objectShader->setUniforms(model, view, projection);
@@ -270,29 +271,30 @@ glm::vec3 initialCameraPos(5.0f, 10.0f, 15.0f);
     // Create the Stadium object
 
     auto stadiumPosition = glm::vec3(0.0f, 1.0f, 0.0f);
+    //glm::vec3 stadiumColor = glm::vec3(0.2f, 0.2f, 0.2f);
     glm::vec3 stadiumColor = glm::vec3(0.5f, 0.5f, 0.5f);
     glm::vec3 ringColor = glm::vec3(1.0f, 1.0f, 0.0f);
     glm::vec3 crossColor = glm::vec3(0.0f, 0.0f, 1.0f);
-    float stadiumRadius = 15.0f;
-    float stadiumCurvature = 0.01f;
-    float stadiumCoefficientOfFriction = 0.2f;
+    float stadiumRadius = 1.0f;
+    float stadiumCurvature = 0.06f;
+    float stadiumCoefficientOfFriction = 0.35f;
     int numRings = 10;
     int sectionsPerRing = 64;
     float stadiumTextureScale = 1.5f;
 
     Stadium stadium(stadiumVAO, stadiumVBO, stadiumEBO, stadiumPosition, stadiumColor, ringColor, crossColor,
         stadiumRadius, stadiumCurvature, stadiumCoefficientOfFriction, numRings, sectionsPerRing, stadiumTexture,
-        stadiumTextureScale, physicsWorld);
+        stadiumTextureScale);
 
     GLuint Bey1VAO = 0, Bey1VBO = 0, Bey1EBO = 0;
 
     // Use default constructors for now
     Layer layer1;
-    Disc disc1;
+    Disc disc1; 
     Driver driver1;
     auto rigidBey1 = new BeybladeBody(layer1, disc1, driver1);
-    std::string beyblade1Path = "../assets/images/beyblade.obj";
-    auto bey1Position = glm::vec3(0.0f, 12.0f, 0.0f);
+    std::string beyblade1Path = "../assets/images/TestBlade.obj";
+    auto bey1Position = glm::vec3(0.0f, 2.0f, 0.6f);
     Beyblade beyblade1(beyblade1Path, Bey1VAO, Bey1VBO, Bey1EBO, rigidBey1);
 
     //TODO Add beys
@@ -305,9 +307,9 @@ glm::vec3 initialCameraPos(5.0f, 10.0f, 15.0f);
     glm::vec3 initialVelocity = glm::vec3(0.2f, 0.0f, 0.0f);
     glm::vec3 initialAngularVelocity = glm::vec3(0.0f, -400.0f, 0.0f);
 #else
-glm::vec3 initialPosition = glm::vec3(0.0f, 9.0f, 0.0f);
-glm::vec3 initialVelocity = glm::vec3(0.01f, 0.0f, 0.0f);
-glm::vec3 initialAngularVelocity = glm::vec3(0.0f, -400.0f, 0.0f);
+glm::vec3 initialPosition = glm::vec3(0.0f, 4.0f, 0.5f);  // move beyblade higher to see effects of gravity
+glm::vec3 initialVelocity = glm::vec3(0.0f, 0.0f, 0.0f);
+glm::vec3 initialAngularVelocity = glm::vec3(0.0f, -800.0f, 0.0f);
 #endif
 
     // TODO: When I do this the bey doesn't render
@@ -319,8 +321,12 @@ beyblade1.getRigidBody()->setInitialLaunch(initialPosition, initialVelocity, ini
         // Measure time
         auto currentFrame = static_cast<float>(glfwGetTime());
         // deltaTime was moved to the callback data so the keyboard handler can use it.
+#if 0
         gameControl.deltaTime = currentFrame - lastFrame;  // xxxFrame: bad name!  Should be xxxtime!
         lastFrame = currentFrame;
+#else
+        gameControl.deltaTime = 0.05; 
+#endif
 
         // Poll events at the start to process input before rendering
         glfwPollEvents();

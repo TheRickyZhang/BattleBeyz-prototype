@@ -26,7 +26,7 @@ class Stadium : public GameObject {
 public:
     Stadium(unsigned int vao, unsigned int vbo, unsigned int ebo, const glm::vec3& pos, const glm::vec3& col,
         const glm::vec3& ringColor, const glm::vec3& crossColor, float radius, float curvature, float coefficientOfFriction, int numRings,
-        int verticesPerRing, Texture* texture, float textureScale, PhysicsWorld* physicsWorld);
+        int verticesPerRing, Texture* texture, float textureScale);
 
     void update() {}
     void initializeMesh() override;
@@ -39,8 +39,6 @@ private:
     Texture* texture;
     PhysicsWorld* physicsWorld;
     StadiumBody* rigidBody;
-    float radius;
-    float curvature;
     int verticesPerRing;
     int numRings;
     glm::vec3 ringColor;

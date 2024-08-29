@@ -29,9 +29,21 @@ public:
 	glm::vec3 BeybladeBody::getAngularVelocity() const { return angularVelocity; }
 	double BeybladeBody::getLayerHeight() const { return layerHeight; }
 	double BeybladeBody::getMass() const { return mass; }
+	double BeybladeBody::getMomentOfInertia() const { return momentOfInertia; }
 	double BeybladeBody::getDriverCOF() const { return coefficientOfFriction; }
+	double BeybladeBody::getDriverRadius() const { return driverRadius; }
 	double BeybladeBody::getLayerCOR() const { return coefficientOfRestitution; }
 	double BeybladeBody::getLayerRadius() const { return layerRadius; }
+	double BeybladeBody::getDiscRadius() const { return discRadius; }
+	double BeybladeBody::getDiscHeight() const { return discHeight; }
+	double BeybladeBody::getDriverHeight() const { return driverHeight; }
+
+	double BeybladeBody::getLinearDragTerm() const { return linearDragTerm; }
+	double BeybladeBody::getAngularDragTerm() const { return angularDragTerm; }
+
+	// TODO: Need to distinguish between the top and bottom of the driver, or driverRadiusTop and driverRadiusBottom
+	double BeybladeBody::getDriverTopRadius() const { return 0.012; }
+	// TODO: Add linearDragCoefficient (low priority, currently assumed to be constant 0.9)
 
 	// Specialized getters
 	double BeybladeBody::getAngularVelocityMagnitude() const { return glm::length(angularVelocity); }
@@ -45,6 +57,7 @@ public:
 	// Adjustors
 	void BeybladeBody::addCenterY(double addY) { baseCenter.y += static_cast<float>(addY); }
 	void BeybladeBody::addCenterXZ(double addX, double addZ) { baseCenter.x += static_cast<float>(addX); baseCenter.z += static_cast<float>(addZ); }
+	void BeybladeBody::setCenterY(double addY) { baseCenter.y = static_cast<float>(addY); }
 
 	// Used in collision calculations
 	double sampleRecoil();
@@ -53,8 +66,8 @@ public:
 	// Accumulators
 	void accumulateVelocity(glm::vec3 addedVelocity);
 	void accumulateAngularVelocity(glm::vec3 addedAngularVelocity);
-	void accumulateAccelaration(glm::vec3 addedAccelaration);
-	void accumulateAngularAccelaration(glm::vec3 addedAngularAccelaration);
+	void accumulateAcceleration(glm::vec3 addedAcceleration);
+	void accumulateAngularAcceleration(glm::vec3 addedAngularAcceleration);
 
 	void accumulateImpulseMagnitude(double magnitude);
 	void accumulateAngularImpulseMagnitude(double magnitude);
@@ -80,7 +93,6 @@ private:
 	RandomDistribution* recoilDistribution;
 	double coefficientOfRestitution;
 	double coefficientOfFriction;
-	double dragCoefficient;
 
 	// Linear Physics
 	double mass;
@@ -91,12 +103,14 @@ private:
 	double momentOfInertia;
 	glm::vec3 angularVelocity{ 0.0, 1.0, 0.0 };
 	glm::vec3 angularAcceleration{};
+	double linearDragTerm; // Sum of Cd*A for parts 
+	double angularDragTerm; // Sum of Cd*A*r^2 for parts
 
 	// Accumulated delta velocity to be applied at cycle end (for instantaneous collisions, does not depend on deltaTime)
 	glm::vec3 accumulatedVelocity {};
 	glm::vec3 accumulatedAngularVelocity {};
 
-	// Accumulated delta accelaration to be applied at cycle end (for forces like friction and inclined plane that do depend on time)
-	glm::vec3 accumulatedAccelaration {};
-	glm::vec3 accumulatedAngularAccelaration{};
+	// Accumulated delta Acceleration to be applied at cycle end (for forces like friction and inclined plane that do depend on time)
+	glm::vec3 accumulatedAcceleration {};
+	glm::vec3 accumulatedAngularAcceleration{};
 };

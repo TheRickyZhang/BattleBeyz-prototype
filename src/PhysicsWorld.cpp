@@ -41,52 +41,46 @@ void PhysicsWorld::removeStadiumBody(StadiumBody* body) {
 */
 
 void PhysicsWorld::update(float deltaTime) {
+    // Map beyblades to their corresponding Accelerations. This allows us to accumulate all the changes and apply them at end
+    std::unordered_map<BeybladeBody*, CollisionAccelerations> beybladeAccelerations;
+
     /**
     * Resolve bey-stadium collisions
     */
     for (BeybladeBody* beybladeBody : beybladeBodies) {
-        std::cout << "Beyblade center:" << beybladeBody->getCenter().x << ", " << beybladeBody->getCenter().y << ", " << beybladeBody->getCenter().z << std::endl;
-
         // TODO: If bey is below minimum spin threshold, end the match. Some default animation could be used.
         if (glm::length(beybladeBody->getAngularVelocity()) < SPIN_THRESHOLD) {
-            // std::cerr << "Beyblade ran out of spin" << std::endl;
+            std::cerr << "Beyblade ran out of spin" << std::endl;
             return;
         }
 
         // Get position of the bottom tip
         glm::vec3 beyBottom = beybladeBody->getBottomPosition();
+        std::cout << "Bottom: " << beyBottom.y << std::endl;
 
         // TODO: Refactor beybladeAcclearations to bey stored in Beyblade like accumulatedVelocity!
         // Should usually only be one stadium, but may need to scale to more
         for (StadiumBody* stadiumBody : stadiumBodies) {
-            std::cout << "Stadium Center: " << stadiumBody->getCenter().x << ", " << stadiumBody->getCenter().y << ", " << stadiumBody->getCenter().z << std::endl;
-
             if(!stadiumBody->isInside(beyBottom.x, beyBottom.z)) {
                 // Game is over since beyblade is out of bounds, implement behavior in future
                 std::cerr << "Beyblade out of bounds" << std::endl;
                 return;
             }
 
-            //// Add air resistance
-            //Physics::accumulateAirResistance(beybladeBody, fluidDrag);
+            // Add air resistance
+            Physics::accumulateAirResistance(beybladeBody, airDensity);
 
             double stadiumY = stadiumBody->getY(beyBottom.x, beyBottom.z);
 
             // If the Beyblade is airborne by some significant amount, only apply gravity
             if (beyBottom.y - stadiumY > 0.005) {
-                beybladeBody->accumulateAccelaration(Physics::GRAVITY_VECTOR);
+                beybladeBody->accumulateAcceleration(Physics::GRAVITY_VECTOR);
             }
-
-            // Beyblade is clipping into stadium. Push it out along y-axis.
-            if (stadiumY > beyBottom.y) {
-                beybladeBody->addCenterY(stadiumY - beyBottom.y);
-                std::cout << "Added " << stadiumY - beyBottom.y << " to y" << std::endl;
-                std::cout << "New y: " << beybladeBody->getCenter().y << std::endl;
+            else {
+                // Add friction and slope forces from contact
+                Physics::accumulateFriction(beybladeBody, stadiumBody);
+                Physics::accumulateSlope(beybladeBody, stadiumBody);
             }
-
-            //// Add friction and slope forces from contact
-            //Physics::accumulateFriction(beybladeBody, stadiumBody);
-            //Physics::accumulateSlope(beybladeBody, stadiumBody);
         }
     }
     /**
@@ -116,6 +110,9 @@ void PhysicsWorld::update(float deltaTime) {
     for (BeybladeBody* beybladeBody : beybladeBodies) {
         beybladeBody->applyAccumulatedChanges(deltaTime);
         beybladeBody->update(deltaTime);
+        for (StadiumBody* stadiumBody : stadiumBodies) {
+            Physics::preventStadiumClipping(beybladeBody, deltaTime, stadiumBody);
+        }
     }
 }
 

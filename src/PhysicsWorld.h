@@ -19,7 +19,7 @@
 
 class PhysicsWorld {
 public:
-    PhysicsWorld(double fluidDragValue = 0.8, double spinThreshold = 30) : fluidDrag(fluidDragValue), SPIN_THRESHOLD(spinThreshold) {}
+    PhysicsWorld(double airDensityValue = 0.8, double spinThreshold = 30) : airDensity(airDensityValue), SPIN_THRESHOLD(spinThreshold) {}
 
     void addBeybladeBody(BeybladeBody* body);
     void addStadiumBody(StadiumBody* body);
@@ -32,7 +32,8 @@ public:
     std::vector<StadiumBody*> getStadiumBodies() const { return stadiumBodies; }
 
 private:
-    double fluidDrag;
+    // Combination of 
+    double airDensity;
     std::vector<BeybladeBody*> beybladeBodies;
     std::vector<StadiumBody*> stadiumBodies;
     const double SPIN_THRESHOLD = 30;

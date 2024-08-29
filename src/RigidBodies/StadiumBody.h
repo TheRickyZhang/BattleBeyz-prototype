@@ -31,6 +31,8 @@ public:
         center(glm::vec3(0.0)), radius(0.4), curvature(0.05), scaledCurvature(0.05/0.4), coefficientOfFriction(0.2) {}
 
 	bool isInside(double x, double z) const;
+	const double getRadius() const { return radius; }
+	const float getYLocal(double r) const;
 	const double getY(double x, double z) const;
 	const glm::vec3 getNormal(double x, double z) const;
 

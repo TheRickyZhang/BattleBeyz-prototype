@@ -9,6 +9,12 @@ bool StadiumBody::isInside(double x, double z) const {
     return scaledX * scaledX + scaledZ * scaledZ <= radius * radius;
 }
 
+// Returns the y-coordinate of the stadium at a given r in LOCAL space, where the stadium bottom (vertex) is at 0.0
+const float StadiumBody::getYLocal(double r) const
+{
+    return scaledCurvature * r * r;
+}
+
 /**
 * Returns the y-coordinate of the stadium at a given x and z.
 */
